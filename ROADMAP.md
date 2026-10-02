@@ -7,31 +7,40 @@
 - Flujo central definido.
 
 ## V1 — Prototipo UX — COMPLETADO
-- Landing.
-- Dashboard.
-- Alumnos.
-- Rutinas.
-- Biblioteca.
-- Calendario.
-- Progreso.
+- Landing, dashboard, alumnos, rutinas, biblioteca, calendario y progreso.
 - Responsive.
 - Identidad visual dark + verde lima.
 
-## V1.1 — Validación
-- Probar con 3–5 entrenadores.
-- Medir si pueden crear/duplicar/personalizar una rutina sin explicación.
-- Revisar navegación móvil.
-- Ajustar nomenclatura y jerarquía.
+## V1.2 — Prototipo funcional local — COMPLETADO
+- Alta de alumnos.
+- Búsqueda de alumnos.
+- Ficha individual.
+- Anamnesis/notas.
+- Edición de ficha.
+- Historial demo de sesiones.
+- Rutina vinculada al alumno seleccionado.
+- Edición de series, repeticiones, RIR y descanso.
+- Agregar/eliminar ejercicios.
+- Duplicar y guardar rutina.
+- Persistencia local con localStorage.
+- Biblioteca con búsqueda.
+- Navegación móvil inferior.
 
-## V2 — Producto funcional
+## Próximo: V1.3 — Validación UX
+- Probar el flujo completo en producción.
+- Revisar móvil 320–430 px.
+- Corregir fricciones antes de backend.
+- Probar con 3–5 entrenadores.
+
+## V2 — Producto multiusuario
 - Login real.
 - Roles profesor/alumno.
 - Base de datos.
-- CRUD alumnos.
-- Ficha/anamnesis.
-- CRUD rutinas y plantillas.
+- CRUD persistente de alumnos.
+- Ficha/anamnesis real.
+- Rutinas y plantillas persistentes.
 - Asignación de rutinas.
-- Registro de sesión por alumno.
+- Registro real de sesión por alumno.
 - RPE/RIR, carga, reps y notas.
 - Historial, adherencia y progreso.
 
