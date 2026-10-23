@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./tests',workers:1,fullyParallel:false,reporter:[['json',{outputFile:'../arm-orchestrator/evidence/nutri-browser-results.json'}],['list']],use:{baseURL:'http://127.0.0.1:4173',headless:true,launchOptions:{executablePath:'/tmp/arm-chromium',args:['--no-sandbox','--disable-dev-shm-usage']}},webServer:{command:'python3 -m http.server 4173 --bind 127.0.0.1 --directory dist',port:4173,timeout:10000}});

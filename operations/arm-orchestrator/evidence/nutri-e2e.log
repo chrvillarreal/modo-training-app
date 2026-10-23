@@ -1,0 +1,16 @@
+Executed on pinned commit e852644c4ce29635024eedbbf3fb8acfc6ff8df8.
+Command: env -u HTTP_PROXY -u HTTPS_PROXY -u ALL_PROXY -u http_proxy -u https_proxy -u all_proxy CHROMIUM_PATH=/tmp/arm-chromium npm run test:e2e
+Original playwright.config.ts; compiled Vite output; Chromium 153.0.8010.0.
+Captured tool output summary (exit 0):
+PASS flujo local completo 320px
+PASS flujo local completo 375px
+PASS flujo local completo 430px
+PASS flujo local completo 768px
+PASS flujo local completo 1024px
+PASS flujo local completo 1440px
+PASS IndexedDB denegado mantiene calculadora operativa
+PASS métodos, plan, PDF y offline 320px
+PASS métodos, plan, PDF y offline 1440px
+PASS actualización explícita de PWA conserva IndexedDB
+10 passed (16.9s)
+Initial attempts failed due browser extraction / proxy readiness. Not product defects.

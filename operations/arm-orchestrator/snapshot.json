@@ -1,0 +1,676 @@
+{
+  "projects": [
+    {
+      "id": "rm-training",
+      "repo": "chrvillarreal/rm-training"
+    },
+    {
+      "id": "modo-training-app",
+      "repo": "chrvillarreal/modo-training-app"
+    },
+    {
+      "id": "calculadora-nutricion-deportiva",
+      "repo": "chrvillarreal/calculadora-nutricion-deportiva"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "c5788091-5851-4c9f-8780-594ba98809cc",
+      "project": "modo-training-app",
+      "title": "MODO-01 La rutina de Agustín no permite registrar cargas",
+      "priority": "P1",
+      "action": "draft_patch",
+      "branch": "feat/rutina-agustin-link",
+      "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Guardar series, recargar y conservar datos. Probar recepción entrenador en dos contextos de navegador con backend de prueba antes de prometer sincronización.\",\"evidence\":\"evidence/modo-repro.json\",\"expected\":\"Registrar reps, kg y RIR y consultar historial.\",\"id\":\"MODO-01\",\"observed\":\"HTML estático sin script ni persistencia.\",\"path\":\"rutina-agustin.html\",\"priority\":\"P1\",\"project\":\"modo-training-app\",\"sha\":\"0bb492437d3f24d2b29c1ed608ffc8080b21230a\",\"status\":\"reproduced\",\"steps\":\"Abrir página; buscar inputs/select/textarea: 0 controles en cuatro días de rutina.\",\"title\":\"La rutina de Agustín no permite registrar cargas\"}"
+    },
+    {
+      "id": "453369ad-2c02-46bd-8f92-8560f9a10f87",
+      "project": "modo-training-app",
+      "title": "MODO-02 Rutina global compartida por todos los alumnos",
+      "priority": "P1",
+      "action": "draft_patch",
+      "branch": "feat/rutina-agustin-link",
+      "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Editar y duplicar rutina por alumno sin alterar ninguna otra; snapshot de sesión independiente.\",\"evidence\":\"evidence/modo-repro.json\",\"expected\":\"Rutinas independientes por alumno.\",\"id\":\"MODO-02\",\"observed\":\"Alumno 2 también muestra 9. Variable global R / mt_routine.\",\"path\":\"index.html:2\",\"priority\":\"P1\",\"project\":\"modo-training-app\",\"sha\":\"0bb492437d3f24d2b29c1ed608ffc8080b21230a\",\"status\":\"reproduced\",\"steps\":\"Seleccionar alumno 1, cambiar primera serie a 9, guardar y abrir alumno 2.\",\"title\":\"Rutina global compartida por todos los alumnos\"}"
+    },
+    {
+      "id": "5f4fb86f-261c-4346-89f2-3fb8350047d4",
+      "project": "modo-training-app",
+      "title": "MODO-03 Inyección HTML/JS en nombre del alumno",
+      "priority": "P1",
+      "action": "draft_patch",
+      "branch": "feat/rutina-agustin-link",
+      "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Usar textContent/escape contextual y comprobar nombre, email, objetivo y notas, incluyendo edición y recarga.\",\"evidence\":\"evidence/modo-repro.json\",\"expected\":\"Mostrar nombre como texto.\",\"id\":\"MODO-03\",\"observed\":\"Se ejecuta marcador local window.armXss=1 mediante innerHTML. No se probó exfiltración ni usuarios reales.\",\"path\":\"index.html:2\",\"priority\":\"P1\",\"project\":\"modo-training-app\",\"sha\":\"0bb492437d3f24d2b29c1ed608ffc8080b21230a\",\"status\":\"reproduced\",\"steps\":\"Crear alumno ficticio con marcador img/onerror; abrir ficha.\",\"title\":\"Inyección HTML/JS en nombre del alumno\"}"
+    },
+    {
+      "id": "4824097c-0549-4b55-8d45-c121e7d45264",
+      "project": "modo-training-app",
+      "title": "MODO-04 JSON corrupto en almacenamiento interrumpe inicio",
+      "priority": "P2",
+      "action": "draft_patch",
+      "branch": "feat/rutina-agustin-link",
+      "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"No perder contenido original; mostrar recuperación segura y probar storage denegado.\",\"evidence\":\"evidence/modo-repro.json\",\"expected\":\"Error recuperable con opción de respaldo/restauración.\",\"id\":\"MODO-04\",\"observed\":\"JSON.parse sin manejo de error interrumpe inicialización.\",\"path\":\"index.html:2\",\"priority\":\"P2\",\"project\":\"modo-training-app\",\"sha\":\"0bb492437d3f24d2b29c1ed608ffc8080b21230a\",\"status\":\"reproduced\",\"steps\":\"En perfil ficticio guardar mt_students=broken-json y recargar.\",\"title\":\"JSON corrupto en almacenamiento interrumpe inicio\"}"
+    },
+    {
+      "id": "6c03a04a-9828-4f36-944f-27dde1fca468",
+      "project": "rm-training",
+      "title": "ARM-01 Autorizar lectura de despliegues Vercel del equipo",
+      "priority": "P1",
+      "action": "draft_patch",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Consultar despliegues exactos y logs sin crear ni publicar despliegues.\",\"evidence\":\"evidence/environment.json\",\"id\":\"ARM-01\",\"priority\":\"P1\",\"project\":\"rm-training\",\"status\":\"blocked\",\"title\":\"Autorizar lectura de despliegues Vercel del equipo\"}"
+    },
+    {
+      "id": "9aafe8ec-4419-4687-b542-409df14bae82",
+      "project": "rm-training",
+      "title": "ARM-02 CI reproducible para RM y Modo",
+      "priority": "P2",
+      "action": "draft_patch",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Checks de unitarias y flujos en PR. Vercel Preview Comments no sustituye QA.\",\"evidence\":\"evidence/github-checks.json\",\"id\":\"ARM-02\",\"priority\":\"P2\",\"project\":\"rm-training\",\"status\":\"pending\",\"title\":\"CI reproducible para RM y Modo\"}"
+    },
+    {
+      "id": "adb400c7-95cb-46a5-9116-2a2e605eee23",
+      "project": "rm-training",
+      "title": "RM-01 Ampliar QA del rediseño y recursos externos",
+      "priority": "P2",
+      "action": "draft_patch",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Verificar design-preview, teclado/foco/contraste, reproducción real y biblioteca R2; no extrapolar las 32 comprobaciones de curso a todo el rediseño.\",\"evidence\":\"evidence/rm-browser.log\",\"id\":\"RM-01\",\"priority\":\"P2\",\"project\":\"rm-training\",\"sha\":\"24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312\",\"status\":\"pending\",\"title\":\"Ampliar QA del rediseño y recursos externos\"}"
+    },
+    {
+      "id": "b336c462-1c1e-412c-8d23-44886b1c3ea0",
+      "project": "calculadora-nutricion-deportiva",
+      "title": "NUTRI-01 Identificar alojamiento de NutriSport inequívocamente",
+      "priority": "P2",
+      "action": "draft_patch",
+      "branch": "feat/nutrisport-pro-local-mvp",
+      "sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Mapear repo/commit/proyecto/URL. No confundir con app de estudio de nutrición ni desplegar por defecto.\",\"evidence\":\"evidence/github-checks.json\",\"id\":\"NUTRI-01\",\"priority\":\"P2\",\"project\":\"calculadora-nutricion-deportiva\",\"sha\":\"e852644c4ce29635024eedbbf3fb8acfc6ff8df8\",\"status\":\"pending\",\"title\":\"Identificar alojamiento de NutriSport inequívocamente\"}"
+    },
+    {
+      "id": "a2a9be37-109d-4970-bde4-b580b4ba6f12",
+      "project": "modo-training-app",
+      "title": "ARM-03 Aprobar rama base funcional y persistencia de ARM",
+      "priority": "P1",
+      "action": "draft_patch",
+      "branch": "feat/rutina-agustin-link",
+      "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Revisar diferencia entre main, prototype 1.3, operations y Agustín; elegir base antes de integrar. Publicar ARM sólo tras aprobación concreta.\",\"evidence\":\"evidence/inventory.json\",\"id\":\"ARM-03\",\"priority\":\"P1\",\"project\":\"modo-training-app\",\"status\":\"pending\",\"title\":\"Aprobar rama base funcional y persistencia de ARM\"}"
+    },
+    {
+      "id": "10352b10-852e-4970-b7b1-4569433a4e1c",
+      "project": "rm-training",
+      "title": "RM-02 Caracteres de reemplazo y control en textos del rediseño",
+      "priority": "P2",
+      "action": "draft_patch",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Restaurar textos UTF-8 desde original confiable; no sustituir ciegamente todos los caracteres. Test de navegación y ausencia de U+FFFD/control.\",\"evidence\":\"evidence/rm-preview.json\",\"id\":\"RM-02\",\"observed\":\"Acentos rotos como Formaci�n y Explicaci�n; flechas convertidas en caracteres de control. Blob local validado con SHA GitHub.\",\"path\":\"design-preview/index.html\",\"priority\":\"P2\",\"project\":\"rm-training\",\"sha\":\"24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312\",\"status\":\"confirmed_source\",\"steps\":\"Abrir rediseño y leer navegación, títulos y guías. Buscar U+FFFD en fuente.\",\"title\":\"Caracteres de reemplazo y control en textos del rediseño\"}"
+    },
+    {
+      "id": "2ea6efa5-cf1f-40a3-b03d-844ecc273e21",
+      "project": "rm-training",
+      "title": "RM-03 Reconciliar PR #2 divergente antes de integrar",
+      "priority": "P1",
+      "action": "draft_patch",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "queued",
+      "agent": "development",
+      "payload": "{\"acceptance\":\"Comparar comportamiento y resolver en copia aislada; ejecutar suite propia y regresión antes de solicitar merge.\",\"evidence\":\"evidence/comparisons.json\",\"id\":\"RM-03\",\"observed\":\"38 commits ahead / 2 behind main\",\"priority\":\"P1\",\"project\":\"rm-training\",\"status\":\"confirmed_metadata\",\"title\":\"Reconciliar PR #2 divergente antes de integrar\"}"
+    },
+    {
+      "id": "87c9e6e7-5ff2-41e7-8272-e60d94583e88",
+      "project": "rm-training",
+      "title": "Unitarias 7/7",
+      "priority": "P1",
+      "action": "test",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "done",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"rm-unit.log\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "32e769e3-ad6b-4014-be6c-9bafeb18f311",
+      "project": "rm-training",
+      "title": "Flujos de estudio: 32 comprobaciones",
+      "priority": "P1",
+      "action": "test",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "done",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"rm-browser.log\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "7f32f193-5831-4c2a-a5ca-e4ea04dd2572",
+      "project": "rm-training",
+      "title": "Preview: textos corruptos detectados",
+      "priority": "P1",
+      "action": "test",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "failed",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"rm-preview.json\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "df028534-d96a-4b06-b7ca-288b82a0c5d0",
+      "project": "modo-training-app",
+      "title": "Cuatro fallos funcionales reproducidos",
+      "priority": "P1",
+      "action": "test",
+      "branch": "feat/rutina-agustin-link",
+      "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+      "status": "failed",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"modo-repro.json\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "d721e04b-03f2-4c7c-97b4-e3ea616ea36b",
+      "project": "calculadora-nutricion-deportiva",
+      "title": "Unitarias 88/88",
+      "priority": "P1",
+      "action": "test",
+      "branch": "feat/nutrisport-pro-local-mvp",
+      "sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+      "status": "done",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"nutri-unit.log\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "ce3e211f-3f57-4397-85d4-08cf46d801b3",
+      "project": "calculadora-nutricion-deportiva",
+      "title": "Build TypeScript y Vite",
+      "priority": "P1",
+      "action": "test",
+      "branch": "feat/nutrisport-pro-local-mvp",
+      "sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+      "status": "done",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"nutri-build.log\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "7e1718d2-48ac-4816-b2af-68885fdbcaed",
+      "project": "calculadora-nutricion-deportiva",
+      "title": "E2E original 10/10",
+      "priority": "P1",
+      "action": "test",
+      "branch": "feat/nutrisport-pro-local-mvp",
+      "sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+      "status": "done",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"nutri-e2e.log\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "45e691d9-1231-4dfb-b243-6687102cc065",
+      "project": "rm-training",
+      "title": "Acceso a despliegues actuales",
+      "priority": "P1",
+      "action": "test",
+      "branch": "design/study-preview-20261019",
+      "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+      "status": "blocked",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"environment.json\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "c6da3486-f8f3-4a5a-bcee-85411685d616",
+      "project": "modo-training-app",
+      "title": "Pruebas del núcleo ARM 20/20",
+      "priority": "P1",
+      "action": "test",
+      "branch": "feat/rutina-agustin-link",
+      "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+      "status": "done",
+      "agent": "ux-qa",
+      "payload": "{\"evidence\":\"orchestrator-tests.log\",\"execution\":\"Completed in current Work session; imported evidence, not executed by this ledger\"}"
+    },
+    {
+      "id": "3831a5b1-2318-413b-8e67-7cdabe8f7573",
+      "project": "modo-training-app",
+      "title": "Publicar paquete ARM en rama y preparar revisión",
+      "priority": "P1",
+      "action": "push_branch",
+      "branch": "feat/arm-orchestrator-v1",
+      "sha": "ee3b6f5ca6865707bf3374722d51c1cad4c174ed",
+      "status": "awaiting_approval",
+      "agent": "human",
+      "payload": "{\"destination\":\"operations/arm-orchestrator/\",\"requires\":\"Explicit user approval before remote persistence\",\"scope\":\"Package only; no main, merge, production or paid actions\"}"
+    }
+  ],
+  "runs": [
+    {
+      "id": "2a4f95fd-2dd9-484d-b61d-cbfee6bbe5c3",
+      "task": "87c9e6e7-5ff2-41e7-8272-e60d94583e88",
+      "status": "passed",
+      "started": 1792727939.5917037,
+      "finished": 1792727939.596569,
+      "evidence": "{\"bytes\":153,\"file\":\"rm-unit.log\",\"sha256\":\"e68c774a7b03b128d453d2f25e4031d2f14ee5175e4d312094564770dadcd21b\"}"
+    },
+    {
+      "id": "a420b7d6-e108-4d41-ba15-0087a3f00718",
+      "task": "32e769e3-ad6b-4014-be6c-9bafeb18f311",
+      "status": "passed",
+      "started": 1792727939.600053,
+      "finished": 1792727939.6014328,
+      "evidence": "{\"bytes\":26,\"file\":\"rm-browser.log\",\"sha256\":\"c9fe0a81dfd847665c2699c1f3d6e212a3d5d7b48783472cb3f6e6022d8436df\"}"
+    },
+    {
+      "id": "3b2d4156-f4ce-4996-9b97-baf6f54eb058",
+      "task": "7f32f193-5831-4c2a-a5ca-e4ea04dd2572",
+      "status": "failed",
+      "started": 1792727939.603986,
+      "finished": 1792727939.6083412,
+      "evidence": "{\"bytes\":2955,\"file\":\"rm-preview.json\",\"sha256\":\"c3e349c51b4708ccc9984d06a33e8775d2b00b1e014f909d4b19b55de37cb7ff\"}"
+    },
+    {
+      "id": "2329a7f2-48d5-4ce2-9956-13c6aa3683e7",
+      "task": "df028534-d96a-4b06-b7ca-288b82a0c5d0",
+      "status": "failed",
+      "started": 1792727939.6118972,
+      "finished": 1792727939.6134992,
+      "evidence": "{\"bytes\":820,\"file\":\"modo-repro.json\",\"sha256\":\"f6b446f6f3b254671a4f3413492ffd33941e534cf92fec961058f3f10bcf3fa7\"}"
+    },
+    {
+      "id": "85098bbb-0403-4399-a35a-ed33744ad269",
+      "task": "d721e04b-03f2-4c7c-97b4-e3ea616ea36b",
+      "status": "passed",
+      "started": 1792727939.6169107,
+      "finished": 1792727939.6185412,
+      "evidence": "{\"bytes\":348,\"file\":\"nutri-unit.log\",\"sha256\":\"0b08f6f2e1ff11ba25fefb651521b620e61d3a2cf221870eb08a015f7e8938f1\"}"
+    },
+    {
+      "id": "1b16b256-7949-4c77-875f-67dfd0547933",
+      "task": "ce3e211f-3f57-4397-85d4-08cf46d801b3",
+      "status": "passed",
+      "started": 1792727939.6219642,
+      "finished": 1792727939.6260777,
+      "evidence": "{\"bytes\":802,\"file\":\"nutri-build.log\",\"sha256\":\"4807bedd64fc20f8ff07055282c608fb3df375277cc73c783e278c5d333dc917\"}"
+    },
+    {
+      "id": "55820fd6-ea03-40df-9912-7feb84ede16e",
+      "task": "7e1718d2-48ac-4816-b2af-68885fdbcaed",
+      "status": "passed",
+      "started": 1792727939.6293168,
+      "finished": 1792727939.6330042,
+      "evidence": "{\"bytes\":823,\"file\":\"nutri-e2e.log\",\"sha256\":\"2d7d14d81225d9033f02d77266b035b155d8a5d7124923b2ca2c3f27e1d2ce43\"}"
+    },
+    {
+      "id": "0a753de0-7c48-416c-ac79-ec6d8556691f",
+      "task": "45e691d9-1231-4dfb-b243-6687102cc065",
+      "status": "blocked",
+      "started": 1792727939.6358151,
+      "finished": 1792727939.638097,
+      "evidence": "{\"bytes\":465,\"file\":\"environment.json\",\"sha256\":\"927cc4700c160996a16f773dba79c0b75aa25ec2968a50d2fc8ee2b9df64e35f\"}"
+    },
+    {
+      "id": "4b0402ff-ade8-427d-aa87-f0dff0bb78d3",
+      "task": "c6da3486-f8f3-4a5a-bcee-85411685d616",
+      "status": "passed",
+      "started": 1792727939.6407528,
+      "finished": 1792727939.6419728,
+      "evidence": "{\"bytes\":1355,\"file\":\"orchestrator-tests.log\",\"sha256\":\"c49652595037320d4ab0708e19e44b4f58b490e9f67e79c8a477c76d7219e5ad\"}"
+    }
+  ],
+  "approvals": [
+    {
+      "id": "0d2c6a9e-ba95-4460-acac-6aa17f18ad1d",
+      "task": "3831a5b1-2318-413b-8e67-7cdabe8f7573",
+      "fingerprint": "05fe3f06e35bf4eeee5d8860b7bcb4ab4984b22aa97daff11848be8d442eca6d",
+      "status": "pending",
+      "expires": 1792814339.6443117,
+      "decision_reference": null
+    }
+  ],
+  "events": [
+    {
+      "seq": 1,
+      "at": 1792727939.57457,
+      "kind": "task.created",
+      "data": "{\"id\":\"c5788091-5851-4c9f-8780-594ba98809cc\",\"status\":\"queued\"}",
+      "previous": "0000000000000000000000000000000000000000000000000000000000000000",
+      "hash": "ec73b8581e1bb2e8dec65f5871d19962d83a19e73cf4a1dd6138e6cca93ed5bb"
+    },
+    {
+      "seq": 2,
+      "at": 1792727939.5756526,
+      "kind": "task.created",
+      "data": "{\"id\":\"453369ad-2c02-46bd-8f92-8560f9a10f87\",\"status\":\"queued\"}",
+      "previous": "ec73b8581e1bb2e8dec65f5871d19962d83a19e73cf4a1dd6138e6cca93ed5bb",
+      "hash": "723feb8765d22f5a398674e8d59600db4dfb610f65ceaccfa9363dceef3bea9e"
+    },
+    {
+      "seq": 3,
+      "at": 1792727939.5767286,
+      "kind": "task.created",
+      "data": "{\"id\":\"5f4fb86f-261c-4346-89f2-3fb8350047d4\",\"status\":\"queued\"}",
+      "previous": "723feb8765d22f5a398674e8d59600db4dfb610f65ceaccfa9363dceef3bea9e",
+      "hash": "6483e24310ecd6787b669476041ff8e296d078b722024e88a4327c6c441369e3"
+    },
+    {
+      "seq": 4,
+      "at": 1792727939.5778415,
+      "kind": "task.created",
+      "data": "{\"id\":\"4824097c-0549-4b55-8d45-c121e7d45264\",\"status\":\"queued\"}",
+      "previous": "6483e24310ecd6787b669476041ff8e296d078b722024e88a4327c6c441369e3",
+      "hash": "0137ab64359ba51ca53cf66b5a205b557cc93c328d902393d4558779febcd55b"
+    },
+    {
+      "seq": 5,
+      "at": 1792727939.5791914,
+      "kind": "task.created",
+      "data": "{\"id\":\"6c03a04a-9828-4f36-944f-27dde1fca468\",\"status\":\"queued\"}",
+      "previous": "0137ab64359ba51ca53cf66b5a205b557cc93c328d902393d4558779febcd55b",
+      "hash": "e2b572a921b89d29e15ec99dd95bca2323bf553f548ef3bf164227dd0c5ea40a"
+    },
+    {
+      "seq": 6,
+      "at": 1792727939.5805528,
+      "kind": "task.created",
+      "data": "{\"id\":\"9aafe8ec-4419-4687-b542-409df14bae82\",\"status\":\"queued\"}",
+      "previous": "e2b572a921b89d29e15ec99dd95bca2323bf553f548ef3bf164227dd0c5ea40a",
+      "hash": "b71006f8639da6f14c761b498d5e7fb8625e8773618ad9739666b588574ac55d"
+    },
+    {
+      "seq": 7,
+      "at": 1792727939.5821197,
+      "kind": "task.created",
+      "data": "{\"id\":\"adb400c7-95cb-46a5-9116-2a2e605eee23\",\"status\":\"queued\"}",
+      "previous": "b71006f8639da6f14c761b498d5e7fb8625e8773618ad9739666b588574ac55d",
+      "hash": "6307a386fa05818cc624eebb68cfcadef35c70f5744b685f78a3721dc96d7443"
+    },
+    {
+      "seq": 8,
+      "at": 1792727939.583221,
+      "kind": "task.created",
+      "data": "{\"id\":\"b336c462-1c1e-412c-8d23-44886b1c3ea0\",\"status\":\"queued\"}",
+      "previous": "6307a386fa05818cc624eebb68cfcadef35c70f5744b685f78a3721dc96d7443",
+      "hash": "c133ed18fbac6740446b56f2b53edc3717ff4a26e590d5fca05fb67bf67a3a57"
+    },
+    {
+      "seq": 9,
+      "at": 1792727939.584246,
+      "kind": "task.created",
+      "data": "{\"id\":\"a2a9be37-109d-4970-bde4-b580b4ba6f12\",\"status\":\"queued\"}",
+      "previous": "c133ed18fbac6740446b56f2b53edc3717ff4a26e590d5fca05fb67bf67a3a57",
+      "hash": "25957b81a9bb9bb735f97789092b4fd491ad0901db6bc28536ebbf139f62b775"
+    },
+    {
+      "seq": 10,
+      "at": 1792727939.5855477,
+      "kind": "task.created",
+      "data": "{\"id\":\"10352b10-852e-4970-b7b1-4569433a4e1c\",\"status\":\"queued\"}",
+      "previous": "25957b81a9bb9bb735f97789092b4fd491ad0901db6bc28536ebbf139f62b775",
+      "hash": "2434de87c9739b98094b0fada416d8febc5541263bf7c270759d7864595df07d"
+    },
+    {
+      "seq": 11,
+      "at": 1792727939.5870614,
+      "kind": "task.created",
+      "data": "{\"id\":\"2ea6efa5-cf1f-40a3-b03d-844ecc273e21\",\"status\":\"queued\"}",
+      "previous": "2434de87c9739b98094b0fada416d8febc5541263bf7c270759d7864595df07d",
+      "hash": "d3a30f9753fd36f2f8d3f34373727e965d3e7b415e130fa6ab5a6b432e70f6bf"
+    },
+    {
+      "seq": 12,
+      "at": 1792727939.590143,
+      "kind": "task.created",
+      "data": "{\"id\":\"87c9e6e7-5ff2-41e7-8272-e60d94583e88\",\"status\":\"queued\"}",
+      "previous": "d3a30f9753fd36f2f8d3f34373727e965d3e7b415e130fa6ab5a6b432e70f6bf",
+      "hash": "f7ad3163266016da797fe1b6f1627e510056fcbd71bd3915df1b97533dfe1203"
+    },
+    {
+      "seq": 13,
+      "at": 1792727939.591724,
+      "kind": "run.started",
+      "data": "{\"id\":\"2a4f95fd-2dd9-484d-b61d-cbfee6bbe5c3\",\"task\":\"87c9e6e7-5ff2-41e7-8272-e60d94583e88\"}",
+      "previous": "f7ad3163266016da797fe1b6f1627e510056fcbd71bd3915df1b97533dfe1203",
+      "hash": "66d46452bec0865f95818af1590fa839742f456f0857aa537d0f917fa8bca53b"
+    },
+    {
+      "seq": 14,
+      "at": 1792727939.5966485,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":153,\"file\":\"rm-unit.log\",\"sha256\":\"e68c774a7b03b128d453d2f25e4031d2f14ee5175e4d312094564770dadcd21b\"},\"id\":\"2a4f95fd-2dd9-484d-b61d-cbfee6bbe5c3\",\"status\":\"passed\"}",
+      "previous": "66d46452bec0865f95818af1590fa839742f456f0857aa537d0f917fa8bca53b",
+      "hash": "00eccd1cd70f92d55c7b922d0746b57ad679b40127f1c5ba9a307753f665fa8f"
+    },
+    {
+      "seq": 15,
+      "at": 1792727939.598184,
+      "kind": "task.created",
+      "data": "{\"id\":\"32e769e3-ad6b-4014-be6c-9bafeb18f311\",\"status\":\"queued\"}",
+      "previous": "00eccd1cd70f92d55c7b922d0746b57ad679b40127f1c5ba9a307753f665fa8f",
+      "hash": "37a0edd56886634e07b800d0cb77b0bd8a3386537e61a9eb80289de937a98ea0"
+    },
+    {
+      "seq": 16,
+      "at": 1792727939.6000652,
+      "kind": "run.started",
+      "data": "{\"id\":\"a420b7d6-e108-4d41-ba15-0087a3f00718\",\"task\":\"32e769e3-ad6b-4014-be6c-9bafeb18f311\"}",
+      "previous": "37a0edd56886634e07b800d0cb77b0bd8a3386537e61a9eb80289de937a98ea0",
+      "hash": "32249d423121369e7e7068a80f07f7a7984146cd4c775e278e4cfa5625139d9d"
+    },
+    {
+      "seq": 17,
+      "at": 1792727939.601522,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":26,\"file\":\"rm-browser.log\",\"sha256\":\"c9fe0a81dfd847665c2699c1f3d6e212a3d5d7b48783472cb3f6e6022d8436df\"},\"id\":\"a420b7d6-e108-4d41-ba15-0087a3f00718\",\"status\":\"passed\"}",
+      "previous": "32249d423121369e7e7068a80f07f7a7984146cd4c775e278e4cfa5625139d9d",
+      "hash": "b8e9e48a548984d0c1a38dd2c97d01ac69b492608dfc9cea6c603e57207c578f"
+    },
+    {
+      "seq": 18,
+      "at": 1792727939.6028986,
+      "kind": "task.created",
+      "data": "{\"id\":\"7f32f193-5831-4c2a-a5ca-e4ea04dd2572\",\"status\":\"queued\"}",
+      "previous": "b8e9e48a548984d0c1a38dd2c97d01ac69b492608dfc9cea6c603e57207c578f",
+      "hash": "22a9fb52f446195dada24517e4e65311320eebcd4eff502a616f76237c3926b8"
+    },
+    {
+      "seq": 19,
+      "at": 1792727939.6039963,
+      "kind": "run.started",
+      "data": "{\"id\":\"3b2d4156-f4ce-4996-9b97-baf6f54eb058\",\"task\":\"7f32f193-5831-4c2a-a5ca-e4ea04dd2572\"}",
+      "previous": "22a9fb52f446195dada24517e4e65311320eebcd4eff502a616f76237c3926b8",
+      "hash": "3166e278c5b0454281a3b006e52d78fe741e7c08c6ed3b0f439756b0f08ed8b5"
+    },
+    {
+      "seq": 20,
+      "at": 1792727939.6083992,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":2955,\"file\":\"rm-preview.json\",\"sha256\":\"c3e349c51b4708ccc9984d06a33e8775d2b00b1e014f909d4b19b55de37cb7ff\"},\"id\":\"3b2d4156-f4ce-4996-9b97-baf6f54eb058\",\"status\":\"failed\"}",
+      "previous": "3166e278c5b0454281a3b006e52d78fe741e7c08c6ed3b0f439756b0f08ed8b5",
+      "hash": "a20115817b0b81f800aeaea0944a04841dec50bb7d4663d5bd625e01d4a1fb72"
+    },
+    {
+      "seq": 21,
+      "at": 1792727939.610214,
+      "kind": "task.created",
+      "data": "{\"id\":\"df028534-d96a-4b06-b7ca-288b82a0c5d0\",\"status\":\"queued\"}",
+      "previous": "a20115817b0b81f800aeaea0944a04841dec50bb7d4663d5bd625e01d4a1fb72",
+      "hash": "dca4a241b54da4399148ad00eb6aaab9e639c6f11b0f5aa172a1954eb81a78db"
+    },
+    {
+      "seq": 22,
+      "at": 1792727939.6119087,
+      "kind": "run.started",
+      "data": "{\"id\":\"2329a7f2-48d5-4ce2-9956-13c6aa3683e7\",\"task\":\"df028534-d96a-4b06-b7ca-288b82a0c5d0\"}",
+      "previous": "dca4a241b54da4399148ad00eb6aaab9e639c6f11b0f5aa172a1954eb81a78db",
+      "hash": "65afda4466fa25cbc877e2f880934e4160e571d40e5879494f0942ddf11c200d"
+    },
+    {
+      "seq": 23,
+      "at": 1792727939.6135583,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":820,\"file\":\"modo-repro.json\",\"sha256\":\"f6b446f6f3b254671a4f3413492ffd33941e534cf92fec961058f3f10bcf3fa7\"},\"id\":\"2329a7f2-48d5-4ce2-9956-13c6aa3683e7\",\"status\":\"failed\"}",
+      "previous": "65afda4466fa25cbc877e2f880934e4160e571d40e5879494f0942ddf11c200d",
+      "hash": "45f7e4e55389a0adfba7945a281a6d3234e10a1896952ce5c1d3b89c3b46a7c8"
+    },
+    {
+      "seq": 24,
+      "at": 1792727939.6152408,
+      "kind": "task.created",
+      "data": "{\"id\":\"d721e04b-03f2-4c7c-97b4-e3ea616ea36b\",\"status\":\"queued\"}",
+      "previous": "45f7e4e55389a0adfba7945a281a6d3234e10a1896952ce5c1d3b89c3b46a7c8",
+      "hash": "295d39613fec887a4e1662abd03fb34d8deb2f6ff88add5fd8383248b47f8ef5"
+    },
+    {
+      "seq": 25,
+      "at": 1792727939.616922,
+      "kind": "run.started",
+      "data": "{\"id\":\"85098bbb-0403-4399-a35a-ed33744ad269\",\"task\":\"d721e04b-03f2-4c7c-97b4-e3ea616ea36b\"}",
+      "previous": "295d39613fec887a4e1662abd03fb34d8deb2f6ff88add5fd8383248b47f8ef5",
+      "hash": "6f49add499a55391b72450a267343c711263048927cce2175f423014f50ea54c"
+    },
+    {
+      "seq": 26,
+      "at": 1792727939.6186025,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":348,\"file\":\"nutri-unit.log\",\"sha256\":\"0b08f6f2e1ff11ba25fefb651521b620e61d3a2cf221870eb08a015f7e8938f1\"},\"id\":\"85098bbb-0403-4399-a35a-ed33744ad269\",\"status\":\"passed\"}",
+      "previous": "6f49add499a55391b72450a267343c711263048927cce2175f423014f50ea54c",
+      "hash": "2674ef612a1543c5f5eb0e69dbdb11cdc99dcb34669efb5f1eca8ef66c16ff2c"
+    },
+    {
+      "seq": 27,
+      "at": 1792727939.6203136,
+      "kind": "task.created",
+      "data": "{\"id\":\"ce3e211f-3f57-4397-85d4-08cf46d801b3\",\"status\":\"queued\"}",
+      "previous": "2674ef612a1543c5f5eb0e69dbdb11cdc99dcb34669efb5f1eca8ef66c16ff2c",
+      "hash": "dccefa077e092014a9c3e56db8e0bf569c7dbde3d52e826154a6b64ee2b2af6a"
+    },
+    {
+      "seq": 28,
+      "at": 1792727939.6219764,
+      "kind": "run.started",
+      "data": "{\"id\":\"1b16b256-7949-4c77-875f-67dfd0547933\",\"task\":\"ce3e211f-3f57-4397-85d4-08cf46d801b3\"}",
+      "previous": "dccefa077e092014a9c3e56db8e0bf569c7dbde3d52e826154a6b64ee2b2af6a",
+      "hash": "6b482f1d45f20098599ee707c177af30c1f776744e570be7dfbbc75ff9aa2f8d"
+    },
+    {
+      "seq": 29,
+      "at": 1792727939.6261427,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":802,\"file\":\"nutri-build.log\",\"sha256\":\"4807bedd64fc20f8ff07055282c608fb3df375277cc73c783e278c5d333dc917\"},\"id\":\"1b16b256-7949-4c77-875f-67dfd0547933\",\"status\":\"passed\"}",
+      "previous": "6b482f1d45f20098599ee707c177af30c1f776744e570be7dfbbc75ff9aa2f8d",
+      "hash": "6b7473f7111af55772dbc485d299b16032640a9d9e9840fdb78021c95a6de83c"
+    },
+    {
+      "seq": 30,
+      "at": 1792727939.6282518,
+      "kind": "task.created",
+      "data": "{\"id\":\"7e1718d2-48ac-4816-b2af-68885fdbcaed\",\"status\":\"queued\"}",
+      "previous": "6b7473f7111af55772dbc485d299b16032640a9d9e9840fdb78021c95a6de83c",
+      "hash": "9212ddede56c57996f292ba5eab125eebcc2fc0e0c8ba68be15eb8ad0fc54ace"
+    },
+    {
+      "seq": 31,
+      "at": 1792727939.6293285,
+      "kind": "run.started",
+      "data": "{\"id\":\"55820fd6-ea03-40df-9912-7feb84ede16e\",\"task\":\"7e1718d2-48ac-4816-b2af-68885fdbcaed\"}",
+      "previous": "9212ddede56c57996f292ba5eab125eebcc2fc0e0c8ba68be15eb8ad0fc54ace",
+      "hash": "1d14606ef6c8f903fea511e87c018403ae67197d421848f50b81e7437b1a52aa"
+    },
+    {
+      "seq": 32,
+      "at": 1792727939.6330736,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":823,\"file\":\"nutri-e2e.log\",\"sha256\":\"2d7d14d81225d9033f02d77266b035b155d8a5d7124923b2ca2c3f27e1d2ce43\"},\"id\":\"55820fd6-ea03-40df-9912-7feb84ede16e\",\"status\":\"passed\"}",
+      "previous": "1d14606ef6c8f903fea511e87c018403ae67197d421848f50b81e7437b1a52aa",
+      "hash": "b38ee68fde39fe2766eee3cc66d739e879a0dad86404e92bf8d94cc1ea6ef85f"
+    },
+    {
+      "seq": 33,
+      "at": 1792727939.6346717,
+      "kind": "task.created",
+      "data": "{\"id\":\"45e691d9-1231-4dfb-b243-6687102cc065\",\"status\":\"queued\"}",
+      "previous": "b38ee68fde39fe2766eee3cc66d739e879a0dad86404e92bf8d94cc1ea6ef85f",
+      "hash": "db8e401d68e34e75f27e3b627f1a93089ba23fce4c19c5be5d55708e01d96346"
+    },
+    {
+      "seq": 34,
+      "at": 1792727939.6358268,
+      "kind": "run.started",
+      "data": "{\"id\":\"0a753de0-7c48-416c-ac79-ec6d8556691f\",\"task\":\"45e691d9-1231-4dfb-b243-6687102cc065\"}",
+      "previous": "db8e401d68e34e75f27e3b627f1a93089ba23fce4c19c5be5d55708e01d96346",
+      "hash": "7e26cfdf57e39ac4751367a2036a3a6c88a1b6564f2daa66831ea6058ccc5de0"
+    },
+    {
+      "seq": 35,
+      "at": 1792727939.6381533,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":465,\"file\":\"environment.json\",\"sha256\":\"927cc4700c160996a16f773dba79c0b75aa25ec2968a50d2fc8ee2b9df64e35f\"},\"id\":\"0a753de0-7c48-416c-ac79-ec6d8556691f\",\"status\":\"blocked\"}",
+      "previous": "7e26cfdf57e39ac4751367a2036a3a6c88a1b6564f2daa66831ea6058ccc5de0",
+      "hash": "34a606744ab0aa42d5006f569d0c5fa73b22f7ba2aade2f6c17b811c26c85cf9"
+    },
+    {
+      "seq": 36,
+      "at": 1792727939.6396627,
+      "kind": "task.created",
+      "data": "{\"id\":\"c6da3486-f8f3-4a5a-bcee-85411685d616\",\"status\":\"queued\"}",
+      "previous": "34a606744ab0aa42d5006f569d0c5fa73b22f7ba2aade2f6c17b811c26c85cf9",
+      "hash": "9b825dc6d309377a77aa8149982f3119c892540f39417074c939077f8efc9243"
+    },
+    {
+      "seq": 37,
+      "at": 1792727939.6407645,
+      "kind": "run.started",
+      "data": "{\"id\":\"4b0402ff-ade8-427d-aa87-f0dff0bb78d3\",\"task\":\"c6da3486-f8f3-4a5a-bcee-85411685d616\"}",
+      "previous": "9b825dc6d309377a77aa8149982f3119c892540f39417074c939077f8efc9243",
+      "hash": "e081e25b5c736fb982d31a4c7b7ea4cda0315cf54fc74f26c2598bc8ee44ba28"
+    },
+    {
+      "seq": 38,
+      "at": 1792727939.6420467,
+      "kind": "run.finished",
+      "data": "{\"evidence\":{\"bytes\":1355,\"file\":\"orchestrator-tests.log\",\"sha256\":\"c49652595037320d4ab0708e19e44b4f58b490e9f67e79c8a477c76d7219e5ad\"},\"id\":\"4b0402ff-ade8-427d-aa87-f0dff0bb78d3\",\"status\":\"passed\"}",
+      "previous": "e081e25b5c736fb982d31a4c7b7ea4cda0315cf54fc74f26c2598bc8ee44ba28",
+      "hash": "c1956f9b2480c1022f18a64d7bdfbe25194f9717a0ef38c0c317103d2a475cb8"
+    },
+    {
+      "seq": 39,
+      "at": 1792727939.6432996,
+      "kind": "task.created",
+      "data": "{\"id\":\"3831a5b1-2318-413b-8e67-7cdabe8f7573\",\"status\":\"awaiting_approval\"}",
+      "previous": "c1956f9b2480c1022f18a64d7bdfbe25194f9717a0ef38c0c317103d2a475cb8",
+      "hash": "51c357ec580fed9867c5d1e36471b838b5cffee85abf1121ef49df591e064b49"
+    },
+    {
+      "seq": 40,
+      "at": 1792727939.6443763,
+      "kind": "approval.requested",
+      "data": "{\"id\":\"0d2c6a9e-ba95-4460-acac-6aa17f18ad1d\",\"task\":\"3831a5b1-2318-413b-8e67-7cdabe8f7573\"}",
+      "previous": "51c357ec580fed9867c5d1e36471b838b5cffee85abf1121ef49df591e064b49",
+      "hash": "e01b936d15de8d1576a7467b7de3b9ee779d8ab6bb3acef073984ad8bb0d5f81"
+    }
+  ]
+}

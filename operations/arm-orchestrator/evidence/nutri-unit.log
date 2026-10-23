@@ -1,0 +1,14 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> nutrisport-pro@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/scratch/c3b8644d3879/audit-nutri
+
+
+ Test Files  4 passed (4)
+      Tests  88 passed (88)
+   Start at  00:49:11
+   Duration  323ms (transform 40%, import 30%, tests 25%, worker 4%)
+
