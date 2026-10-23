@@ -1,0 +1,257 @@
+test_approval_expiry (test_arm.Tests.test_approval_expiry) ... ERROR
+test_approval_reuse (test_arm.Tests.test_approval_reuse) ... ERROR
+test_approval_scope (test_arm.Tests.test_approval_scope) ... ERROR
+test_block_not_pass (test_arm.Tests.test_block_not_pass) ... ERROR
+test_duplicate_finish (test_arm.Tests.test_duplicate_finish) ... ERROR
+test_duplicate_start (test_arm.Tests.test_duplicate_start) ... ERROR
+test_evidence_required (test_arm.Tests.test_evidence_required) ... ERROR
+test_failure_not_done (test_arm.Tests.test_failure_not_done) ... ERROR
+test_forbidden (test_arm.Tests.test_forbidden) ... ERROR
+test_main_write_block (test_arm.Tests.test_main_write_block) ... ERROR
+test_no_self_approval (test_arm.Tests.test_no_self_approval) ... ERROR
+test_persistence (test_arm.Tests.test_persistence) ... ERROR
+test_priority (test_arm.Tests.test_priority) ... ERROR
+test_registry (test_arm.Tests.test_registry) ... ok
+test_safe_run (test_arm.Tests.test_safe_run) ... ERROR
+test_sensitive_no_executor (test_arm.Tests.test_sensitive_no_executor) ... ERROR
+test_sha_required (test_arm.Tests.test_sha_required) ... ok
+test_tampering (test_arm.Tests.test_tampering) ... ERROR
+test_unknown_action (test_arm.Tests.test_unknown_action) ... ok
+test_unknown_project (test_arm.Tests.test_unknown_project) ... ERROR
+
+======================================================================
+ERROR: test_approval_expiry (test_arm.Tests.test_approval_expiry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 46, in test_approval_expiry
+    a=self.o.request_approval(self.task('create_pr'));self.o.db.execute('UPDATE approvals SET expires=0 WHERE id=?',(a,));self.o.db.commit()
+                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_approval_reuse (test_arm.Tests.test_approval_reuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 43, in test_approval_reuse
+    a=self.o.request_approval(self.task('create_pr'));self.o.decide(a,False,'TEST refusal')
+                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_approval_scope (test_arm.Tests.test_approval_scope)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 49, in test_approval_scope
+    t=self.task('create_pr');a=self.o.request_approval(t);self.o.db.execute('UPDATE tasks SET sha=? WHERE id=?',('b'*40,t));self.o.db.commit()
+      ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_block_not_pass (test_arm.Tests.test_block_not_pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 23, in test_block_not_pass
+    t=self.task();self.o.finish(self.o.start(t),'blocked',self.e);self.assertEqual(self.o.get(t)['status'],'blocked')
+      ^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_duplicate_finish (test_arm.Tests.test_duplicate_finish)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 31, in test_duplicate_finish
+    r=self.o.start(self.task());self.o.finish(r,'passed',self.e)
+                   ^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_duplicate_start (test_arm.Tests.test_duplicate_start)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 28, in test_duplicate_start
+    t=self.task();self.o.start(t)
+      ^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_evidence_required (test_arm.Tests.test_evidence_required)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 25, in test_evidence_required
+    r=self.o.start(self.task())
+                   ^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_failure_not_done (test_arm.Tests.test_failure_not_done)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 21, in test_failure_not_done
+    t=self.task();self.o.finish(self.o.start(t),'failed',self.e);self.assertEqual(self.o.get(t)['status'],'failed')
+      ^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_forbidden (test_arm.Tests.test_forbidden)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 35, in test_forbidden
+    t=self.task(action)
+      ^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_main_write_block (test_arm.Tests.test_main_write_block)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 38, in test_main_write_block
+    def test_main_write_block(self):self.assertEqual(self.o.get(self.task('push_branch','main'))['status'],'blocked')
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_no_self_approval (test_arm.Tests.test_no_self_approval)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 52, in test_no_self_approval
+    a=self.o.request_approval(self.task('create_pr'))
+                              ^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_persistence (test_arm.Tests.test_persistence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 57, in test_persistence
+    self.task();second=Orchestrator(pathlib.Path(self.tmp.name)/'db');self.assertEqual(len(second.export()['tasks']),1);second.db.close()
+    ^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_priority (test_arm.Tests.test_priority)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 17, in test_priority
+    with self.assertRaises(sqlite3.IntegrityError):self.o.task(PROJECTS[0],'X','urgent','test','audit','a'*40)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_safe_run (test_arm.Tests.test_safe_run)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 19, in test_safe_run
+    t=self.task();r=self.o.start(t);self.o.finish(r,'passed',self.e);self.assertEqual(self.o.get(t)['status'],'done');self.assertTrue(self.o.verify())
+      ^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_sensitive_no_executor (test_arm.Tests.test_sensitive_no_executor)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 40, in test_sensitive_no_executor
+    t=self.task('push_branch');a=self.o.request_approval(t);self.o.decide(a,True,'TEST ONLY user instruction')
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_tampering (test_arm.Tests.test_tampering)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 55, in test_tampering
+    self.task();self.o.db.execute("UPDATE events SET kind='changed'");self.assertFalse(self.o.verify())
+    ^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 8, in task
+    def task(self,action='test',branch='audit/local',sha='a'*40):return self.o.task(PROJECTS[0],'Audit','P1',action,branch,sha)
+                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+======================================================================
+ERROR: test_unknown_project (test_arm.Tests.test_unknown_project)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/tests/test_arm.py", line 11, in test_unknown_project
+    with self.assertRaises(sqlite3.IntegrityError):self.o.task('other','X','P1','test','audit','a'*40)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/c3b8644d3879/arm-orchestrator/arm.py", line 47, in task
+    self.db.execute('INSERT INTO tasks VALUES(?,?,?,?,?,?,?,?,?,?,?)',(ident,project,title,priority,action,branch,sha,status,SAFE.get(action,'human'),canonical(payload or {})))
+sqlite3.OperationalError: table tasks has 10 columns but 11 values were supplied
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.158s
+
+FAILED (errors=17)
