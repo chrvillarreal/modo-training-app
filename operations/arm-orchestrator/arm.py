@@ -124,4 +124,5 @@ def main():
     elif cmd=='finish':result=o.finish(**args)
     else:result={'approval':o.request_approval(**args)}
     print(json.dumps(result,ensure_ascii=False,indent=2))
+    if cmd=='verify' and not result['valid']: raise SystemExit(1)
 if __name__=='__main__':main()

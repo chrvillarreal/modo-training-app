@@ -1,0 +1,16 @@
+Command: ['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3', '-m', 'unittest', 'discover', '-s', 'tests', '-p', 'test_cli_integrity.py', '-v']
+Exit: 1
+test_verify_exit_status (test_cli_integrity.CliIntegrity.test_verify_exit_status) ... FAIL
+
+======================================================================
+FAIL: test_verify_exit_status (test_cli_integrity.CliIntegrity.test_verify_exit_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/work/arm-candidate/tests/test_cli_integrity.py", line 18, in test_verify_exit_status
+    self.assertNotEqual(invalid.returncode,0,'Invalid chain must fail command-line checks')
+AssertionError: 0 == 0 : Invalid chain must fail command-line checks
+
+----------------------------------------------------------------------
+Ran 1 test in 0.077s
+
+FAILED (failures=1)

@@ -1,0 +1,19 @@
+{
+  "sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "e2e_specs": 10,
+  "all_specs_ok": true,
+  "stats": {
+    "startTime": "2026-10-23T03:55:52.352Z",
+    "duration": 14669.093,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "quality": "88 tests en 4 archivos y build documentados; E2E original es resumen. Alternativo tiene log y JSON detallados; son los mismos diez casos, no veinte pruebas distintas. No demuestra validación clínica ni alojamiento actual.",
+  "evidence_date": "2026-10-23",
+  "audit_date": "2026-10-28",
+  "current_product_test_status": "not_run",
+  "verdict": "historical_evidence_consistent_with_limits",
+  "reason": "Esta ejecución audita artefactos del PR; no reejecuta suites de productos ni certifica versiones actuales."
+}

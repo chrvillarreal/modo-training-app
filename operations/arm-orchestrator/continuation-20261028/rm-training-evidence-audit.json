@@ -1,0 +1,17 @@
+{
+  "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "unit_log": "Executed: npm test; Node v24.19.0; commit 24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312\n7 tests, 7 passed, 0 failed; exit 0. Captured summary of tool output.\n",
+  "browser": {
+    "checks": 32,
+    "errors": []
+  },
+  "preview_cases": 24,
+  "overflow_cases": 0,
+  "encoding_defect_present": true,
+  "quality": "Unitarias y navegador son resúmenes; no contienen salida individual ni timestamps completos. Preview no valida videos/R2/accesibilidad completa.",
+  "evidence_date": "2026-10-23",
+  "audit_date": "2026-10-28",
+  "current_product_test_status": "not_run",
+  "verdict": "historical_evidence_consistent_with_limits",
+  "reason": "Esta ejecución audita artefactos del PR; no reejecuta suites de productos ni certifica versiones actuales."
+}

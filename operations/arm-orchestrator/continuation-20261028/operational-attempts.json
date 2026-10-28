@@ -1,0 +1,19 @@
+{
+  "attempts": [
+    {
+      "command": "create client output folder",
+      "status": "blocked",
+      "result": "/codex root is read-only; target does not exist"
+    },
+    {
+      "command": "continue_audit.py first aggregation",
+      "status": "failed",
+      "result": "KeyError overflow: notesPersisted row has no viewport keys; corrected local aggregator; original successful 20 tests and DB preserved"
+    },
+    {
+      "command": "continue_audit.py resume",
+      "status": "passed",
+      "result": "6 runs recorded, source manifest 29/29, chain valid"
+    }
+  ]
+}

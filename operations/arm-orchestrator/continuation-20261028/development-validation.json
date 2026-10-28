@@ -1,0 +1,50 @@
+{
+  "base_sha": "fb8352fc066595ee072eb9f57dab8e554fa52e87",
+  "repo": "chrvillarreal/modo-training-app",
+  "local_branch_label": "audit/local-20261028",
+  "scope": "Validación supervisada de contrato Desarrollo y paquete ARM; sin ejecutor nuevo",
+  "acceptance": [
+    "30 blobs Git verificados",
+    "29 entradas MANIFEST correctas",
+    "contrato leído antes de pruebas",
+    "sin publicación ni producción"
+  ],
+  "manifest": {
+    "arm.sqlite": true,
+    "seed_audit.py": true,
+    "snapshot.json": true,
+    "backlog.json": true,
+    "arm.py": true,
+    "INFORME.md": true,
+    "README.md": true,
+    "tests/modo-repro.cjs": true,
+    "tests/test_arm.py": true,
+    "tests/nutri-adapted.config.ts": true,
+    "tests/rm-preview.cjs": true,
+    "evidence/inventory.json": true,
+    "evidence/orchestrator-tests.log": true,
+    "evidence/modo-repro.json": true,
+    "evidence/rm-blobs.json": true,
+    "evidence/rm-browser.log": true,
+    "evidence/comparisons.json": true,
+    "evidence/nutri-e2e-adapted.log": true,
+    "evidence/nutri-e2e.log": true,
+    "evidence/nutri-browser-results.json": true,
+    "evidence/rm-preview.json": true,
+    "evidence/orchestrator-tests-initial-failure.log": true,
+    "evidence/environment.json": true,
+    "evidence/nutri-unit.log": true,
+    "evidence/rm-unit.log": true,
+    "evidence/github-checks.json": true,
+    "evidence/nutri-build.log": true,
+    "agents/development.md": true,
+    "agents/ux-qa.md": true
+  },
+  "verdict": "passed",
+  "limitations": [
+    "Recuperación de blobs por conector; no checkout Git completo ni validación del estado del árbol remoto",
+    "No demuestra servicio agente LLM, sandbox fuerte ni ejecución automática",
+    "AGENTS.md raíz y ancestros del paquete: 404; no se encontraron instrucciones adicionales",
+    "Niveles A/B/C no definidos en paquete: A=lectura/pruebas/borradores locales; B=push/PR/preview/configuración persistente; C=main/merge/producción/datos/gastos/comunicaciones, prohibidos en este alcance"
+  ]
+}

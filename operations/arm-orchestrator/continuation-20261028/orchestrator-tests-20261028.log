@@ -1,0 +1,28 @@
+Python 3.12.14
+Command: ['/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3', '-m', 'unittest', 'discover', '-s', 'tests', '-v']
+Exit: 0
+test_approval_expiry (test_arm.Tests.test_approval_expiry) ... ok
+test_approval_reuse (test_arm.Tests.test_approval_reuse) ... ok
+test_approval_scope (test_arm.Tests.test_approval_scope) ... ok
+test_block_not_pass (test_arm.Tests.test_block_not_pass) ... ok
+test_duplicate_finish (test_arm.Tests.test_duplicate_finish) ... ok
+test_duplicate_start (test_arm.Tests.test_duplicate_start) ... ok
+test_evidence_required (test_arm.Tests.test_evidence_required) ... ok
+test_failure_not_done (test_arm.Tests.test_failure_not_done) ... ok
+test_forbidden (test_arm.Tests.test_forbidden) ... ok
+test_main_write_block (test_arm.Tests.test_main_write_block) ... ok
+test_no_self_approval (test_arm.Tests.test_no_self_approval) ... ok
+test_persistence (test_arm.Tests.test_persistence) ... ok
+test_priority (test_arm.Tests.test_priority) ... ok
+test_registry (test_arm.Tests.test_registry) ... ok
+test_safe_run (test_arm.Tests.test_safe_run) ... ok
+test_sensitive_no_executor (test_arm.Tests.test_sensitive_no_executor) ... ok
+test_sha_required (test_arm.Tests.test_sha_required) ... ok
+test_tampering (test_arm.Tests.test_tampering) ... ok
+test_unknown_action (test_arm.Tests.test_unknown_action) ... ok
+test_unknown_project (test_arm.Tests.test_unknown_project) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.018s
+
+OK
