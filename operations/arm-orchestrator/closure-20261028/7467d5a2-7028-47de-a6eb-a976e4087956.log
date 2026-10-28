@@ -1,0 +1,233 @@
+{
+  "task_id": "28b4d0f8-5e2d-4a20-9931-5c7328232dcb",
+  "run_id": "7467d5a2-7028-47de-a6eb-a976e4087956",
+  "title": "Comparar candidatos Modo sin decidir base funcional",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work/arm-publish",
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess,json;g=lambda *a:subprocess.check_output(['git',*a],text=True);print(g('ls-remote','origin','refs/heads/main','refs/heads/feature/modo-training-1.3','refs/heads/feat/ai-operations-mvp','refs/heads/feat/rutina-agustin-link'));print(open('/workspace/work/phase2-arm/operations/arm-orchestrator/evidence/inventory.json').read())"
+  ],
+  "started_utc": "2026-10-28T23:14:46.198846+00:00",
+  "finished_utc": "2026-10-28T23:14:47.731533+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "7467d5a2-7028-47de-a6eb-a976e4087956.log"
+}
+
+8e15576e678f03027a92cdd980e7cbfd6ec273da	refs/heads/feat/ai-operations-mvp
+0bb492437d3f24d2b29c1ed608ffc8080b21230a	refs/heads/feat/rutina-agustin-link
+9f8b2c32390e7111b6eb6cb51214cb6391454cf4	refs/heads/feature/modo-training-1.3
+ee3b6f5ca6865707bf3374722d51c1cad4c174ed	refs/heads/main
+
+{
+  "capturedAt": "2026-10-23T03:48:49.980Z",
+  "projects": [
+    {
+      "repo": "chrvillarreal/rm-training",
+      "branches": [
+        {
+          "name": "design/study-preview-20261019",
+          "commit": {
+            "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+            "url": "https://api.github.com/repos/chrvillarreal/rm-training/commits/24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312"
+          },
+          "protected": false
+        },
+        {
+          "name": "feat/rm-estudio-android",
+          "commit": {
+            "sha": "ee0b8250a731c115a20e0013e43e375c63eb3d6b",
+            "url": "https://api.github.com/repos/chrvillarreal/rm-training/commits/ee0b8250a731c115a20e0013e43e375c63eb3d6b"
+          },
+          "protected": false
+        },
+        {
+          "name": "improve-study-learning",
+          "commit": {
+            "sha": "22e24e50acffcdc116e7f3f3d9bfc0999436c2ad",
+            "url": "https://api.github.com/repos/chrvillarreal/rm-training/commits/22e24e50acffcdc116e7f3f3d9bfc0999436c2ad"
+          },
+          "protected": false
+        },
+        {
+          "name": "integrate-arm-r2-library",
+          "commit": {
+            "sha": "43f727997773f314a13f801c0a74ae905471d5f0",
+            "url": "https://api.github.com/repos/chrvillarreal/rm-training/commits/43f727997773f314a13f801c0a74ae905471d5f0"
+          },
+          "protected": false
+        },
+        {
+          "name": "main",
+          "commit": {
+            "sha": "c96fd2e24aeeeeab67f2df55a664e0a2097f2ecb",
+            "url": "https://api.github.com/repos/chrvillarreal/rm-training/commits/c96fd2e24aeeeeab67f2df55a664e0a2097f2ecb"
+          },
+          "protected": false
+        },
+        {
+          "name": "rm-audit-p0-p1",
+          "commit": {
+            "sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+            "url": "https://api.github.com/repos/chrvillarreal/rm-training/commits/77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6"
+          },
+          "protected": false
+        }
+      ],
+      "prs": [
+        {
+          "number": 4,
+          "title": "Propuesta visual de Formación: inicio, curso, aula y práctica",
+          "state": "open",
+          "merged_at": null,
+          "head": "design/study-preview-20261019",
+          "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+          "base": "main",
+          "url": "https://github.com/chrvillarreal/rm-training/pull/4"
+        },
+        {
+          "number": 3,
+          "title": "Mejorar el recorrido de estudio ARM y corregir la simulación del examen",
+          "state": "closed",
+          "merged_at": "2026-10-19T01:53:33Z",
+          "head": "improve-study-learning",
+          "sha": "22e24e50acffcdc116e7f3f3d9bfc0999436c2ad",
+          "base": "main",
+          "url": "https://github.com/chrvillarreal/rm-training/pull/3"
+        },
+        {
+          "number": 2,
+          "title": "RM Formación: integración pedagógica, Biomecánica y biblioteca R2",
+          "state": "open",
+          "merged_at": null,
+          "head": "rm-audit-p0-p1",
+          "sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+          "base": "main",
+          "url": "https://github.com/chrvillarreal/rm-training/pull/2"
+        },
+        {
+          "number": 1,
+          "title": "Integrar biblioteca ARM desde Cloudflare R2",
+          "state": "closed",
+          "merged_at": "2026-09-28T06:46:51Z",
+          "head": "integrate-arm-r2-library",
+          "sha": "2be6ab2970e5eef7e47f21651361dcf753352f3c",
+          "base": "main",
+          "url": "https://github.com/chrvillarreal/rm-training/pull/1"
+        }
+      ]
+    },
+    {
+      "repo": "chrvillarreal/modo-training-app",
+      "branches": [
+        {
+          "name": "feat/ai-operations-mvp",
+          "commit": {
+            "sha": "8e15576e678f03027a92cdd980e7cbfd6ec273da",
+            "url": "https://api.github.com/repos/chrvillarreal/modo-training-app/commits/8e15576e678f03027a92cdd980e7cbfd6ec273da"
+          },
+          "protected": false
+        },
+        {
+          "name": "feat/multiuser-training-mvp",
+          "commit": {
+            "sha": "ee3b6f5ca6865707bf3374722d51c1cad4c174ed",
+            "url": "https://api.github.com/repos/chrvillarreal/modo-training-app/commits/ee3b6f5ca6865707bf3374722d51c1cad4c174ed"
+          },
+          "protected": false
+        },
+        {
+          "name": "feat/rutina-agustin-link",
+          "commit": {
+            "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+            "url": "https://api.github.com/repos/chrvillarreal/modo-training-app/commits/0bb492437d3f24d2b29c1ed608ffc8080b21230a"
+          },
+          "protected": false
+        },
+        {
+          "name": "feature/modo-training-1.3",
+          "commit": {
+            "sha": "9f8b2c32390e7111b6eb6cb51214cb6391454cf4",
+            "url": "https://api.github.com/repos/chrvillarreal/modo-training-app/commits/9f8b2c32390e7111b6eb6cb51214cb6391454cf4"
+          },
+          "protected": false
+        },
+        {
+          "name": "main",
+          "commit": {
+            "sha": "ee3b6f5ca6865707bf3374722d51c1cad4c174ed",
+            "url": "https://api.github.com/repos/chrvillarreal/modo-training-app/commits/ee3b6f5ca6865707bf3374722d51c1cad4c174ed"
+          },
+          "protected": false
+        }
+      ],
+      "prs": [
+        {
+          "number": 1,
+          "title": "Preview: rutina de 4 días para Agustín",
+          "state": "open",
+          "merged_at": null,
+          "head": "feat/rutina-agustin-link",
+          "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+          "base": "main",
+          "url": "https://github.com/chrvillarreal/modo-training-app/pull/1"
+        }
+      ]
+    },
+    {
+      "repo": "chrvillarreal/calculadora-nutricion-deportiva",
+      "branches": [
+        {
+          "name": "feat/nhost-auth-athletes",
+          "commit": {
+            "sha": "15441d27353ef016a6dd29ecb0fbee441ed5ef8a",
+            "url": "https://api.github.com/repos/chrvillarreal/calculadora-nutricion-deportiva/commits/15441d27353ef016a6dd29ecb0fbee441ed5ef8a"
+          },
+          "protected": false
+        },
+        {
+          "name": "feat/nutrisport-pro-local-mvp",
+          "commit": {
+            "sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+            "url": "https://api.github.com/repos/chrvillarreal/calculadora-nutricion-deportiva/commits/e852644c4ce29635024eedbbf3fb8acfc6ff8df8"
+          },
+          "protected": false
+        },
+        {
+          "name": "main",
+          "commit": {
+            "sha": "57f33b2da6d343fc0d05a4bca8ae62f9729ab7c9",
+            "url": "https://api.github.com/repos/chrvillarreal/calculadora-nutricion-deportiva/commits/57f33b2da6d343fc0d05a4bca8ae62f9729ab7c9"
+          },
+          "protected": false
+        }
+      ],
+      "prs": [
+        {
+          "number": 2,
+          "title": "NutriSport Pro MVP 1.0: gestión local, métodos, PDF y PWA",
+          "state": "open",
+          "merged_at": null,
+          "head": "feat/nutrisport-pro-local-mvp",
+          "sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+          "base": "main",
+          "url": "https://github.com/chrvillarreal/calculadora-nutricion-deportiva/pull/2"
+        },
+        {
+          "number": 1,
+          "title": "Feat/nhost auth athletes",
+          "state": "open",
+          "merged_at": null,
+          "head": "feat/nhost-auth-athletes",
+          "sha": "15441d27353ef016a6dd29ecb0fbee441ed5ef8a",
+          "base": "main",
+          "url": "https://github.com/chrvillarreal/calculadora-nutricion-deportiva/pull/1"
+        }
+      ]
+    }
+  ]
+}
+

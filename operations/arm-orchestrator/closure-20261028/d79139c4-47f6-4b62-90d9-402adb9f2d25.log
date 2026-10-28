@@ -1,0 +1,30 @@
+{
+  "task_id": "829ed373-24c6-4151-983e-2d0d5143a6f9",
+  "run_id": "d79139c4-47f6-4b62-90d9-402adb9f2d25",
+  "title": "Leer adaptador de páginas heredadas RM y causa de ancla ausente",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "cat",
+    "study-legacy.js"
+  ],
+  "started_utc": "2026-10-28T23:16:46.763233+00:00",
+  "finished_utc": "2026-10-28T23:16:46.764497+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "d79139c4-47f6-4b62-90d9-402adb9f2d25.log"
+}
+
+/* Keep legacy records, but do not label reconstructed answers as official. */
+(function(){
+'use strict';
+const originalTopic=renderTopicView;
+renderTopicView=function(){return '<div class="panel"><strong>Resumen y actividades elaborados con IA a partir del curso</strong><p>No son transcripciones ni una clave oficial. Las respuestas del Banco siguen pendientes de revisión editorial completa. La lectura por voz narra este resumen, no el audio del docente.</p><a href="criterios-estudio.html">Consultar correcciones, fuentes y límites</a> · <a href="curso-arm.html">Estudiar con las guías por clase</a></div>'+originalTopic();};
+renderExamenFinal=function(){return '<div class="panel"><h1>Práctica y simulación del examen ARM</h1><p>El recorrido actualizado distingue práctica de simulación, permite omitir respuestas y aplica +1 / −1 / 0. Las claves siguen siendo provisionales.</p><a class="btn" href="examen-estudio.html">Abrir examen actualizado</a><p>Los resultados históricos se conservan, pero no se comparan con la nueva puntuación.</p></div>';};
+const originalStart=startQuiz;startQuiz=function(scope,count,shuffle){if(scope==='examenfinal'){location.href='examen-estudio.html';return;}originalStart(scope,count,shuffle);};
+const originalPick=pickAnswer;pickAnswer=function(letter){if(!quizSession||quizSession.picked!==null||quizSession.pos>=quizSession.items.length)return;const q=quizSession.items[quizSession.pos].q;if(!Object.hasOwn(q.options,letter))return;originalPick(letter);};
+const originalStage=renderQuizStage;renderQuizStage=function(){return '<p class="note">Práctica con clave reconstruida. Este porcentaje describe respuestas al Banco; no demuestra dominio ni equivale a la puntuación del examen.</p>'+originalStage();};
+if(location.hash==='#examen-final')view={name:'examenfinal'};
+render();
+})();

@@ -1,0 +1,197 @@
+{
+  "task_id": "884a97ec-c1be-4df0-90f8-cb37f3b5fe0c",
+  "run_id": "1aa78e7b-797c-4b2d-acfa-87f5856353aa",
+  "title": "Leer detección de worker pendiente y registro PWA",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;print(Path('src/PwaSettings.tsx').read_text()[:6400]);print(Path('src/main.tsx').read_text())"
+  ],
+  "started_utc": "2026-10-28T23:18:27.737983+00:00",
+  "finished_utc": "2026-10-28T23:18:27.761919+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "1aa78e7b-797c-4b2d-acfa-87f5856353aa.log"
+}
+
+import { useEffect, useState } from "react";
+type InstallEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: string }>;
+};
+let registrationTask: Promise<ServiceWorkerRegistration> | undefined;
+function registerWorker() {
+  return (registrationTask ??= navigator.serviceWorker
+    .register("/sw.js", { updateViaCache: "none" })
+    .catch((error) => {
+      registrationTask = undefined;
+      throw error;
+    }));
+}
+export function PwaSettings() {
+  const [ready, setReady] = useState(false),
+    [online, setOnline] = useState(navigator.onLine),
+    [error, setError] = useState(""),
+    [install, setInstall] = useState<InstallEvent | null>(null),
+    [waiting, setWaiting] = useState<ServiceWorker | null>(null),
+    [updating, setUpdating] = useState(false);
+  useEffect(() => {
+    let disposed = false,
+      registration: ServiceWorkerRegistration | undefined;
+    const status = () => setOnline(navigator.onLine);
+    const prompt = (e: Event) => {
+      e.preventDefault();
+      setInstall(e as InstallEvent);
+    };
+    const installed = () => setInstall(null);
+    const onMessage = (e: MessageEvent) => {
+      if (e.data?.type === "NUTRISPORT_OFFLINE_READY") setReady(true);
+    };
+    const check = () => {
+      if (registration?.waiting) setWaiting(registration.waiting);
+    };
+    const onUpdate = () => {
+      const worker = registration?.installing;
+      worker?.addEventListener("statechange", () => {
+        if (!disposed && worker.state === "installed") {
+          setReady(!!navigator.serviceWorker.controller);
+          check();
+        }
+      });
+    };
+    window.addEventListener("online", status);
+    window.addEventListener("offline", status);
+    window.addEventListener("beforeinstallprompt", prompt);
+    window.addEventListener("appinstalled", installed);
+    if ("serviceWorker" in navigator && import.meta.env.PROD) {
+      navigator.serviceWorker.addEventListener("message", onMessage);
+      registerWorker()
+        .then(async (r) => {
+          if (disposed) return;
+          registration = r;
+          check();
+          setReady(!!navigator.serviceWorker.controller);
+          r.addEventListener("updatefound", onUpdate);
+          r.active?.postMessage({ type: "STATUS" });
+        })
+        .catch(() => {
+          if (!disposed)
+            setError(
+              "No se pudo preparar el modo sin conexión. Volvé a abrir la app con conexión segura.",
+            );
+        });
+    }
+    return () => {
+      disposed = true;
+      window.removeEventListener("online", status);
+      window.removeEventListener("offline", status);
+      window.removeEventListener("beforeinstallprompt", prompt);
+      window.removeEventListener("appinstalled", installed);
+      navigator.serviceWorker?.removeEventListener("message", onMessage);
+      registration?.removeEventListener("updatefound", onUpdate);
+    };
+  }, []);
+  async function update() {
+    setUpdating(true);
+    setError("");
+    try {
+      const registration = await navigator.serviceWorker.getRegistration();
+      const worker = registration?.waiting;
+      if (!worker)
+        throw new Error(
+          "La actualización ya no está disponible. Cerrá otras pestañas de la app y volvé a abrirla.",
+        );
+      const activate = () => {
+        if (worker.state === "activated") {
+          worker.removeEventListener("statechange", activate);
+          window.location.reload();
+        } else if (worker.state === "redundant") {
+          worker.removeEventListener("statechange", activate);
+          setUpdating(false);
+          setError(
+            "La actualización no pudo activarse. Volvé a abrir la app con conexión.",
+          );
+        }
+      };
+      worker.addEventListener("statechange", activate);
+      worker.postMessage({ type: "ACTIVATE_UPDATE" });
+    } catch (e) {
+      setUpdating(false);
+      setError(
+        e instanceof Error ? e.message : "No se pudo aplicar la actualización.",
+      );
+    }
+  }
+  return (
+    <section className="panel">
+      <h2>Instalar y usar sin conexión</h2>
+      <p>
+        {online ? "Con conexión" : "Sin conexión"} ·{" "}
+        {ready
+          ? "Recursos disponibles para uso sin conexión."
+          : "Preparando recursos locales. Abrí esta sección con conexión para habilitar el uso offline."}
+      </p>
+      {error && (
+        <p role="alert" className="error">
+          {error}
+        </p>
+      )}
+      <p className="muted">
+        Abrí la aplicación una vez con conexión y esperá a que los recursos
+        estén listos. Luego podés usar calculadoras, fichas, backups e informes
+        PDF sin red. El guardado sigue en el mismo navegador y origen.
+      </p>
+      <div className="actions">
+        {install ? (
+          <button
+            onClick={async () => {
+              try {
+                await install.prompt();
+                await install.userChoice;
+                setInstall(null);
+              } catch {
+                setError(
+                  "El navegador no pudo mostrar la instalación. Usá su menú para instalar.",
+                );
+              }
+            }}
+          >
+            Instalar NutriSport Pro
+          </button>
+        ) : (
+          <p>
+            Para instalar: usá «Instalar app» del navegador o, en Safari de
+            iPhone/iPad, «Compartir → Agregar a inicio». La disponibilidad
+            depende del navegador y requiere HTTPS (o localhost).
+          </p>
+        )}
+        {waiting && (
+          <button disabled={updating} onClick={update}>
+            Aplicar actualización y recargar
+          </button>
+        )}
+      </div>
+      <p className="muted">
+        Las actualizaciones se aplican con este botón cuando hay otra versión
+        abierta. Terminá de guardar y exportá un respaldo antes de actualizar.
+        La caché contiene solo la aplicación; no guarda fichas ni informes
+        generados. Desinstalar no equivale a eliminar todos los datos del
+        navegador.
+      </p>
+    </section>
+  );
+}
+
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { App } from "./App";
+import "./styles.css";
+createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
+

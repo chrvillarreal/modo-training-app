@@ -1,0 +1,35 @@
+{
+  "task_id": "86e12af5-fdd1-4b81-bed7-b80d74455e06",
+  "run_id": "484bf54a-2d0b-453f-b0b5-18d68031bc91",
+  "title": "Preparar propuestas B y parches por proyecto sin publicarlos",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/prepare_phase2_proposals.py"
+  ],
+  "started_utc": "2026-10-28T23:22:55.164535+00:00",
+  "finished_utc": "2026-10-28T23:22:55.206784+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "484bf54a-2d0b-453f-b0b5-18d68031bc91.log"
+}
+
+{
+  "proposals": [
+    "README.md",
+    "modo-ci.proposal.yml",
+    "modo-demo-security.patch",
+    "modo-security-tests.cjs",
+    "modo13-smoke.cjs",
+    "nutrisport-pwa.patch",
+    "patch-hashes.json",
+    "rm-ci.proposal.yml",
+    "rm-preview-keyboard.cjs"
+  ],
+  "patches": {
+    "modo-demo-security.patch": "0e1ae5957b8397603786ee860b8a913d1e53cde84aecdf79c71d55f95bdbfb83",
+    "nutrisport-pwa.patch": "1a5cac732a93941ab84491bfad85279e32ec20ac5a25a7c1b988084a39b49a64"
+  }
+}

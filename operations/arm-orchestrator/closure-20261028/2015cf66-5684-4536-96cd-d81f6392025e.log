@@ -1,0 +1,35 @@
+{
+  "task_id": "0d216cd8-1d97-4b15-ad3b-bdbb8e95ef94",
+  "run_id": "2015cf66-5684-4536-96cd-d81f6392025e",
+  "title": "Reejecutar 32 comprobaciones RM con red externa bloqueada",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm",
+    "--port",
+    "4178",
+    "--",
+    "node",
+    "/workspace/work/rm-browser-safe.cjs"
+  ],
+  "started_utc": "2026-10-28T23:15:03.936510+00:00",
+  "finished_utc": "2026-10-28T23:15:38.974066+00:00",
+  "exit_code": 1,
+  "status": "failed",
+  "evidence": "2015cf66-5684-4536-96cd-d81f6392025e.log"
+}
+
+page.waitForSelector: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('a[href="examen-estudio.html"]') to be visible[22m
+
+    at /workspace/work/phase2-rm/tests/browser.cjs:9:123 {
+  log: [
+    `  - waiting for locator('a[href="examen-estudio.html"]') to be visible`
+  ],
+  name: 'TimeoutError'
+}

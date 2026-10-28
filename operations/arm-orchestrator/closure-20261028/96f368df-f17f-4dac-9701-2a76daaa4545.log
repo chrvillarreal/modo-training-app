@@ -1,0 +1,67 @@
+{
+  "task_id": "ce66a41a-05f0-4abc-a8d8-23fcfeb3452e",
+  "run_id": "96f368df-f17f-4dac-9701-2a76daaa4545",
+  "title": "Inventariar ramas, scripts y tests RM",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess,pathlib;print(subprocess.check_output(['git','branch','-a'],text=True));print('AGENTS',list(pathlib.Path('.').rglob('AGENTS.md')));print(pathlib.Path('package.json').read_text());print('\\n'.join(str(p)+'\\n'+p.read_text() for p in pathlib.Path('tests').rglob('*') if p.is_file()))"
+  ],
+  "started_utc": "2026-10-28T23:13:06.128479+00:00",
+  "finished_utc": "2026-10-28T23:13:06.208207+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "96f368df-f17f-4dac-9701-2a76daaa4545.log"
+}
+
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/design/study-preview-20261019
+  remotes/origin/feat/rm-estudio-android
+  remotes/origin/improve-study-learning
+  remotes/origin/integrate-arm-r2-library
+  remotes/origin/main
+  remotes/origin/rm-audit-p0-p1
+
+AGENTS []
+{"name":"rm-training","private":true,"scripts":{"test":"node --test tests/study.test.cjs","preview":"node tests/server.cjs"}}
+
+tests/browser.cjs
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'C:/Users/crist/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');const path=require('node:path'),assert=require('node:assert/strict'),fs=require('node:fs');
+(async()=>{const b=await chromium.launch({headless:true,executablePath:process.env.CHROME_PATH||path.resolve(__dirname,'../../.browsers/chromium-1234/chrome-win64/chrome.exe')});const page=await b.newPage(),base=process.env.APP_URL||'http://127.0.0.1:4178';const errors=[];page.on('pageerror',e=>errors.push(e.message));let checks=0;try{
+for(const width of [1440,390]){await page.setViewportSize({width,height:900});await page.goto(base+'/curso-arm.html');await page.waitForSelector('#study-dashboard');for(let n=1;n<=11;n++){const id=String(n).padStart(2,'0');await page.evaluate(id=>openLesson(id),id);assert.equal(await page.locator('#guided-study').count(),1);assert.equal(await page.locator('#practica fieldset').count(),2);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);checks++;}await page.screenshot({path:path.resolve(__dirname,'../../study-upgrade-'+width+'.png'),fullPage:true});}
+await page.goto(base+'/curso-arm.html#lesson=11&section=practica');await page.waitForSelector('#study-notes');await page.locator('#study-notes').fill('Fuente p. 4 <script>alert(1)</script>');await page.locator('[data-activity="practice-0"] input[value="1"]').check();await page.locator('[data-activity="practice-0"] button').click();assert.match(await page.locator('#study-evidence').textContent(),/1\/2/);await page.reload();await page.waitForSelector('#study-notes');assert.match(await page.locator('#study-notes').inputValue(),/<script>/);assert.equal(await page.locator('#practica').isVisible(),true);checks++;
+await page.evaluate(()=>{const v=RMStudy.read();v.lessons['11'].attempts[0].at=Date.now()-2*RMStudy.DAY;RMStudy.write(v);});await page.getByRole('button',{name:'Repaso',exact:true}).click();await page.locator('[data-activity="review-0"] input[value="0"]').check();await page.locator('[data-activity="review-0"] button').click();assert.equal(await page.evaluate(()=>RMStudy.status('11').retention),true);checks++;
+await page.goto(base+'/examen-estudio.html');await page.locator('#simulation').click();await page.locator('input[value="D"]').check();assert.equal(await page.locator('.study-feedback').count(),0);await page.reload();assert.equal(await page.locator('input[value="D"]').isChecked(),true);await page.locator('#omit').click();assert.equal(await page.locator('input:checked').count(),0);checks++;
+await page.evaluate(()=>{const v=RMStudy.read();v.exam.answers=STUDY_EXAM.questions.map((q,i)=>i<24?q.correct:Object.keys(q.options).find(k=>k!==q.correct));RMStudy.write(v);});await page.reload();await page.locator('#finish').click();await page.locator('#confirm-finish').click();assert.match(await page.locator('#exam-root').textContent(),/8 \/ 40 puntos \(20 %\)/);checks++;
+await page.locator('#new-attempt').click();await page.locator('#simulation').click();await page.evaluate(()=>{const v=RMStudy.read();v.exam.deadline=Date.now()-1;RMStudy.write(v);});await page.reload();assert.match(await page.locator('#exam-root').textContent(),/40 omitidas/);checks++;
+for(const file of ['entrenamiento-base.html','banco-arm.html']){await page.goto(base+'/'+file+'#examen-final');await page.waitForSelector('a[href="examen-estudio.html"]');await page.evaluate(()=>{view={name:'exam'};startQuiz('exam',1);const q=quizSession.items[0].q;pickAnswer(q.correct);pickAnswer(q.correct);nextQuiz();render();render();});const result=await page.evaluate(()=>({score:quizSession.score,attempts:progress.quiz.__mixto__.attempts}));assert.equal(result.score,1);assert(result.attempts<=2);checks++;}
+await page.goto(base+'/entrenamiento.html');await page.locator('#aiSearch').fill('tonelaje');await page.locator('#aiSearch').press('Enter');await page.locator('#results .r').filter({hasText:'Clase 11'}).first().click();await page.frameLocator('#app').locator('#guided-study').waitFor();assert.match(await page.frameLocator('#app').locator('#lessonTitle').textContent(),/Hipertrofia/);checks++;
+await page.locator('#aiSearch').fill('penalización');await page.locator('#aiSearch').press('Enter');await page.locator('#results .r').first().click();await page.frameLocator('#app').locator('#exam-root').waitFor();checks++;
+await page.goto(base+'/curso-arm.html');await page.locator('#study-dashboard summary').click();await page.locator('#study-import').setInputFiles({name:'respaldo.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify({version:1,lessons:{'01':{consulted:true,attempts:[]}},notes:{'01':'Apunte importado'}}))});await page.waitForFunction(()=>RMStudy.read().notes['01']==='Apunte importado');await page.goto(base+'/curso-arm.html#lesson=01&section=practica');assert.equal(await page.locator('#study-notes').inputValue(),'Apunte importado');assert.equal(await page.locator('#done').isChecked(),true);checks++;
+assert.deepEqual(errors,[]);console.log(JSON.stringify({checks,errors}));}finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1});
+
+tests/study.test.cjs
+const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
+const root=path.join(__dirname,'..');
+function engine(blocked=false){const data=new Map([['arm-done-01','1']]);const c={localStorage:{getItem:k=>{if(blocked)throw Error();return data.get(k)||null;},setItem:(k,v)=>{if(blocked)throw Error();data.set(k,v);}},Date};vm.runInNewContext(fs.readFileSync(path.join(root,'study-core.js'),'utf8'),c);return {api:c.RMStudy,data};}
+test('exam subtracts mistakes and counts omissions without clamping negative points',()=>{const {api}=engine();assert.equal(api.score([...Array(24).fill(true),...Array(16).fill(false)]).percent,20);assert.equal(api.score([true,false,null],40).blank,38);assert.equal(api.score(Array(40).fill(false)).points,-40);});
+test('immediate repeated answers never become delayed retention',()=>{const {api,data}=engine();const t=100000;api.answer('11','practice-0',1,true,'practice',t);api.answer('11','review-0',0,true,'review',t+1000);assert.equal(api.status('11',t+2000).retention,false);api.answer('11','review-0',0,true,'review',t+api.DAY);assert.equal(api.status('11',t+api.DAY).retention,true);assert.equal(data.get('arm-done-01'),'1');});
+test('backup merges attempts without replacing existing notes or other records',()=>{const {api}=engine();api.saveNote('11','original');api.answer('11','practice-0',1,true);const backup=api.read();backup.notes['11']='imported';api.importBackup(JSON.stringify(backup));assert.equal(api.read().notes['11'],'original');assert.equal(api.lesson('11').attempts.length,1);assert.throws(()=>api.importBackup('{"version":2}'));});
+test('storage unavailable preserves current-session work and reports failure',()=>{const {api}=engine(true);api.saveNote('11','draft');assert.equal(api.read().notes['11'],'draft');assert.equal(api.storageAvailable(),false);});
+test('successful delayed review schedules a later review without repeated-click inflation',()=>{const {api}=engine();const t=100000;api.answer('11','practice-0',1,true,'practice',t);api.answer('11','review-0',0,true,'review',t+api.DAY);api.answer('11','review-0',0,true,'review',t+api.DAY+1);assert.equal(api.status('11',t+2*api.DAY).due,false);assert.equal(api.status('11',t+4*api.DAY).due,true);});
+test('all source scripts parse and static local destinations exist',()=>{for(const file of fs.readdirSync(root)){if(!/\.(html|js)$/.test(file))continue;const s=fs.readFileSync(path.join(root,file),'utf8');if(file.endsWith('.js'))new vm.Script(s,{filename:file});else for(const m of s.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi))new vm.Script(m[1],{filename:file});if(file.endsWith('.html'))for(const m of s.matchAll(/(?:href|src)=["']([\w-]+\.(?:js|css|html))(?:[?#][^"']*)?["']/g))assert(fs.existsSync(path.join(root,m[1])),file+' → '+m[1]);}});
+test('eleven guides have valid exercise keys and a distinct retrieval question',()=>{const c={window:{}};vm.runInNewContext(fs.readFileSync(path.join(root,'study-lessons.js'),'utf8'),c);const lessons=c.window.STUDY_LESSONS;assert.equal(Object.keys(lessons).length,11);for(const d of Object.values(lessons)){assert(d.explanation.length>=2);for(const q of [...d.q,d.review])assert(q[1][q[2]]);assert(!d.q.some(q=>q[0]===d.review[0]));}});
+
+tests/server.cjs
+const http=require('node:http'),fs=require('node:fs'),path=require('node:path');const root=path.resolve(__dirname,'..');http.createServer((req,res)=>{let file;try{file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));}catch{res.writeHead(400);return res.end();}if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}if(!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);return res.end();}res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8'})[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res);}).listen(4178,'127.0.0.1',()=>console.log('Preview: http://127.0.0.1:4178/curso-arm.html'));
+
+tests/preservation.cjs
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),cp=require('node:child_process');
+const original=cp.execFileSync('git',['show','67ed8770367c17e3b62295dae68c60ba5daebdda:curso-arm.html'],{encoding:'utf8'}),current=fs.readFileSync('curso-arm.html','utf8');
+const inv=s=>vm.runInNewContext(s.match(/const INVENTORY\s*=\s*(\[[\s\S]*?\]);/)[0]+';JSON.stringify(INVENTORY)');assert.equal(inv(original),inv(current));
+const books=s=>[...s.matchAll(/https:\/\/[^"'<> ]+\/bibliografia-complementaria\/[^"'<> ]+/g)].map(x=>x[0]).sort();assert.deepEqual(books(original),books(current));console.log('199 inventory routes and supplementary book URLs preserved.');
+

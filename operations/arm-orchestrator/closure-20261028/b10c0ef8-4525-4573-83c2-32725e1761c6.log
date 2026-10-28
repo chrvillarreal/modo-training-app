@@ -1,0 +1,31 @@
+{
+  "task_id": "c5c84b36-c47e-4e66-b40a-1edd24c91b0b",
+  "run_id": "b10c0ef8-4525-4573-83c2-32725e1761c6",
+  "title": "Reejecutar 24 rutas y anchos del preview RM",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm",
+    "--port",
+    "4180",
+    "--",
+    "node",
+    "/workspace/work/phase2-arm/operations/arm-orchestrator/tests/rm-preview.cjs"
+  ],
+  "started_utc": "2026-10-28T23:18:56.833106+00:00",
+  "finished_utc": "2026-10-28T23:18:57.569843+00:00",
+  "exit_code": 1,
+  "status": "failed",
+  "evidence": "b10c0ef8-4525-4573-83c2-32725e1761c6.log"
+}
+
+browserType.launch: Failed to launch chromium because executable doesn't exist at /tmp/arm-chromium
+    at /workspace/work/phase2-arm/operations/arm-orchestrator/tests/rm-preview.cjs:2:35
+    at Object.<anonymous> (/workspace/work/phase2-arm/operations/arm-orchestrator/tests/rm-preview.cjs:3:306) {
+  log: [],
+  name: 'Error'
+}

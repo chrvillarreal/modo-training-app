@@ -1,0 +1,43 @@
+{
+  "task_id": "0a83659b-78b1-4968-8c4e-b0bec7fcb8c4",
+  "run_id": "eefa6de1-0779-46ee-a602-02a2a8ceea47",
+  "title": "Verificar charset HTML y comparar servidor original RM",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;import re; s=Path('entrenamiento-base.html').read_text();print(s[:700]);print([(m.start(),m.group()) for m in re.finditer('charset[^>]*',s)]);print([x for x in s.splitlines() if 'normalize' in x or '0300' in x][:10]);print(Path('tests/server.cjs').read_text())"
+  ],
+  "started_utc": "2026-10-28T23:18:10.910907+00:00",
+  "finished_utc": "2026-10-28T23:18:10.942288+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "eefa6de1-0779-46ee-a602-02a2a8ceea47.log"
+}
+
+<title>RM Training — Entrenamiento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f0e6;
+  --surface:#ffffff;
+  --surface-alt:#ece3ce;
+  --ink:#211c14;
+  --ink-2:#5c5340;
+  --ink-3:#8a7f68;
+  --border:#ddd0b0;
+  --border-soft:#e8dcc0;
+  --accent:#c8401f;
+  --accent-ink:#fff8f0;
+  --accent-soft:#f4ded2;
+  --success:#276b45;
+  --success-bg:#dfeee1;
+  --dan
+[]
+["  return (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');"]
+const http=require('node:http'),fs=require('node:fs'),path=require('node:path');const root=path.resolve(__dirname,'..');http.createServer((req,res)=>{let file;try{file=path.resolve(root,'.'+decodeURIComponent(new URL(req.url,'http://localhost').pathname));}catch{res.writeHead(400);return res.end();}if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}if(!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404);return res.end();}res.setHeader('Content-Type',({'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8'})[path.extname(file)]||'application/octet-stream');fs.createReadStream(file).pipe(res);}).listen(4178,'127.0.0.1',()=>console.log('Preview: http://127.0.0.1:4178/curso-arm.html'));
+

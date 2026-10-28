@@ -1,0 +1,65 @@
+{
+  "task_id": "07114f06-0b07-4f70-bcec-61c9040c6874",
+  "run_id": "5467983a-17c7-4269-8e0e-6330f418576b",
+  "title": "Reejecutar cuatro reproducciones históricas Modo",
+  "project": "modo-training-app",
+  "base_sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-modo",
+    "--port",
+    "4179",
+    "--",
+    "node",
+    "/workspace/work/phase2-arm/operations/arm-orchestrator/tests/modo-repro.cjs"
+  ],
+  "started_utc": "2026-10-28T23:15:03.915366+00:00",
+  "finished_utc": "2026-10-28T23:15:07.184113+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "5467983a-17c7-4269-8e0e-6330f418576b.log"
+}
+
+[
+  {
+    "id": "MODO-01",
+    "confirmed": true,
+    "detail": "Agustin: zero editable controls; 4 static training days",
+    "controls": 0,
+    "days": 4
+  },
+  {
+    "id": "MODO-02",
+    "confirmed": true,
+    "detail": "Changing student 1 sets to 9 also changes student 2",
+    "sets": "9"
+  },
+  {
+    "id": "MODO-03",
+    "confirmed": true,
+    "detail": "Student name HTML executes harmless local marker via innerHTML"
+  },
+  {
+    "id": "MODO-04",
+    "confirmed": true,
+    "detail": "Malformed mt_students throws during initialization",
+    "errors": [
+      "Unexpected token 'b', \"broken-json\" is not valid JSON"
+    ]
+  },
+  {
+    "id": "MODO-layout-320",
+    "overflow": false
+  },
+  {
+    "id": "MODO-layout-390",
+    "overflow": false
+  },
+  {
+    "id": "MODO-layout-1440",
+    "overflow": false
+  }
+]

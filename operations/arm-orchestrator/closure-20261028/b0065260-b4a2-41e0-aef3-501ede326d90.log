@@ -1,0 +1,26 @@
+{
+  "task_id": "717d8e7b-022b-4b28-8526-a736e43e1fc6",
+  "run_id": "b0065260-b4a2-41e0-aef3-501ede326d90",
+  "title": "Validar borrador Modo contra inyección y recuperación de datos",
+  "project": "modo-training-app",
+  "base_sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-modo-fix",
+    "--port",
+    "4179",
+    "--",
+    "node",
+    "/workspace/work/modo-security-tests.cjs"
+  ],
+  "started_utc": "2026-10-28T23:18:11.344083+00:00",
+  "finished_utc": "2026-10-28T23:18:13.770884+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "b0065260-b4a2-41e0-aef3-501ede326d90.log"
+}
+
+{"checks":6,"errors":[],"corruptErrors":[],"deniedErrors":[]}

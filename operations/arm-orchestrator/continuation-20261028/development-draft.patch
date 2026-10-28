@@ -1,0 +1,29 @@
+--- a/operations/arm-orchestrator/arm.py
++++ b/operations/arm-orchestrator/arm.py
+@@ -124,4 +124,5 @@
+     elif cmd=='finish':result=o.finish(**args)
+     else:result={'approval':o.request_approval(**args)}
+     print(json.dumps(result,ensure_ascii=False,indent=2))
++    if cmd=='verify' and not result['valid']: raise SystemExit(1)
+ if __name__=='__main__':main()
+--- /dev/null
++++ b/operations/arm-orchestrator/tests/test_cli_integrity.py
+@@ -0,0 +1,18 @@
++import unittest, tempfile, pathlib, sqlite3, subprocess, sys
++sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]))
++from arm import Orchestrator
++class CliIntegrity(unittest.TestCase):
++ def test_verify_exit_status(self):
++  script=pathlib.Path(__file__).resolve().parents[1]/'arm.py'
++  with tempfile.TemporaryDirectory() as td:
++   db=pathlib.Path(td)/'ledger.sqlite'
++   o=Orchestrator(db)
++   o.task('modo-training-app','Synthetic integrity check','P1','audit','audit/local','a'*40)
++   o.db.close()
++   valid=subprocess.run([sys.executable,str(script),'--db',str(db),'verify'],capture_output=True,text=True)
++   self.assertEqual(valid.returncode,0)
++   self.assertTrue(__import__('json').loads(valid.stdout)['valid'])
++   with sqlite3.connect(db) as conn: conn.execute("UPDATE events SET kind='tampered'")
++   invalid=subprocess.run([sys.executable,str(script),'--db',str(db),'verify'],capture_output=True,text=True)
++   self.assertFalse(__import__('json').loads(invalid.stdout)['valid'])
++   self.assertNotEqual(invalid.returncode,0,'Invalid chain must fail command-line checks')

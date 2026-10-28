@@ -1,0 +1,26 @@
+{
+  "task_id": "f8630c31-289d-49f4-a92e-b032ca355147",
+  "run_id": "0e24ce8f-c384-4fe5-8e44-2a6511d32b18",
+  "title": "QA teclado menú y búsqueda del preview RM",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm",
+    "--port",
+    "4181",
+    "--",
+    "node",
+    "/workspace/work/rm-extra.cjs"
+  ],
+  "started_utc": "2026-10-28T23:19:57.112896+00:00",
+  "finished_utc": "2026-10-28T23:20:00.020321+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "0e24ce8f-c384-4fe5-8e44-2a6511d32b18.log"
+}
+
+{"checks":5,"errors":[],"limitations":["Keyboard/menu/search sample only; no WCAG certification or remote resources"]}

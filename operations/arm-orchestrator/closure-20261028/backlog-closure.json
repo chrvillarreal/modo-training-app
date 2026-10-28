@@ -1,0 +1,170 @@
+[
+  {
+    "id": "MODO-01",
+    "project": "modo-training-app",
+    "priority": "P1",
+    "status": "reproduced",
+    "title": "La rutina de Agustín no permite registrar cargas",
+    "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+    "path": "rutina-agustin.html",
+    "steps": "Abrir página; buscar inputs/select/textarea: 0 controles en cuatro días de rutina.",
+    "expected": "Registrar reps, kg y RIR y consultar historial.",
+    "observed": "HTML estático sin script ni persistencia.",
+    "evidence": "evidence/modo-repro.json",
+    "acceptance": "Guardar series, recargar y conservar datos. Probar recepción entrenador en dos contextos de navegador con backend de prueba antes de prometer sincronización.",
+    "closure_status": "blocked_product_decision",
+    "next_step": "Agustín sigue estático. Candidato 1.3 tiene campos de carga; elegir base y contrato de entrega entrenador/alumno con backend de prueba antes de implementar sincronización."
+  },
+  {
+    "id": "MODO-02",
+    "project": "modo-training-app",
+    "priority": "P1",
+    "status": "reproduced",
+    "title": "Rutina global compartida por todos los alumnos",
+    "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+    "path": "index.html:2",
+    "steps": "Seleccionar alumno 1, cambiar primera serie a 9, guardar y abrir alumno 2.",
+    "expected": "Rutinas independientes por alumno.",
+    "observed": "Alumno 2 también muestra 9. Variable global R / mt_routine.",
+    "evidence": "evidence/modo-repro.json",
+    "acceptance": "Editar y duplicar rutina por alumno sin alterar ninguna otra; snapshot de sesión independiente.",
+    "closure_status": "blocked_product_decision",
+    "next_step": "Rutina global reproducida en demo. Candidato 1.3 pasa prueba de copias independientes localmente. No se migra ni elige base sin decisión de producto."
+  },
+  {
+    "id": "MODO-03",
+    "project": "modo-training-app",
+    "priority": "P1",
+    "status": "reproduced",
+    "title": "Inyección HTML/JS en nombre del alumno",
+    "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+    "path": "index.html:2",
+    "steps": "Crear alumno ficticio con marcador img/onerror; abrir ficha.",
+    "expected": "Mostrar nombre como texto.",
+    "observed": "Se ejecuta marcador local window.armXss=1 mediante innerHTML. No se probó exfiltración ni usuarios reales.",
+    "evidence": "evidence/modo-repro.json",
+    "acceptance": "Usar textContent/escape contextual y comprobar nombre, email, objetivo y notas, incluyendo edición y recarga.",
+    "closure_status": "draft_validated",
+    "next_step": "Parche local de escape contextual preparado para demo 0bb4924. Prueba original falla; seis comprobaciones de seguridad/recuperación pasan con el borrador. Publicación condicionada a base."
+  },
+  {
+    "id": "MODO-04",
+    "project": "modo-training-app",
+    "priority": "P2",
+    "status": "reproduced",
+    "title": "JSON corrupto en almacenamiento interrumpe inicio",
+    "sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+    "path": "index.html:2",
+    "steps": "En perfil ficticio guardar mt_students=broken-json y recargar.",
+    "expected": "Error recuperable con opción de respaldo/restauración.",
+    "observed": "JSON.parse sin manejo de error interrumpe inicialización.",
+    "evidence": "evidence/modo-repro.json",
+    "acceptance": "No perder contenido original; mostrar recuperación segura y probar storage denegado.",
+    "closure_status": "draft_validated",
+    "next_step": "Recuperación conserva el JSON original, permite descargarlo y evita sobrescrituras durante recuperación; storage denegado no causa error JS. No restauración automática ni migración de datos."
+  },
+  {
+    "id": "ARM-01",
+    "project": "rm-training",
+    "priority": "P1",
+    "status": "blocked",
+    "title": "Autorizar lectura de despliegues Vercel del equipo",
+    "evidence": "evidence/environment.json",
+    "acceptance": "Consultar despliegues exactos y logs sin crear ni publicar despliegues.",
+    "closure_status": "blocked_access",
+    "next_step": "Vercel 403 de equipo confirmado. Enlace de consentimiento generado sin otorgar permisos; no se usa otra identidad ni bypass."
+  },
+  {
+    "id": "ARM-02",
+    "project": "rm-training",
+    "priority": "P2",
+    "status": "pending",
+    "title": "CI reproducible para RM y Modo",
+    "evidence": "evidence/github-checks.json",
+    "acceptance": "Checks de unitarias y flujos en PR. Vercel Preview Comments no sustituye QA.",
+    "closure_status": "draft_prepared",
+    "next_step": "Dos propuestas de workflow documentadas, sin activar GitHub Actions. RM necesita adaptar servidor según base elegida; Modo requiere elegir base y publicar primero patch/test."
+  },
+  {
+    "id": "RM-01",
+    "project": "rm-training",
+    "priority": "P2",
+    "status": "pending",
+    "title": "Ampliar QA del rediseño y recursos externos",
+    "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+    "evidence": "evidence/rm-browser.log",
+    "acceptance": "Verificar design-preview, teclado/foco/contraste, reproducción real y biblioteca R2; no extrapolar las 32 comprobaciones de curso a todo el rediseño.",
+    "closure_status": "partially_validated",
+    "next_step": "32 checks curso, 24 rutas/anchos preview, persistencia, menú/teclado/búsqueda y capturas revisadas. R2 remoto bloqueado por proxy 403; no certificación WCAG ni reproducción streaming."
+  },
+  {
+    "id": "NUTRI-01",
+    "project": "calculadora-nutricion-deportiva",
+    "priority": "P2",
+    "status": "pending",
+    "title": "Identificar alojamiento de NutriSport inequívocamente",
+    "sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+    "evidence": "evidence/github-checks.json",
+    "acceptance": "Mapear repo/commit/proyecto/URL. No confundir con app de estudio de nutrición ni desplegar por defecto.",
+    "closure_status": "blocked_access",
+    "next_step": "Repo y SHA identificados; no hay URL de hosting en archivos de despliegue consultados. Mapeo proyecto Vercel/URL bloqueado por 403 del equipo."
+  },
+  {
+    "id": "ARM-03",
+    "project": "modo-training-app",
+    "priority": "P1",
+    "status": "pending",
+    "title": "Aprobar rama base funcional y persistencia de ARM",
+    "evidence": "evidence/inventory.json",
+    "acceptance": "Revisar diferencia entre main, prototype 1.3, operations y Agustín; elegir base antes de integrar. Publicar ARM sólo tras aprobación concreta.",
+    "closure_status": "partially_completed",
+    "next_step": "Destino ARM confirmado en PR2 desde la fase previa. Base funcional Modo pendiente; 1.3 recomendado para evaluación siguiente, sin afirmar backend/permisos/sincronización."
+  },
+  {
+    "id": "RM-02",
+    "project": "rm-training",
+    "priority": "P2",
+    "status": "confirmed_source",
+    "title": "Caracteres de reemplazo y control en textos del rediseño",
+    "sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+    "path": "design-preview/index.html",
+    "steps": "Abrir rediseño y leer navegación, títulos y guías. Buscar U+FFFD en fuente.",
+    "observed": "Acentos rotos como Formaci�n y Explicaci�n; flechas convertidas en caracteres de control. Blob local validado con SHA GitHub.",
+    "evidence": "evidence/rm-preview.json",
+    "acceptance": "Restaurar textos UTF-8 desde original confiable; no sustituir ciegamente todos los caracteres. Test de navegación y ausencia de U+FFFD/control.",
+    "closure_status": "blocked_editorial_source",
+    "next_step": "154 U+FFFD en fuente. Historial contiene sólo ese archivo ya corrupto. Requiere original confiable o aprobación editorial de reconstrucciones concretas; no reemplazo ciego."
+  },
+  {
+    "id": "RM-03",
+    "project": "rm-training",
+    "priority": "P1",
+    "status": "confirmed_metadata",
+    "title": "Reconciliar PR #2 divergente antes de integrar",
+    "evidence": "evidence/comparisons.json",
+    "observed": "38 commits ahead / 2 behind main",
+    "acceptance": "Comparar comportamiento y resolver en copia aislada; ejecutar suite propia y regresión antes de solicitar merge.",
+    "closure_status": "blocked_integration_design",
+    "next_step": "38 ahead / 2 behind. 16 unitarias y 3 suites browser de PR2 pasan por separado; merge-tree confirma cuatro conflictos. Propuesta de convivencia/migración de motores preparada, sin ejecutar merge."
+  },
+  {
+    "id": "ARM-CLI-02",
+    "closure_status": "draft_validated",
+    "next_step": "verify sólo lectura; rutas ausentes, vacío, no SQLite, JSON corrupto y esquema incompleto rechazados sin crear/modificar archivos; ciclo CLI completo aceptado. 27/27."
+  },
+  {
+    "id": "ARM-EVIDENCE-01",
+    "closure_status": "draft_validated",
+    "next_step": "development-draft.patch faltaba en PR. Recuperado con SHA256 exacto 4c273b081749f1f331cb8a340295839831d6baba371294e936e79cca2fe57f7a; 19 runs y 70 eventos históricos verificados."
+  },
+  {
+    "id": "NUTRI-PWA-01",
+    "closure_status": "draft_validated",
+    "next_step": "Original 9/10 E2E. Borrador de estado waiting/controlador: build y 10/10 E2E, más regresión de primera instalación y actualización. Publicación B-NUTRI pendiente."
+  },
+  {
+    "id": "RM-CHARSET-01",
+    "closure_status": "draft_validated",
+    "next_step": "Sin cabecera UTF-8, regex se interpreta mal en páginas sin meta charset. Dos declaraciones meta corrigen el caso: 32 checks pasan también con servidor genérico. B-RM pendiente."
+  }
+]

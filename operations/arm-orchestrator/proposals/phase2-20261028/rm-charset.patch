@@ -1,0 +1,18 @@
+diff --git a/banco-arm.html b/banco-arm.html
+index 8e37f7f..3576df9 100644
+--- a/banco-arm.html
++++ b/banco-arm.html
+@@ -1,3 +1,4 @@
++<meta charset="utf-8">
+ <title>Banco ARM</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+diff --git a/entrenamiento-base.html b/entrenamiento-base.html
+index c7513f6..abac96c 100644
+--- a/entrenamiento-base.html
++++ b/entrenamiento-base.html
+@@ -1,3 +1,4 @@
++<meta charset="utf-8">
+ <title>RM Training — Entrenamiento</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

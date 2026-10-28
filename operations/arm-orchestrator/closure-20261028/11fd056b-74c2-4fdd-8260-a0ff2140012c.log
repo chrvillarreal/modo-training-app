@@ -1,0 +1,21 @@
+{
+  "task_id": "d2dd0a07-52d9-4ae0-8349-19ab6518715c",
+  "run_id": "11fd056b-74c2-4fdd-8260-a0ff2140012c",
+  "title": "Fijar candidato NutriSport local auditado",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "git",
+    "switch",
+    "--detach",
+    "e852644c4ce29635024eedbbf3fb8acfc6ff8df8"
+  ],
+  "started_utc": "2026-10-28T23:13:22.321378+00:00",
+  "finished_utc": "2026-10-28T23:13:22.332448+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "11fd056b-74c2-4fdd-8260-a0ff2140012c.log"
+}
+
+HEAD is now at e852644 test: cover offline reports and PWA upgrades with documented evidence

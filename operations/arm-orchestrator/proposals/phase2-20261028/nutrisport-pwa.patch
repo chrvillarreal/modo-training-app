@@ -1,0 +1,49 @@
+diff --git a/src/PwaSettings.tsx b/src/PwaSettings.tsx
+index 8c6caf8..aecb5c4 100644
+--- a/src/PwaSettings.tsx
++++ b/src/PwaSettings.tsx
+@@ -32,7 +32,12 @@ export function PwaSettings() {
+       if (e.data?.type === "NUTRISPORT_OFFLINE_READY") setReady(true);
+     };
+     const check = () => {
+-      if (registration?.waiting) setWaiting(registration.waiting);
++      const worker = registration?.waiting;
++      setWaiting(
++        navigator.serviceWorker.controller && worker?.state === "installed"
++          ? worker
++          : null,
++      );
+     };
+     const onUpdate = () => {
+       const worker = registration?.installing;
+@@ -49,6 +54,7 @@ export function PwaSettings() {
+     window.addEventListener("appinstalled", installed);
+     if ("serviceWorker" in navigator && import.meta.env.PROD) {
+       navigator.serviceWorker.addEventListener("message", onMessage);
++      navigator.serviceWorker.addEventListener("controllerchange", check);
+       registerWorker()
+         .then(async (r) => {
+           if (disposed) return;
+@@ -72,6 +78,7 @@ export function PwaSettings() {
+       window.removeEventListener("beforeinstallprompt", prompt);
+       window.removeEventListener("appinstalled", installed);
+       navigator.serviceWorker?.removeEventListener("message", onMessage);
++      navigator.serviceWorker?.removeEventListener("controllerchange", check);
+       registration?.removeEventListener("updatefound", onUpdate);
+     };
+   }, []);
+diff --git a/tests/stage-two.spec.ts b/tests/stage-two.spec.ts
+index e8c4d15..3f2f31c 100644
+--- a/tests/stage-two.spec.ts
++++ b/tests/stage-two.spec.ts
+@@ -200,6 +200,10 @@ test("actualización explícita de PWA conserva IndexedDB", async ({ page }) =>
+         exact: false,
+       }),
+     ).toBeVisible();
++    // Initial installation must not advertise an update that already activated.
++    await expect(
++      page.getByRole("button", { name: "Aplicar actualización y recargar" }),
++    ).toHaveCount(0);
+     const foreign = "cache-otra-app";
+     await page.evaluate(async (name) => {
+       await caches.open(name);

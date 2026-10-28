@@ -1,0 +1,27 @@
+{
+  "task_id": "7be0b875-09c9-4557-a455-2076177cf765",
+  "base_sha": "fb8352fc066595ee072eb9f57dab8e554fa52e87",
+  "files_changed": [
+    "operations/arm-orchestrator/arm.py",
+    "operations/arm-orchestrator/tests/test_cli_integrity.py"
+  ],
+  "patch_path": "development-draft.patch",
+  "tests": [
+    {
+      "command": "python3 -m unittest discover -s tests -p test_cli_integrity.py -v",
+      "status": "failed",
+      "evidence": "cli-before.log"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -v",
+      "status": "passed",
+      "evidence": "cli-after-21-tests.log"
+    }
+  ],
+  "risks": [
+    "Cambio sólo local; el MANIFEST histórico se preserva y requeriría actualización al publicar",
+    "No auditoría UX/QA independiente: revisión cruzada pendiente; no agente adicional invocado",
+    "No cambia el alcance de verify: cadena de eventos, sin revalidar hashes de archivos externos"
+  ],
+  "approval_required": true
+}

@@ -1,0 +1,26 @@
+{
+  "task_id": "d23de84f-bb3b-4033-aafa-b973b4b90dcd",
+  "run_id": "46ed849f-cb50-44d1-aa03-8ca97e098bfc",
+  "title": "Verificar integridad del paquete de cierre y alcance local",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/check_phase2_package.py"
+  ],
+  "started_utc": "2026-10-28T23:27:52.400746+00:00",
+  "finished_utc": "2026-10-28T23:27:52.473111+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "46ed849f-cb50-44d1-aa03-8ca97e098bfc.log"
+}
+
+{
+  "event_chain_valid": true,
+  "all_run_evidence_resolves": true,
+  "historical_files_preserved": true,
+  "changes_confined_to_arm_package": true,
+  "manifest_entries": 155,
+  "pending_B": 3
+}

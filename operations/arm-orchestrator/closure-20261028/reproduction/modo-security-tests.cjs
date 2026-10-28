@@ -1,0 +1,40 @@
+const {chromium}=require('/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+ let checks=0;
+ try{
+  const context=await browser.newContext();await context.route('**/*',r=>new URL(r.request().url()).hostname==='127.0.0.1'?r.continue():r.abort());
+  const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto('http://127.0.0.1:4179');
+  const payload='<img src=x onerror="window.armXss=1">';
+  await page.evaluate(payload=>{enter();newStudent();nname.value=payload;nemail.value='" autofocus onfocus="window.armXss=2';nnotes.value='</textarea>'+payload;createStudent()},payload);
+  await page.waitForTimeout(100);
+  assert.equal(await page.evaluate(()=>window.armXss),undefined,'Student content executed JavaScript');
+  assert((await page.locator('#view').textContent()).includes(payload));checks++;
+  await page.evaluate(()=>editStudent(selected));
+  assert.equal(await page.locator('#ename').inputValue(),payload);
+  assert.equal(await page.locator('#enotes').inputValue(),'</textarea>'+payload);
+  await page.evaluate(payload=>{ename.value=payload;egoal.value=payload;updateStudent(selected);show('students');show('home');show('routines');show('calendar');show('progress')},payload);
+  await page.reload();await page.evaluate(()=>enter());await page.waitForTimeout(100);
+  assert.equal(await page.evaluate(()=>window.armXss),undefined);checks++;
+  await context.close();
+  const corrupt=await browser.newContext();const cp=await corrupt.newPage();const corruptErrors=[];cp.on('pageerror',e=>corruptErrors.push(e.message));
+  await cp.addInitScript(()=>{if(!localStorage.getItem('seeded')){localStorage.setItem('mt_students','broken-json');localStorage.setItem('seeded','1')}});
+  await cp.goto('http://127.0.0.1:4179');await cp.evaluate(()=>enter());
+  assert.deepEqual(corruptErrors,[]);
+  assert.equal(await cp.evaluate(()=>localStorage.getItem('mt_students')),'broken-json');
+  assert((await cp.getByRole('alert').textContent()).includes('recuperación'));checks++;
+  const download=cp.waitForEvent('download');await cp.getByRole('button',{name:'Descargar datos originales'}).click();const file=await download;
+  const raw=JSON.parse(require('node:fs').readFileSync(await file.path(),'utf8'));assert.equal(raw.mt_students,'broken-json');checks++;
+  await cp.evaluate(()=>{newStudent();nname.value='Ficticio';createStudent()});
+  assert.equal(await cp.evaluate(()=>localStorage.getItem('mt_students')),'broken-json');checks++;
+  await corrupt.close();
+  const denied=await browser.newContext();const dp=await denied.newPage();const deniedErrors=[];dp.on('pageerror',e=>deniedErrors.push(e.message));
+  await dp.addInitScript(()=>Object.defineProperty(window,'localStorage',{get(){throw Error('Synthetic storage denied')}}));
+  await dp.goto('http://127.0.0.1:4179');await dp.evaluate(()=>{enter();newStudent();nname.value='Ficticio';createStudent()});
+  assert.deepEqual(deniedErrors,[]);assert(await dp.getByRole('alert').isVisible());checks++;
+  assert.deepEqual(errors,[]);
+  console.log(JSON.stringify({checks,errors,corruptErrors,deniedErrors}));
+ }finally{await browser.close()}
+})().catch(e=>{console.error(e);process.exitCode=1});

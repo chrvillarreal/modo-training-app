@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-23",
+  "timezone": "America/Buenos_Aires",
+  "node": "24.19.0",
+  "python": "3.12.14",
+  "chromium": "153.0.8010.0",
+  "isolation": "separate local worktrees / copied pinned blobs; no OS network sandbox",
+  "bwrap": "Operation not permitted",
+  "vercel": "project list readable; scoped deployments HTTP 403; authorization helper absent",
+  "browser": "standard download failed; npm-distributed Chromium succeeded",
+  "sources_unchanged": true
+}

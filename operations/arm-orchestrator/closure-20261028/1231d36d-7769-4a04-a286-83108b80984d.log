@@ -1,0 +1,63 @@
+{
+  "task_id": "b2561977-78e5-47f5-b242-5c89724a936a",
+  "run_id": "1231d36d-7769-4a04-a286-83108b80984d",
+  "title": "Diagnosticar timeout de suite RM y anclas de examen",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;import re;print('\\n'.join(str(p)+'\\n'+ '\\n'.join(s[max(0,m.start()-180):m.end()+250] for m in re.finditer('examen-estudio.html',s)) for p in [Path('entrenamiento-base.html'),Path('banco-arm.html')] for s in [p.read_text()]));print(Path('/workspace/work/phase2-rm-pr2/docs/pre-merge-validation.md').read_text())"
+  ],
+  "started_utc": "2026-10-28T23:16:14.863785+00:00",
+  "finished_utc": "2026-10-28T23:16:14.893829+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "1231d36d-7769-4a04-a286-83108b80984d.log"
+}
+
+entrenamiento-base.html
+
+banco-arm.html
+
+# RM Training — audit before merge
+
+Branch: `rm-audit-p0-p1`, PR #2. Production was not deployed and main was not merged.
+
+## Verified
+
+- 11 logic tests pass: academic routes/search, learning engine, classroom loading/history/races, original library consistency.
+- Chromium end-to-end: widths 320, 360, 390, 430 and 1365 px. Main workflow and extended classroom/catalog/biomechanics workflow pass without uncaught page errors.
+- All 11 classrooms: original resources, four sections, completion persistence, 100% aggregate completion and marked cards.
+- Navigation: query/hash deep links, Back/Forward, invalid destinations, resource selection, shell tabs and academic search.
+- Evaluation: accepted wrong answer captured once, exact correct answer saved, finished exam attempt counted once despite result rerenders.
+- Review: reveal answer, remembered rating, scheduled removal from due list, error bank persistence.
+- Catalog: 199 unique originals, all 11 classroom associations, lesson/type/query/empty filters, exact path encoding and index consistency.
+- Cloudflare R2: 199/199 HTTP range requests succeeded with valid file signatures (162 videos, 32 PDFs, four documents, one other file).
+- PDFs: 32/32 full downloads parsed successfully with pdfinfo.
+- One original MP4: h264/aac, 480×864, 10.22 seconds; playback and seek verified in Chromium using the downloaded file through controlled local transport.
+- Biomechanics: eight patterns, correct search destinations, independent saved notes, reload and browser history, no page overflow.
+- Storage blocked: classroom status explains unsaved progress; shell and biomechanics remain usable without uncaught errors.
+- Visual screenshots inspected at 320 px for shell/course and biomechanics; screenshots captured at all five widths.
+
+## Fixed
+
+1. Late classroom material responses overwriting newer navigation (a176052).
+2. Missing classroom route adapter, lost deep links/history, async tab reset and stale home state (96edafd).
+3. Academic resources leading to generic fallback despite verified original R2 path; biomechanics searches losing selected pattern (9fba438).
+4. Biomechanics horizontal overflow at 320 px, duplicate hash render affecting notes, history restore and local storage failure handling (f662ede).
+5. Finished exam rerenders incorrectly incrementing the same attempt multiple times (f4a458).
+
+## Remaining gate
+
+The Vercel connector returned 403 for team `chrvillarreals-projects` / `team_bG9D7jWqrmuc0E572KIiiF2h`. The user must reauthorize that scope before authenticated preview verification. Direct R2 video playback in this environment's browser timed out; transport availability and a downloaded sample's decoding/playback passed, but this is not equivalent to verifying streaming on the deployed preview or a physical phone.
+
+Preview alias: https://rm-training-git-rm-audit-p0-p1-chrvillarreals-projects.vercel.app/
+
+Local validation is green. Do not declare the deployed version fully stable until the final preview gate and deployed streaming checks pass. No merge or production release is authorized by this report.
+
+## Reproduce
+
+Serve with `python3 -m http.server 4173 --bind 127.0.0.1`. Run each `tests/*.test.cjs` with Node, then `node tests/browser.cjs` and `node tests/full-audit.cjs`. Set `RM_CHROMIUM_PATH` when using an existing Chromium executable; set `RM_TEST_URL` for an authenticated accessible preview. External asset reads in these two browser suites are blocked deliberately; the HTTP/PDF/media audit above is a separate check.
+

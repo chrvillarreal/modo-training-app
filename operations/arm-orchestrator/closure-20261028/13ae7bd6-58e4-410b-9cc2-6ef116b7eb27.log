@@ -1,0 +1,107 @@
+{
+  "task_id": "9f6c00c8-b7a3-4fa3-8e32-4482c6009bce",
+  "run_id": "13ae7bd6-58e4-410b-9cc2-6ef116b7eb27",
+  "title": "Revisión UX QA final de diff ARM",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work/phase2-arm",
+  "command": [
+    "git",
+    "diff",
+    "--",
+    "operations/arm-orchestrator/arm.py",
+    "operations/arm-orchestrator/README.md",
+    "operations/arm-orchestrator/tests/rm-preview.cjs"
+  ],
+  "started_utc": "2026-10-28T23:23:52.412901+00:00",
+  "finished_utc": "2026-10-28T23:23:52.415564+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "13ae7bd6-58e4-410b-9cc2-6ef116b7eb27.log"
+}
+
+diff --git a/operations/arm-orchestrator/README.md b/operations/arm-orchestrator/README.md
+index e609657..ce1839f 100644
+--- a/operations/arm-orchestrator/README.md
++++ b/operations/arm-orchestrator/README.md
+@@ -14,6 +14,7 @@ python3 arm.py --db arm.sqlite verify
+ python3 arm.py --db demo.sqlite task --project rm-training --title 'Revisar flujo' --priority P1 --action review --branch audit/review --sha 24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312
+ ```
+ `start TASK_ID` abre una ejecución; `finish RUN_ID passed|failed|blocked evidencia.log` registra el resultado del operador. No ejecuta comandos y no verifica automáticamente que un log sea verdadero: corresponde a QA adjuntar resultados reales.
++`verify` abre una base existente en modo de sólo lectura: no crea ni inicializa archivos. Devuelve JSON `{"valid":false}` y código de salida 1 si falta la base, no es un registro SQLite válido o la cadena está alterada; una cadena válida devuelve salida 0. Verifica la cadena de eventos, no autentica al operador ni revalida archivos de evidencia externos.
+ `request-approval TASK_ID` solicita revisión de una tarea sensible. La API Python `decide` registra referencia de una decisión humana; no es autenticación de identidad y no habilita un ejecutor externo. En v1 ninguna aprobación local dispara pushes, despliegues ni publicaciones.
+ 
+ ## Seguridad y límites
+diff --git a/operations/arm-orchestrator/arm.py b/operations/arm-orchestrator/arm.py
+index 364b941..2af3d71 100644
+--- a/operations/arm-orchestrator/arm.py
++++ b/operations/arm-orchestrator/arm.py
+@@ -16,10 +16,12 @@ def digest(value):
+     return hashlib.sha256(canonical(value).encode()).hexdigest()
+ 
+ class Orchestrator:
+-    def __init__(self, path='arm.sqlite'):
+-        self.db = sqlite3.connect(path)
++    def __init__(self, path='arm.sqlite', *, read_only=False):
++        self.db = sqlite3.connect(Path(path).resolve().as_uri()+'?mode=ro', uri=True) if read_only else sqlite3.connect(path)
+         self.db.row_factory = sqlite3.Row
+         self.db.execute('PRAGMA foreign_keys=ON')
++        if read_only:
++            return
+         self.db.executescript('''
+         CREATE TABLE IF NOT EXISTS projects (id TEXT PRIMARY KEY, repo TEXT NOT NULL);
+         CREATE TABLE IF NOT EXISTS tasks (id TEXT PRIMARY KEY, project TEXT REFERENCES projects(id), title TEXT NOT NULL, priority TEXT CHECK(priority IN ('P0','P1','P2')), action TEXT NOT NULL, branch TEXT NOT NULL, sha TEXT NOT NULL, status TEXT NOT NULL, agent TEXT NOT NULL, payload TEXT NOT NULL);
+@@ -98,9 +100,12 @@ class Orchestrator:
+ 
+     def verify(self):
+         prev='0'*64
+-        for r in self.db.execute('SELECT * FROM events ORDER BY seq'):
+-            if r['previous']!=prev or r['hash']!=digest([r['at'],r['kind'],json.loads(r['data']),prev]): return False
+-            prev=r['hash']
++        try:
++            for r in self.db.execute('SELECT seq,at,kind,data,previous,hash FROM events ORDER BY seq'):
++                if r['previous']!=prev or r['hash']!=digest([r['at'],r['kind'],json.loads(r['data']),prev]): return False
++                prev=r['hash']
++        except (sqlite3.DatabaseError, ValueError, TypeError):
++            return False
+         return True
+ 
+     def export(self):
+@@ -116,13 +121,23 @@ def main():
+     start=sub.add_parser('start');start.add_argument('task')
+     finish=sub.add_parser('finish');finish.add_argument('run');finish.add_argument('status',choices=['passed','failed','blocked']);finish.add_argument('evidence')
+     approval=sub.add_parser('request-approval');approval.add_argument('task')
+-    args=vars(p.parse_args());db=args.pop('db');cmd=args.pop('cmd');o=Orchestrator(db)
++    args=vars(p.parse_args());db=args.pop('db');cmd=args.pop('cmd')
++    if cmd=='verify':
++        o=None
++        try:
++            o=Orchestrator(db, read_only=True)
++            valid=o.verify()
++        except sqlite3.DatabaseError:
++            valid=False
++        finally:
++            if o is not None: o.db.close()
++        print(json.dumps({'valid':valid},indent=2))
++        raise SystemExit(0 if valid else 1)
++    o=Orchestrator(db)
+     if cmd=='status': result=o.export()
+-    elif cmd=='verify': result={'valid':o.verify()}
+     elif cmd=='task': result={'task':o.task(**args)}
+     elif cmd=='start':result={'run':o.start(**args)}
+     elif cmd=='finish':result=o.finish(**args)
+     else:result={'approval':o.request_approval(**args)}
+     print(json.dumps(result,ensure_ascii=False,indent=2))
+-    if cmd=='verify' and not result['valid']: raise SystemExit(1)
+ if __name__=='__main__':main()
+diff --git a/operations/arm-orchestrator/tests/rm-preview.cjs b/operations/arm-orchestrator/tests/rm-preview.cjs
+index 4ec0205..9dced95 100644
+--- a/operations/arm-orchestrator/tests/rm-preview.cjs
++++ b/operations/arm-orchestrator/tests/rm-preview.cjs
+@@ -1,3 +1,3 @@
+-const {chromium}=require('/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');
+-(async()=>{const b=await chromium.launch({executablePath:'/tmp/arm-chromium',headless:true,args:['--no-sandbox']});const c=await b.newContext();await c.route('**/*',r=>new URL(r.request().url()).hostname==='127.0.0.1'?r.continue():r.abort());const p=await c.newPage(),errors=[],results=[];p.on('pageerror',e=>errors.push(e.message));for(const width of [320,390,430,1440]){await p.setViewportSize({width,height:900});for(const route of ['inicio','curso','aula/11','practica/11','aula/11/notas','biblioteca']){await p.goto('http://127.0.0.1:4178/design-preview/index.html#'+route);await p.locator('#view').waitFor();results.push({width,route,overflow:await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),replacementCharacters:await p.locator('body').innerText().then(s=>(s.match(/\uFFFD/g)||[]).length)});}}
+-await p.goto('http://127.0.0.1:4178/design-preview/index.html#aula/11/notas');await p.locator('#notes').fill('ARM QA ficticio');await p.reload();results.push({notesPersisted:await p.locator('#notes').inputValue()==='ARM QA ficticio'});console.log(JSON.stringify({results,errors},null,2));await b.close()})().catch(e=>{console.error(e);process.exitCode=1});
++const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');const base=process.env.APP_URL||'http://127.0.0.1:4178';
++(async()=>{const b=await chromium.launch({executablePath:process.env.CHROME_PATH||'/tmp/arm-chromium',headless:true,args:['--no-sandbox']});const c=await b.newContext();await c.route('**/*',r=>new URL(r.request().url()).hostname==='127.0.0.1'?r.continue():r.abort());const p=await c.newPage(),errors=[],results=[];p.on('pageerror',e=>errors.push(e.message));for(const width of [320,390,430,1440]){await p.setViewportSize({width,height:900});for(const route of ['inicio','curso','aula/11','practica/11','aula/11/notas','biblioteca']){await p.goto(base+'/design-preview/index.html#'+route);await p.locator('#view').waitFor();results.push({width,route,overflow:await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),replacementCharacters:await p.locator('body').innerText().then(s=>(s.match(/\uFFFD/g)||[]).length)});}}
++await p.goto(base+'/design-preview/index.html#aula/11/notas');await p.locator('#notes').fill('ARM QA ficticio');await p.reload();results.push({notesPersisted:await p.locator('#notes').inputValue()==='ARM QA ficticio'});console.log(JSON.stringify({results,errors},null,2));await b.close()})().catch(e=>{console.error(e);process.exitCode=1});

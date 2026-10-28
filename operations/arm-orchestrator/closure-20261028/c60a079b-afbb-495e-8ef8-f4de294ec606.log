@@ -1,0 +1,506 @@
+{
+  "task_id": "5372a972-b5ab-4117-9dbe-24ff761c1b3c",
+  "run_id": "c60a079b-afbb-495e-8ef8-f4de294ec606",
+  "title": "Revisar ejecución local sin backend de NutriSport",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;print(Path('package.json').read_text());print(Path('playwright.config.ts').read_text());print('\\n'.join(str(p)+'\\n'+p.read_text() for p in Path('tests').rglob('*.ts')));print('\\n'.join(str(p) for p in Path('src').rglob('*') if p.is_file()))"
+  ],
+  "started_utc": "2026-10-28T23:13:59.333516+00:00",
+  "finished_utc": "2026-10-28T23:13:59.359391+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "c60a079b-afbb-495e-8ef8-f4de294ec606.log"
+}
+
+{
+  "name": "nutrisport-pro",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "dexie": "^4.4.6",
+    "jspdf": "^4.2.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "fake-indexeddb": "^6.2.6",
+    "prettier": "^3.9.10",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.0",
+    "vitest": "^5.0.5"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}
+
+import { defineConfig } from "@playwright/test";
+export default defineConfig({
+  testDir: "./tests",
+  fullyParallel: false,
+  workers: 1,
+  use: {
+    baseURL: "http://127.0.0.1:4173",
+    headless: true,
+    launchOptions: {
+      executablePath: process.env.CHROMIUM_PATH || undefined,
+      args: ["--no-sandbox", "--disable-dev-shm-usage"],
+    },
+    trace: "retain-on-failure",
+  },
+  webServer: {
+    command: "npm run preview -- --host 127.0.0.1 --port 4173 --strictPort",
+    url: "http://127.0.0.1:4173",
+    reuseExistingServer: false,
+  },
+});
+
+tests/stage-two.spec.ts
+import { test, expect } from "@playwright/test";
+import { readFileSync, writeFileSync } from "node:fs";
+for (const width of [320, 1440]) {
+  test(`métodos, plan, PDF y offline a ${width}px`, async ({
+    page,
+    context,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const errors: string[] = [],
+      external: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    page.on("request", (r) => {
+      if (!r.url().startsWith("http://127.0.0.1:4173")) external.push(r.url());
+    });
+    page.on("dialog", (d) => d.accept());
+    await page.goto("/");
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Configuración", exact: true })
+      .click();
+    await page.getByRole("button", { name: "Cargar ejemplo ficticio" }).click();
+    await expect(
+      page.getByText("Recursos disponibles para uso sin conexión.", {
+        exact: false,
+      }),
+    ).toBeVisible();
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Evaluaciones", exact: true })
+      .click();
+    await page
+      .getByRole("combobox", { name: "Alumno", exact: true })
+      .selectOption("demo-alex");
+    await page.getByLabel("Fecha", { exact: true }).fill("2026-01-01");
+    await page
+      .getByLabel("Método energético")
+      .selectOption("cunningham-1980-v1");
+    await expect(page.getByRole("alert")).toContainText("masa magra");
+    await expect(
+      page.getByRole("button", { name: "Guardar evaluación", exact: true }),
+    ).toHaveCount(0);
+    await page.getByLabel("Masa magra (kg, opcional)").fill("64");
+    await page.getByLabel("Modo de planificación").selectOption("percent");
+    await page.getByLabel("Ajuste energético (%)", { exact: true }).fill("-10");
+    await page.getByLabel("Proteína (% energético)").fill("25");
+    await page.getByLabel("Grasas (% energético)").fill("30");
+    await page
+      .getByLabel("Notas de evaluación")
+      .fill(
+        "Evaluación ficticia. Masa magra estimada por antropometría. " +
+          "Texto de prueba para comprobar paginación y acentos: nutrición, evaluación, proteína. ".repeat(
+            20,
+          ),
+      );
+    await page
+      .getByText("Comparar métodos con los mismos datos", { exact: true })
+      .click();
+    await expect(
+      page.getByRole("cell", { name: "2.957,4", exact: true }),
+    ).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+    await page
+      .getByRole("button", { name: "Guardar evaluación", exact: true })
+      .click();
+    await expect(page.getByRole("status")).toHaveText(
+      "Evaluación guardada en este dispositivo.",
+    );
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Seguimiento", exact: true })
+      .click();
+    await expect(
+      page.getByRole("img", { name: /Evolución|Peso|Alex/ }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("En este período hay métodos energéticos distintos.", {
+        exact: false,
+      }),
+    ).toBeVisible();
+    await page.getByLabel("Desde", { exact: true }).fill("2099-01-01");
+    await page.getByLabel("Hasta", { exact: true }).fill("2026-01-01");
+    await expect(page.getByRole("alert")).toContainText("Desde");
+    await page.getByLabel("Desde", { exact: true }).fill("");
+    await page.getByLabel("Hasta", { exact: true }).fill("");
+    await page.screenshot({
+      path: `test-results/seguimiento-${width}.png`,
+      fullPage: true,
+    });
+    await context.setOffline(true);
+    await page.reload();
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Evaluaciones", exact: true })
+      .click();
+    const article = page
+      .locator(".history > article")
+      .filter({ hasText: "cunningham-1980-v1" });
+    await expect(article).toHaveCount(1);
+    const pdfPromise = page.waitForEvent("download");
+    await article
+      .getByRole("button", { name: "Descargar informe PDF" })
+      .click();
+    const pdf = await pdfPromise;
+    await pdf.saveAs(`test-results/informe-${width}.pdf`);
+    expect(
+      readFileSync((await pdf.path())!)
+        .subarray(0, 5)
+        .toString(),
+    ).toBe("%PDF-");
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Configuración", exact: true })
+      .click();
+    const downloadPromise = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Exportar copia JSON" }).click();
+    const backup = await downloadPromise;
+    const raw = JSON.parse(readFileSync((await backup.path())!, "utf8"));
+    expect(raw.version).toBe(2);
+    expect(
+      raw.assessments.some((a: any) => a.formula === "cunningham-1980-v1"),
+    ).toBe(true);
+    expect(raw.assessments.some((a: any) => !a.schemaVersion)).toBe(true);
+    const cached = await page.evaluate(async () => {
+      const urls: string[] = [];
+      for (const name of await caches.keys()) {
+        const cache = await caches.open(name);
+        for (const r of await cache.keys()) urls.push(r.url);
+      }
+      return urls;
+    });
+    expect(cached.some((u) => u.endsWith("/fonts/NutriSans.ttf"))).toBe(true);
+    expect(cached.some((u) => u.includes("report-"))).toBe(true);
+    expect(cached.some((u) => u.includes(".pdf"))).toBe(false);
+    const manifest = await page.evaluate(async () =>
+      JSON.parse(await (await caches.match("/manifest.webmanifest"))!.text()),
+    );
+    expect(manifest.display).toBe("standalone");
+    expect(manifest.icons.some((i: any) => i.sizes === "512x512")).toBe(true);
+    // Escribir y restaurar los dos esquemas también sin red.
+    await page
+      .getByLabel("Elegir copia JSON")
+      .setInputFiles((await backup.path())!);
+    await page
+      .getByRole("button", { name: "Reemplazar datos con esta copia" })
+      .click();
+    await expect(page.getByRole("status")).toHaveText(
+      "Copia restaurada correctamente.",
+    );
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Alumnos", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Nuevo alumno", exact: true })
+      .click();
+    await page.getByLabel("Nombre o alias").fill("Offline Ficticio");
+    await page
+      .getByRole("button", { name: "Guardar ficha", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: "Ficha · Offline Ficticio",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Editar", exact: true }).click();
+    await page.getByLabel("Nombre o alias").fill("Offline Editado");
+    await page
+      .getByRole("button", { name: "Guardar ficha", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Eliminar alumno", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: "Alex Ejemplo (ficticio)",
+        exact: true,
+      }),
+    ).toBeVisible();
+    expect(errors).toEqual([]);
+    expect(external).toEqual([]);
+  });
+}
+test("actualización explícita de PWA conserva IndexedDB", async ({ page }) => {
+  const swPath = "dist/sw.js";
+  const original = readFileSync(swPath, "utf8");
+  try {
+    await page.goto("/");
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Configuración", exact: true })
+      .click();
+    await page.getByRole("button", { name: "Cargar ejemplo ficticio" }).click();
+    await expect(
+      page.getByText("Recursos disponibles para uso sin conexión.", {
+        exact: false,
+      }),
+    ).toBeVisible();
+    const foreign = "cache-otra-app";
+    await page.evaluate(async (name) => {
+      await caches.open(name);
+    }, foreign);
+    writeFileSync(
+      swPath,
+      original.replace(
+        /nutrisport-static-[a-f0-9]+/g,
+        "nutrisport-static-test-update",
+      ),
+    );
+    await page.evaluate(async () => {
+      await (await navigator.serviceWorker.ready).update();
+    });
+    const update = page.getByRole("button", {
+      name: "Aplicar actualización y recargar",
+    });
+    await expect(update).toBeVisible();
+    await Promise.all([page.waitForEvent("load"), update.click()]);
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Alumnos", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", {
+        name: "Alex Ejemplo (ficticio)",
+        exact: true,
+      }),
+    ).toBeVisible();
+
+    await expect
+      .poll(async () =>
+        (await page.evaluate(() => caches.keys())).filter((k) =>
+          k.startsWith("nutrisport-static-"),
+        ),
+      )
+      .toEqual(["nutrisport-static-test-update"]);
+    expect(await page.evaluate(() => caches.keys())).toContain(foreign);
+  } finally {
+    writeFileSync(swPath, original);
+  }
+});
+
+tests/local-mvp.spec.ts
+import { test, expect } from "@playwright/test";
+for (const width of [320, 375, 430, 768, 1024, 1440]) {
+  test(`flujo local completo a ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const errors: string[] = [],
+      external: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    page.on("request", (r) => {
+      if (!r.url().startsWith("http://127.0.0.1:4173")) external.push(r.url());
+    });
+    page.on("dialog", (d) => d.accept());
+    await page.goto("/");
+    await page
+      .getByRole("button", { name: "Agregar alumno", exact: true })
+      .click();
+    await page.getByLabel("Nombre o alias").fill("Prueba Ficticia");
+    await page.getByLabel("Deporte", { exact: true }).fill("Fútbol");
+    await page.getByLabel("Objetivo", { exact: true }).fill("Mantenimiento");
+    await page.getByRole("button", { name: "Guardar ficha" }).click();
+    await expect(
+      page.getByRole("heading", {
+        name: "Ficha · Prueba Ficticia",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Editar", exact: true }).click();
+    await page.getByLabel("Nombre o alias").fill("Ficticia Editada");
+    await page.getByRole("button", { name: "Guardar ficha" }).click();
+    await expect(
+      page.getByRole("heading", {
+        name: "Ficha · Ficticia Editada",
+        exact: true,
+      }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "Nueva evaluación", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Guardar evaluación", exact: true })
+      .click();
+    await expect(page.getByRole("status")).toHaveText(
+      "Evaluación guardada en este dispositivo.",
+    );
+    await page
+      .getByRole("button", { name: "Seguimiento", exact: true })
+      .click();
+    await expect(
+      page.getByRole("cell", { name: "2.759", exact: true }).first(),
+    ).toBeVisible();
+    for (const name of [
+      "Inicio",
+      "Alumnos",
+      "Calculadoras",
+      "Evaluaciones",
+      "Seguimiento",
+      "Configuración",
+    ]) {
+      await page
+        .getByRole("navigation")
+        .getByRole("button", { name, exact: true })
+        .click();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        ),
+      ).toBe(true);
+    }
+    const download = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Exportar copia JSON" }).click();
+    const file = await download;
+    const path = await file.path();
+    expect(path).toBeTruthy();
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Alumnos", exact: true })
+      .click();
+    await page
+      .getByRole("button", { name: "Eliminar alumno", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Tu primer alumno empieza acá" }),
+    ).toBeVisible();
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Configuración", exact: true })
+      .click();
+    await page.getByLabel("Elegir copia JSON").setInputFiles(path!);
+    await expect(
+      page.getByText("Copia validada:", { exact: false }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "Reemplazar datos con esta copia" })
+      .click();
+    await expect(page.getByRole("status")).toHaveText(
+      "Copia restaurada correctamente.",
+    );
+    await page.reload();
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Alumnos", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Ficticia Editada", exact: true }),
+    ).toBeVisible();
+    await page
+      .getByRole("button", { name: "Abrir ficha", exact: true })
+      .click();
+    await expect(
+      page.getByRole("heading", { name: "Historial individual" }),
+    ).toBeVisible();
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Configuración", exact: true })
+      .click();
+    await page.getByLabel("Elegir copia JSON").setInputFiles({
+      name: "invalid.json",
+      mimeType: "application/json",
+      buffer: Buffer.from('{"version":999}'),
+    });
+    await expect(page.getByRole("alert")).toContainText("Copia no válida");
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Calculadoras", exact: true })
+      .click();
+    await page.getByLabel("Peso (kg)", { exact: true }).fill("0");
+    await expect(page.getByRole("alert")).toBeVisible();
+    await page.getByLabel("Peso (kg)", { exact: true }).fill("80");
+    await expect(
+      page
+        .locator(".metrics article")
+        .filter({ hasText: "Gasto total" })
+        .getByText("2.759", { exact: true }),
+    ).toBeVisible();
+    expect(errors).toEqual([]);
+    expect(external).toEqual([]);
+    await page
+      .getByRole("navigation")
+      .getByRole("button", { name: "Inicio", exact: true })
+      .click();
+    if (width === 320 || width === 1440)
+      await page.screenshot({
+        path: `test-results/dashboard-${width}.png`,
+        fullPage: true,
+      });
+  });
+}
+test("IndexedDB denegado mantiene calculadora operativa", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, "indexedDB", {
+      get() {
+        throw new Error("Storage denied");
+      },
+    });
+  });
+  await page.goto("/");
+  await expect(page.getByRole("alert")).toBeVisible();
+  await page
+    .getByRole("navigation")
+    .getByRole("button", { name: "Calculadoras", exact: true })
+    .click();
+  await expect(
+    page
+      .locator(".metrics article")
+      .filter({ hasText: "Gasto total" })
+      .getByText("2.759", { exact: true }),
+  ).toBeVisible();
+});
+
+src/FollowUp.tsx
+src/StudentForm.tsx
+src/planning.ts
+src/calculations.test.ts
+src/PwaSettings.tsx
+src/report.ts
+src/storage.ts
+src/Calculator.tsx
+src/calculations.ts
+src/App.tsx
+src/storage.test.ts
+src/styles.css
+src/planning.test.ts
+src/History.tsx
+src/compatibility.test.ts
+src/assessmentResults.ts
+src/main.tsx

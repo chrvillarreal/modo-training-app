@@ -1,0 +1,19 @@
+{
+  "task_id": "602dd322-da20-4bdb-a980-8e02b076200b",
+  "run_id": "9382e741-ac03-416b-b9d8-bfc481d46ab3",
+  "title": "Comprobar acceso de lectura al host de recursos R2 sin descargar datos",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/check_remote_resource.py"
+  ],
+  "started_utc": "2026-10-28T23:21:22.650975+00:00",
+  "finished_utc": "2026-10-28T23:21:22.721907+00:00",
+  "exit_code": 3,
+  "status": "failed",
+  "evidence": "9382e741-ac03-416b-b9d8-bfc481d46ab3.log"
+}
+
+{"url": "https://pub-b050dbe4a1884bcabebbabf79b62cebb.r2.dev", "status": "blocked", "error": "<urlopen error Tunnel connection failed: 403 Forbidden>", "scope": "No retry or alternate route attempted"}

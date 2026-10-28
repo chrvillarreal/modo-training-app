@@ -1,0 +1,20 @@
+{
+  "task_id": "9310be58-fb72-436c-a17a-1f5744acbc75",
+  "run_id": "d8dfebab-6f9b-4ea7-afb7-b660ed489dd7",
+  "title": "Empaquetar propuesta adicional RM y registrar bloqueos externos",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "-c",
+    "import pathlib,subprocess,json,sys;d=pathlib.Path('/workspace/work/phase2-arm/operations/arm-orchestrator/proposals/phase2-20261028');(d/'rm-charset.patch').write_bytes(subprocess.check_output(['git','-C','/workspace/work/phase2-rm-fix','diff','HEAD']));sys.path.insert(0,'/workspace/work/arm-candidate');from arm import Orchestrator;o=Orchestrator('/workspace/work/phase2/arm-session.sqlite');t=o.task('rm-training','Acceso Vercel bloqueado y recursos R2 fuera de política','P1','audit','audit/phase2-20261028','24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312',{'level':'A','source':'connector 403; R2 HEAD tunnel 403'});r=o.start(t);o.finish(r,'blocked','/workspace/work/phase2/vercel-access.json');print(json.dumps({'blocked_run':r,'ledger_valid':o.verify()}))"
+  ],
+  "started_utc": "2026-10-28T23:25:10.726855+00:00",
+  "finished_utc": "2026-10-28T23:25:10.792024+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "d8dfebab-6f9b-4ea7-afb7-b660ed489dd7.log"
+}
+
+{"blocked_run": "5afc71c2-7cd0-4db0-9dd0-32557344f47d", "ledger_valid": true}

@@ -1,0 +1,51 @@
+{
+  "task_id": "491b576c-e779-4858-b9c0-35e8423975de",
+  "run_id": "34bd78d1-3cbf-4c2a-beb9-5e5ff74d014e",
+  "title": "Inventariar ramas scripts tests NutriSport",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess,pathlib;print(subprocess.check_output(['git','branch','-a'],text=True));print('AGENTS',list(pathlib.Path('.').rglob('AGENTS.md')));print(pathlib.Path('package.json').read_text());print('\\n'.join(str(p)+'\\n'+p.read_text() for p in pathlib.Path('.github/workflows').rglob('*') if p.is_file()))"
+  ],
+  "started_utc": "2026-10-28T23:13:06.168461+00:00",
+  "finished_utc": "2026-10-28T23:13:06.243905+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "34bd78d1-3cbf-4c2a-beb9-5e5ff74d014e.log"
+}
+
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/feat/nhost-auth-athletes
+  remotes/origin/feat/nutrisport-pro-local-mvp
+  remotes/origin/main
+
+AGENTS []
+{
+  "name": "nutrisport-lab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@nhost/nhost-js": "^3.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.0",
+    "vitest": "^3.1.0"
+  }
+}
+

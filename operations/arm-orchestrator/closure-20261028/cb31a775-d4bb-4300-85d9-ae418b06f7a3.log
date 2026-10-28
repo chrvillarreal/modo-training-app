@@ -1,0 +1,48 @@
+{
+  "task_id": "9a65a3fa-3a16-4c8b-b25f-5c8762e09277",
+  "run_id": "cb31a775-d4bb-4300-85d9-ae418b06f7a3",
+  "title": "Reejecutar suite propia de RM PR2 divergente",
+  "project": "rm-training",
+  "base_sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+  "cwd": "/workspace/work/phase2-rm-pr2",
+  "command": [
+    "node",
+    "--test",
+    "tests/academic.test.cjs",
+    "tests/backup.test.cjs",
+    "tests/course-flow.test.cjs",
+    "tests/learning.test.cjs",
+    "tests/library.test.cjs",
+    "tests/study-flow.test.cjs"
+  ],
+  "started_utc": "2026-10-28T23:16:24.617693+00:00",
+  "finished_utc": "2026-10-28T23:16:25.324270+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "cb31a775-d4bb-4300-85d9-ae418b06f7a3.log"
+}
+
+✔ search supports accents, all words, source/type filters and honest totals (21.250443ms)
+✔ all indexed results resolve to existing internal pages (8.388459ms)
+✔ query, old hash and all four sections normalize safely (0.576636ms)
+✔ all script blocks parse and local static routes exist (37.108724ms)
+✔ backup transfers study state and leaves students, nutrition and unrelated values alone (2.608017ms)
+✔ invalid, oversized and unsafe backups are rejected before any writes (21.674245ms)
+✔ failed import rolls back already written keys (0.816428ms)
+✔ all 11 classrooms load their own resources and four sections (17.308919ms)
+✔ query routes, resource fallback, history and invalid routes initialize correctly (3.446818ms)
+✔ late resource responses do not override new classroom, selected tab or home (2.621607ms)
+✔ recommendations preserve saved section, require evidence and prioritize due errors (3.922556ms)
+✔ unexpected stored shapes do not crash read-only dashboard (0.916294ms)
+✔ 199 unique original resources cover all eleven classrooms and match indexed paths (24.351855ms)
+✔ library filters and all eight biomechanics destinations remain resolvable (6.231785ms)
+✔ lesson-specific quizzes use existing topics and do not invent a class six question bank (1.424811ms)
+✔ new numeric and historical named errors route to the same classroom (0.570968ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 644.353514

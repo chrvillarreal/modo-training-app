@@ -1,0 +1,32 @@
+{
+  "task_id": "ec61b876-5576-4802-8947-0bb06bfb9047",
+  "run_id": "cd029d18-edb1-437d-98b2-fa91500c08b9",
+  "title": "Ejecutar flujo navegador principal de RM PR2 sin mezclar ramas",
+  "project": "rm-training",
+  "base_sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm-pr2",
+    "--port",
+    "4183",
+    "--",
+    "node",
+    "/workspace/work/rm-pr2-browser.cjs",
+    "browser.cjs"
+  ],
+  "started_utc": "2026-10-28T23:20:46.082746+00:00",
+  "finished_utc": "2026-10-28T23:20:59.318979+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "cd029d18-edb1-437d-98b2-fa91500c08b9.log"
+}
+
+PASS desktop/mobile flow width=320
+PASS desktop/mobile flow width=360
+PASS desktop/mobile flow width=390
+PASS desktop/mobile flow width=430
+PASS desktop/mobile flow width=1365
+PASS unavailable storage fallback

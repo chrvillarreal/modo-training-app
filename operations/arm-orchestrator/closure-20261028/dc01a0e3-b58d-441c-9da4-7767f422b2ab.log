@@ -1,0 +1,27 @@
+{
+  "task_id": "c98e8e18-c3c8-4074-ac84-0570a997f8e6",
+  "run_id": "dc01a0e3-b58d-441c-9da4-7767f422b2ab",
+  "title": "Regresión RM charset explícito con servidor sin cabecera UTF-8",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm-fix",
+    "--port",
+    "4186",
+    "--raw",
+    "--",
+    "node",
+    "/workspace/work/rm-browser-safe.cjs"
+  ],
+  "started_utc": "2026-10-28T23:24:53.980077+00:00",
+  "finished_utc": "2026-10-28T23:24:58.475726+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "dc01a0e3-b58d-441c-9da4-7767f422b2ab.log"
+}
+
+{"checks":32,"errors":[]}

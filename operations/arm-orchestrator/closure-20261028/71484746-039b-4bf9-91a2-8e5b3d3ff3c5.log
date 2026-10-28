@@ -1,0 +1,20 @@
+{
+  "task_id": "712a71a7-644d-468d-b4e2-88a5eb7f4159",
+  "run_id": "71484746-039b-4bf9-91a2-8e5b3d3ff3c5",
+  "title": "Restaurar evidencia omitida del paquete ARM desde archivo hash verificado",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "-c",
+    "import pathlib,hashlib,shutil;p=pathlib.Path('/workspace/work/arm-continuation-20261028/development-draft.patch');assert hashlib.sha256(p.read_bytes()).hexdigest()=='4c273b081749f1f331cb8a340295839831d6baba371294e936e79cca2fe57f7a';shutil.copyfile(p,'/workspace/work/phase2-arm/operations/arm-orchestrator/continuation-20261028/development-draft.patch');print('Evidence restored without rewriting historical events')"
+  ],
+  "started_utc": "2026-10-28T23:16:17.146879+00:00",
+  "finished_utc": "2026-10-28T23:16:17.173595+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "71484746-039b-4bf9-91a2-8e5b3d3ff3c5.log"
+}
+
+Evidence restored without rewriting historical events

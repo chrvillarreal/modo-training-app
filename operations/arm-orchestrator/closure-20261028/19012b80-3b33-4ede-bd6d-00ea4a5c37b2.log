@@ -1,0 +1,32 @@
+{
+  "task_id": "55263b9a-fe37-42c7-9b8c-cddc0d723094",
+  "run_id": "19012b80-3b33-4ede-bd6d-00ea4a5c37b2",
+  "title": "Ejecutar auditoría extendida local RM PR2",
+  "project": "rm-training",
+  "base_sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm-pr2",
+    "--port",
+    "4184",
+    "--",
+    "node",
+    "/workspace/work/rm-pr2-browser.cjs",
+    "full-audit.cjs"
+  ],
+  "started_utc": "2026-10-28T23:22:02.084770+00:00",
+  "finished_utc": "2026-10-28T23:22:40.913906+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "19012b80-3b33-4ede-bd6d-00ea4a5c37b2.log"
+}
+
+PASS all classrooms, library, biomechanics, shell width=320
+PASS all classrooms, library, biomechanics, shell width=360
+PASS all classrooms, library, biomechanics, shell width=390
+PASS all classrooms, library, biomechanics, shell width=430
+PASS all classrooms, library, biomechanics, shell width=1365
+PASS shell unavailable storage

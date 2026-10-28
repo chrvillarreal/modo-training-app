@@ -1,0 +1,221 @@
+{
+  "task_id": "e2f38c7e-f2b5-41b2-ab00-7b49daa2ceee",
+  "run_id": "19e120d0-989c-4d69-92c0-92c23befa92b",
+  "title": "Revisar scripts de prueba RM PR2 sin package manifest",
+  "project": "rm-training",
+  "base_sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+  "cwd": "/workspace/work/phase2-rm-pr2",
+  "command": [
+    "python3",
+    "-c",
+    "import pathlib,subprocess;print(subprocess.check_output(['git','diff','--name-only','HEAD..origin/main'],text=True));print('\\n'.join(str(p)+'\\n'+p.read_text() for p in pathlib.Path('tests').glob('*.test.cjs'))[-14000:]);print('\\n'.join(str(p) for p in pathlib.Path('tests').glob('*')))"
+  ],
+  "started_utc": "2026-10-28T23:16:15.289476+00:00",
+  "finished_utc": "2026-10-28T23:16:15.325647+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "19e120d0-989c-4d69-92c0-92c23befa92b.log"
+}
+
+.vercelignore
+alumno.html
+antes-del-primer-alumno.html
+banco-arm.html
+biblioteca-arm-r2.html
+biomecanica-aplicada.html
+buscador-academico.html
+criterios-estudio.html
+curso-arm-r2-legacy.html
+curso-arm.html
+docs/academic-search-audit.md
+docs/personal-study-improvements.md
+docs/pre-merge-validation.md
+docs/study-upgrade.md
+entrenamiento-base.html
+entrenamiento.html
+evaluacion-arm.html
+examen-estudio.html
+index.html
+mis-errores.html
+package.json
+repaso-arm.html
+respaldo-estudio.html
+revision-respuestas.html
+rm-academic-index.js
+rm-academic-search.js
+rm-answer-review.js
+rm-backup-page.js
+rm-classroom-study.js
+rm-course-navigation.js
+rm-evaluation-context.js
+rm-evaluation-events.js
+rm-exam-questions.js
+rm-learning-engine.js
+rm-r2-library.js
+rm-search-page.js
+rm-shell-search.js
+rm-study-backup.js
+rm-study-flow.js
+rm-ui.js
+rutinas.html
+study-biomechanics.js
+study-core.js
+study-course.js
+study-exam-data.js
+study-exam.js
+study-legacy.js
+study-lessons.js
+study-topics.js
+study.css
+tests/academic.test.cjs
+tests/backup.test.cjs
+tests/browser.cjs
+tests/course-flow.test.cjs
+tests/full-audit.cjs
+tests/learning.test.cjs
+tests/library.test.cjs
+tests/personal-study-browser.cjs
+tests/preservation.cjs
+tests/server.cjs
+tests/study-flow.test.cjs
+tests/study.test.cjs
+vercel.json
+
+dStart(2,'0'));}assert.equal(flow.topics('06').length,0);assert.equal(flow.lesson('99'),null);});
+test('new numeric and historical named errors route to the same classroom',()=>{assert(flow.matchesError({lesson:'03'},'03'));assert(flow.matchesError({lesson:'Zona Media'},'03'));assert(!flow.matchesError({lesson:'07'},'03'));assert.equal(flow.lessonForTopic(null,'El Rol del Entrenador Personal ARM'),'01');});
+
+tests/backup.test.cjs
+const test=require('node:test'),assert=require('node:assert/strict'),api=require('../rm-study-backup.js');
+function storage(seed={}){const map=new Map(Object.entries(seed));return {map,getItem:k=>map.get(k)??null,setItem:(k,v)=>map.set(k,v),removeItem:k=>map.delete(k)};}
+function payload(data){return {app:'rm-training-study',version:1,createdAt:'2026-09-30',data};}
+test('backup transfers study state and leaves students, nutrition and unrelated values alone',()=>{
+ const source=storage({'arm-done-01':'1','arm-bio-notes-sentadilla':'Mis notas','arm-study-notes-03':'Mi duda','arm-last-study':JSON.stringify({lesson:'03',tab:'practica'}),'rm-students':'private','unrelated':'keep'});
+ const backup=api.capture(source);assert(!('rm-students'in backup.data));assert(!('unrelated'in backup.data));
+ const target=storage({'rm-students':'target','arm-done-11':'1'});assert.equal(api.restore(target,JSON.stringify(backup)),4);assert.equal(target.getItem('arm-study-notes-03'),'Mi duda');assert.equal(target.getItem('rm-students'),'target');assert.equal(target.getItem('arm-done-11'),'1');
+});
+test('invalid, oversized and unsafe backups are rejected before any writes',()=>{
+ const target=storage({'arm-done-01':'0'});const invalid=[{app:'other',version:1,data:{}},payload({'rm-students':'[]'}),payload({'arm-done-01':'yes'}),payload({'arm-error-bank-v1':'{}'}),payload({'arm-error-bank-v1':JSON.stringify([{id:'x',q:'x',a:'x',box:'<img>'}])}),payload({'banco-arm-progress-v1':'{"__proto__":{}}'}),payload({'arm-study-notes-03':'x'.repeat(api.MAX_BYTES+1)})];
+ for(const value of invalid)assert.throws(()=>api.restore(target,value));assert.equal(target.getItem('arm-done-01'),'0');assert.equal(target.map.size,1);
+});
+test('failed import rolls back already written keys',()=>{
+ const target=storage({'arm-done-01':'0','arm-done-02':'0'}),original=target.setItem;target.setItem=(k,v)=>{if(k==='arm-done-02'&&v==='1')throw Error('quota');return original(k,v)};
+ assert.throws(()=>api.restore(target,payload({'arm-done-01':'1','arm-done-02':'1'})),/conservaron/);assert.equal(target.getItem('arm-done-01'),'0');assert.equal(target.getItem('arm-done-02'),'0');
+});
+
+tests/library.test.cjs
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const root=path.join(__dirname,'..'),academic=require('../rm-academic-search.js');
+function library(){const ctx={window:{},fetch:async()=>({ok:true,text:async()=>fs.readFileSync(path.join(root,'curso-arm-r2-legacy.html'),'utf8')})};vm.runInNewContext(fs.readFileSync(path.join(root,'rm-r2-library.js'),'utf8'),ctx);return ctx.window.RMR2Library;}
+test('199 unique original resources cover all eleven classrooms and match indexed paths',async()=>{
+ const api=library(),rows=await api.resources();assert.equal(rows.length,199);assert.equal(new Set(rows.map(x=>x.path)).size,199);
+ for(let i=1;i<=11;i++)assert((await api.resources({lesson:i})).length>0);
+ for(const entry of academic.index.filter(x=>x.resource&&x.source==='ARM'&&/^\d+$/.test(x.resource))){const hit=rows.find(x=>x.path===entry.terms);assert(hit,entry.title);assert.equal(hit.name,entry.title);assert.equal(String(hit.id),entry.resource);assert.equal(hit.lesson,entry.lesson);}
+ for(const x of rows){assert.equal(decodeURIComponent(new URL(x.url).pathname),'/material del curso/'+x.path);assert.equal(new URL(x.url).hostname,new URL(api.R2_BASE).hostname);}
+});
+test('library filters and all eight biomechanics destinations remain resolvable',async()=>{
+ const api=library();assert((await api.resources({query:'traccion'})).length>0);assert.equal((await api.resources({query:'zznonexistent'})).length,0);
+ for(const kind of ['video','pdf','documento'])assert((await api.resources({kind})).every(x=>x.kind===kind));
+ const patterns=academic.index.filter(x=>x.source==='RM'&&x.type==='guia'&&/^Biomecánica · /.test(x.title));assert.equal(patterns.length,8);
+ for(const x of patterns){const id=JSON.parse(x.terms).id;assert.equal(new URL(academic.href(x),'https://rm.test').hash,'#pattern='+encodeURIComponent(id));}
+});
+
+tests/learning.test.cjs
+const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');
+function engine(seed={}){const data=new Map(Object.entries(seed));const context={localStorage:{getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)},document:{readyState:'loading',addEventListener(){}},window:{addEventListener(){},dispatchEvent(){}},CustomEvent:class{},setTimeout(){},Date};vm.runInNewContext(fs.readFileSync(require('node:path').join(__dirname,'../rm-learning-engine.js'),'utf8'),context);return{api:context.window.RMLearning,data};}
+test('recommendations preserve saved section, require evidence and prioritize due errors',()=>{
+ const {api,data}=engine({'arm-last-study':JSON.stringify({lesson:'03',tab:'practica'}),'untouched':'keep'});
+ assert.equal(api.studyRecommendation().href,'curso-arm.html#lesson=03&section=practica');
+ api.recordQuizAnswer({q:'Fixture',correct:false,correctText:'Expected',topic:'Zona media',lesson:'03'});
+ assert.equal(api.studyRecommendation().type,'review');const item=api.getErrorBank()[0];item.due=Date.now()+86400000;data.set('arm-error-bank-v1',JSON.stringify([item]));
+ assert.equal(api.studyRecommendation().type,'continue');api.rateError(item.id,true);
+ assert.equal(api.studyRecommendation().type,'topic');assert.equal(data.get('untouched'),'keep');
+ assert.equal(api.getDueErrors().length,0);assert.equal(api.getErrorBank()[0].a,'Expected');
+});
+test('unexpected stored shapes do not crash read-only dashboard',()=>{const {api,data}=engine({'arm-error-bank-v1':'{}','rm-learning-events-v1':'[null]'});assert.equal(api.stats().total,0);assert.equal(api.weakestTopics().length,0);assert.equal(data.get('arm-error-bank-v1'),'{}');});
+
+tests/academic.test.cjs
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const api=require('../rm-academic-search.js');
+test('search supports accents, all words, source/type filters and honest totals',()=>{
+  assert.deepEqual(api.search('tracción').rows,api.search('traccion').rows);
+  assert(api.search('peso muerto').rows.every(x=>api.normalize(x.title+' '+x.terms+' '+x.detail).includes('peso')));
+  assert.equal(api.search('zznonexistent').total,0);
+  for(const filter of ['ARM','RM','video','pdf'])assert(api.search('',filter).rows.every(x=>x.source===filter||x.type===filter));
+  const result=api.search('','all',2);assert.equal(result.rows.length,2);assert(result.total>2);
+});
+test('all indexed results resolve to existing internal pages',()=>{for(const x of api.index){const url=api.href(x);assert(fs.existsSync(path.join(__dirname,'..',url.split('#')[0])));if(x.available!==false&&x.page!=='antes-del-primer-alumno.html')assert.equal(api.parseRoute(url).invalid,false,url);}});
+test('query, old hash and all four sections normalize safely',()=>{
+  assert.equal(api.parseRoute('curso-arm.html#lesson=3').lesson,'03');
+  for(const section of api.sections){assert.equal(api.parseRoute('curso-arm.html?lesson=03&section='+section).section,section);assert.equal(api.parseRoute('curso-arm.html#lesson=03&tab='+section).section,section);}
+  assert.equal(api.parseRoute('curso-arm.html#lesson=03&section=__proto__').section,'resumen');
+  assert.equal(api.parseRoute('curso-arm.html#lesson=99').invalid,true);
+  assert.equal(api.parseRoute('curso-arm.html?lesson=03&resource=195#lesson=04').resource,null);
+  assert.equal(api.parseRoute('curso-arm.html#lesson=04&resource=195').invalid,true);
+  assert.equal(api.parseRoute('curso-arm.html#resource=unknown').invalid,true);
+  assert.equal(api.parseRoute('curso-arm.html#bio=sentadilla').unavailable,true);
+});
+test('all script blocks parse and local static routes exist',()=>{
+  const root=path.join(__dirname,'..');for(const file of fs.readdirSync(root)){if(!/\.(html|js)$/.test(file))continue;const text=fs.readFileSync(path.join(root,file),'utf8');if(file.endsWith('.js'))new vm.Script(text,{filename:file});else{for(const match of text.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi))new vm.Script(match[1],{filename:file});for(const match of text.matchAll(/(?:href|src)=["']([^"']+)["']/g)){const target=match[1].split(/[?#]/)[0];if(/^[\w-]+\.(?:html|js|css)$/.test(target))assert(fs.existsSync(path.join(root,target)),file+' → '+target);}}}
+});
+
+tests/course-flow.test.cjs
+// Execute the real classroom scripts with deterministic delayed resource requests.
+// This checks state and routing; it does not replace visual browser verification.
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const root=path.join(__dirname,'..');
+function classroom(url='https://rm.test/curso-arm.html'){
+ const elements=new Map(),requests=[],events={},data=new Map();
+ function el(id=''){
+  const classes=new Set();const e={id,value:'',textContent:'',innerHTML:'',style:{},dataset:{},children:[],hidden:false,checked:false,
+   classList:{add:x=>classes.add(x),remove:x=>classes.delete(x),contains:x=>classes.has(x),toggle(x,on){if(on===undefined)on=!classes.has(x);on?classes.add(x):classes.delete(x);}},
+   setAttribute(){},append(...x){this.children.push(...x)},prepend(x){this.children.unshift(x);if(x.id)elements.set(x.id,x)},remove(){elements.delete(this.id)},focus(){}};return e;
+ }
+ for(const id of ['home','lesson','cards','q','lessonTag','lessonTitle','lessonDesc','done','resumen','material','practica','repaso','doneCount','progressPct','bar','resumeTitle','resumeText','resumeBtn','nextBtn','libraryCount'])elements.set(id,el(id));
+ elements.get('lesson').classList.add('hidden');
+ const tabs=['resumen','material','practica','repaso'].map(x=>{const e=el();e.dataset.tab=x;return e}),main=el();
+ const context={URL,URLSearchParams,Date,console,location:{href:url},scrollTo(){},localStorage:{getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)},
+  document:{getElementById:id=>elements.get(id)||null,querySelector:s=>s==='main'?main:null,querySelectorAll:s=>s==='.tab'?tabs:[],createElement:()=>el()},
+  history:{pushState(_s,_t,u){context.location.href=String(u)}},
+  RMR2Library:{inventory:async()=>Array(199),resources:(opts)=>opts?new Promise(resolve=>requests.push({lesson:opts.lesson,resolve})):Promise.resolve([])},
+  RMAcademic:require('../rm-academic-search.js'),addEventListener:(name,fn)=>{events[name]=fn}};
+ context.window=context;for(const [id,e] of elements)context[id]=e;
+ vm.createContext(context);const html=fs.readFileSync(path.join(root,'curso-arm.html'),'utf8');
+ const scripts=[...html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)];
+ for(const [,attrs,body]of scripts){const src=attrs.match(/src="([^"]+)"/);if(src){if(src[1]==='rm-course-navigation.js')vm.runInContext(fs.readFileSync(path.join(root,src[1]),'utf8'),context);}else vm.runInContext(body,context);}
+ const settle=async()=>{for(let i=0;i<8;i++)await Promise.resolve()};
+ return{context,elements,tabs,requests,data,events,settle};
+}
+test('all 11 classrooms load their own resources and four sections',async()=>{
+ const c=classroom();for(let i=1;i<=11;i++){const n=String(i).padStart(2,'0'),pending=c.context.openLesson(n,'material');
+  assert(c.elements.get('home').classList.contains('hidden'));assert.equal(c.requests.at(-1).lesson,n);
+  c.requests.at(-1).resolve([{kind:'pdf',name:'Class '+n,url:'https://example.test/'+n}]);await pending;
+  assert.match(c.elements.get('material').innerHTML,new RegExp('Class '+n));
+  for(const section of ['resumen','material','practica','repaso']){c.context.showTab(section);assert.equal(c.tabs.find(t=>t.classList.contains('active')).dataset.tab,section);assert.match(c.context.location.href,new RegExp('section='+section));}
+ }
+});
+test('query routes, resource fallback, history and invalid routes initialize correctly',async()=>{
+ const c=classroom('https://rm.test/curso-arm.html?lesson=03&section=practica');assert.equal(c.requests[0].lesson,'03');assert.equal(c.tabs.find(t=>t.classList.contains('active')).dataset.tab,'practica');
+ c.requests[0].resolve([]);await c.settle();c.context.location.href='https://rm.test/curso-arm.html#lesson=03&resource=195';
+ const route=c.context.RMCourseNavigation.openDestination();c.requests.at(-1).resolve([]);await route;
+ assert(c.elements.has('rm-resource-fallback'));assert.match(c.elements.get('rm-resource-fallback').children.at(-1).href,/biblioteca-arm-r2/);
+ c.context.location.href='https://rm.test/curso-arm.html#lesson=99';await c.events.popstate();assert(!c.elements.get('home').classList.contains('hidden'));
+ assert.match(c.elements.get('rm-route-notice').textContent,/El enlace/);
+});
+test('late resource responses do not override new classroom, selected tab or home',async()=>{
+ const c=classroom(),first=c.context.openLesson('03','material'),second=c.context.openLesson('04','resumen');
+ c.context.showTab('practica');c.requests[1].resolve([{kind:'pdf',name:'New class',url:'https://example.test/new'}]);await second;
+ c.requests[0].resolve([{kind:'pdf',name:'Old class',url:'https://example.test/old'}]);await first;
+ assert.match(c.elements.get('material').innerHTML,/New class/);assert.equal(c.tabs.find(t=>t.classList.contains('active')).dataset.tab,'practica');
+ const third=c.context.openLesson('05','material');c.context.goHome();c.requests[2].resolve([]);await third;
+ assert(!c.elements.get('home').classList.contains('hidden'));assert(!c.context.location.href.includes('lesson='));
+});
+
+tests/study-flow.test.cjs
+tests/full-audit.cjs
+tests/backup.test.cjs
+tests/library.test.cjs
+tests/browser.cjs
+tests/learning.test.cjs
+tests/personal-study-browser.cjs
+tests/academic.test.cjs
+tests/course-flow.test.cjs

@@ -1,0 +1,20 @@
+{
+  "task_id": "8d3698af-b6f3-4249-aa9a-5d7d2177e3ac",
+  "run_id": "043e5d07-d7e0-48b2-a013-48e4f8d2a762",
+  "title": "Comprobar que parches de producto aplican al SHA declarado",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess,pathlib;d=pathlib.Path('/workspace/work/phase2-arm/operations/arm-orchestrator/proposals/phase2-20261028');subprocess.run(['git','-C','/workspace/work/phase2-modo','apply','--check',str(d/'modo-demo-security.patch')],check=True);subprocess.run(['git','-C','/workspace/work/phase2-nutri','apply','--reverse','--check',str(d/'nutrisport-pwa.patch')],check=True);print('Both patches apply/reverse cleanly at their pinned bases; no patch applied to original worktree')"
+  ],
+  "started_utc": "2026-10-28T23:23:29.438396+00:00",
+  "finished_utc": "2026-10-28T23:23:29.472130+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "043e5d07-d7e0-48b2-a013-48e4f8d2a762.log"
+}
+
+Both patches apply/reverse cleanly at their pinned bases; no patch applied to original worktree

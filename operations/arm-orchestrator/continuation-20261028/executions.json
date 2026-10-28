@@ -1,0 +1,92 @@
+{
+  "base_sha": "fb8352fc066595ee072eb9f57dab8e554fa52e87",
+  "records": [
+    {
+      "task_id": "4882efff-d456-4f3a-bf78-8ad9f6c32954",
+      "run_id": "3e1d6ef7-e10c-4246-8508-f775aa1e5622",
+      "title": "Validar primero contrato Desarrollo e integridad ARM",
+      "status": "passed",
+      "command": "Auditoría supervisada development.md; SHA Git blobs + SHA256 MANIFEST",
+      "evidence": "development-validation.json",
+      "sha256": "5d592e37dd9f2320cbaad97114a9a6b04e62b824ab6818372396a937af6a0e3d"
+    },
+    {
+      "task_id": "92c39dcb-575c-4c3a-85c3-686fa6f1b537",
+      "run_id": "001b959f-4deb-49ec-a525-63475f384eb1",
+      "title": "Reejecutar las 20 pruebas declaradas",
+      "status": "passed",
+      "command": "python3 -m unittest discover -s tests -v",
+      "evidence": "orchestrator-tests-20261028.log",
+      "sha256": "0c65acae06b4643149145dfa6f17a128ac328adf15151bffe5c3aead2d7fd1e2"
+    },
+    {
+      "task_id": "74866026-beee-4e20-8648-358f94db329c",
+      "run_id": "2cac9a05-360c-490b-9912-6891eab1a2a6",
+      "title": "Auditar evidencia histórica rm-training",
+      "status": "passed",
+      "command": "Inspección de logs/JSON/backlog/INFORME del SHA ARM fijado",
+      "evidence": "rm-training-evidence-audit.json",
+      "sha256": "2a725c790030fa50bf0c4a567cd8c12aa9a0dad2cbf66fbdd9569831848cac88",
+      "registered_at": "2026-10-28T22:36:20.790886+00:00"
+    },
+    {
+      "task_id": "7e679aec-6fc6-4f79-a603-1656307d552b",
+      "run_id": "6fcdd3ee-4b11-4246-95e9-700ac8c828ef",
+      "title": "Auditar evidencia histórica modo-training-app",
+      "status": "passed",
+      "command": "Inspección de logs/JSON/backlog/INFORME del SHA ARM fijado",
+      "evidence": "modo-training-app-evidence-audit.json",
+      "sha256": "271dfa6eef54b6280d301a7029ff19c85168a525a43c438d09cea400fca10dad",
+      "registered_at": "2026-10-28T22:36:20.795311+00:00"
+    },
+    {
+      "task_id": "bc79e52a-892e-4cb7-af60-c6805882a6cb",
+      "run_id": "84d10768-2066-4e32-a037-671d052b62ad",
+      "title": "Auditar evidencia histórica calculadora-nutricion-deportiva",
+      "status": "passed",
+      "command": "Inspección de logs/JSON/backlog/INFORME del SHA ARM fijado",
+      "evidence": "calculadora-nutricion-deportiva-evidence-audit.json",
+      "sha256": "bffe6f5f8f1a54b5bbcc384043509901614f1b80378b84c35a3c72f443ac2e46",
+      "registered_at": "2026-10-28T22:36:20.799517+00:00"
+    },
+    {
+      "task_id": "407b1e5f-fee9-4dd8-9ab8-6c50e41e4e69",
+      "run_id": "d64a8cec-02ab-45df-ad76-0c6c919f93e3",
+      "title": "Intento de recuperación Git por proxy",
+      "status": "blocked",
+      "command": "git clone (intento previo, registrado retrospectivamente)",
+      "evidence": "git-recovery.log",
+      "sha256": "99c38f06233440873ee989c6fdf2cd32056f392989bd0a6d5536ca334bb00bb7",
+      "registered_at": "2026-10-28T22:36:20.804431+00:00"
+    },
+    {
+      "task_id": "4ff3f11a-5cdd-46a0-8f77-72d5928474fb",
+      "run_id": "4be35e70-9de7-49f8-a545-eda54f5a06bd",
+      "title": "Reproducir falso éxito CLI con cadena alterada",
+      "status": "failed",
+      "evidence": "cli-before.log"
+    },
+    {
+      "task_id": "7be0b875-09c9-4557-a455-2076177cf765",
+      "run_id": "de699803-db25-4319-85be-bada0272f499",
+      "title": "Preparar corrección mínima local de exit status verify",
+      "status": "passed",
+      "evidence": "development-draft.patch"
+    },
+    {
+      "task_id": "a02d9d0c-544b-4644-baf1-2191204f2f54",
+      "run_id": "25b43c35-3dd0-40f1-9f60-66d4db5a93dc",
+      "title": "Regresión de candidato local: 21 pruebas",
+      "status": "passed",
+      "evidence": "cli-after-21-tests.log"
+    },
+    {
+      "task_id": "4b28e158-db42-44b4-b7d0-944e8a79d3fb",
+      "run_id": "e83f4279-7b2c-474c-ba6f-7493d64051a5",
+      "status": "passed",
+      "evidence": "operational-attempts.json"
+    }
+  ],
+  "chain_valid": true,
+  "historical_snapshot_preserved": true
+}

@@ -1,0 +1,8 @@
+{
+  "arm.py": "e6959f1e62ef80775ae38f1f874c58050aff3104bd94c43dc8b65500f944bec8",
+  "tests/test_cli_workflow.py": "ab00824d2a18a049a9c20c30fec7f0a3d02c9e661442dd2a09ef0c6ef34db9ba",
+  "tests/rm-preview.cjs": "c04dadc95ccc229b89ed8bdc15baf8f82be58577cb3f62d0aa5d1936e24be26c",
+  "proposals/phase2-20261028/rm-charset.patch": "5c940c53f8aaebd347e98e9d31fadc264d5a3513764dfdddb664163073c096fd",
+  "proposals/phase2-20261028/modo-demo-security.patch": "0e1ae5957b8397603786ee860b8a913d1e53cde84aecdf79c71d55f95bdbfb83",
+  "proposals/phase2-20261028/nutrisport-pwa.patch": "1a5cac732a93941ab84491bfad85279e32ec20ac5a25a7c1b988084a39b49a64"
+}

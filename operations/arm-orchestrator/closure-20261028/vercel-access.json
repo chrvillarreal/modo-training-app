@@ -1,0 +1,25 @@
+{
+  "observed_at": "2026-10-28T23:21:21.603Z",
+  "source": "Vercel connector",
+  "operation": "list_projects",
+  "inputs": {
+    "slug": "chrvillarreals-projects",
+    "limit": "100"
+  },
+  "result": {
+    "status": 403,
+    "scope": "chrvillarreals-projects",
+    "team_id": "team_bG9D7jWqrmuc0E572KIiiF2h",
+    "reason": "Team access not authorized"
+  },
+  "authorization_link": {
+    "generated": true,
+    "user_action_required": true,
+    "url_not_persisted": true
+  },
+  "impact": [
+    "ARM-01 blocked",
+    "NUTRI-01 project/hosting mapping blocked"
+  ],
+  "no_permission_changes": true
+}

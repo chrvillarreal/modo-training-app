@@ -1,0 +1,109 @@
+{
+  "task_id": "f3856eb6-5c2f-4fcb-a27b-01f33f9736b0",
+  "run_id": "333f2c14-9c20-4b66-af49-80315dfeaa69",
+  "title": "Revisar flujos de navegador propios RM PR2 y límites externos",
+  "project": "rm-training",
+  "base_sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+  "cwd": "/workspace/work/phase2-rm-pr2",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;print(Path('tests/browser.cjs').read_text()[:5500]);print(Path('tests/full-audit.cjs').read_text()[:5500]);print(Path('tests/personal-study-browser.cjs').read_text()[:2500])"
+  ],
+  "started_utc": "2026-10-28T23:20:23.487847+00:00",
+  "finished_utc": "2026-10-28T23:20:23.518546+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "333f2c14-9c20-4b66-af49-80315dfeaa69.log"
+}
+
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const base=process.env.RM_TEST_URL||'http://127.0.0.1:4173/';
+(async()=>{
+ const browser=await chromium.launch({headless:true,...(process.env.RM_CHROMIUM_PATH?{executablePath:process.env.RM_CHROMIUM_PATH}:{})});const evidence=process.env.RM_EVIDENCE||'../rm-evidence';fs.mkdirSync(evidence,{recursive:true});
+ try {for(const width of [320,360,390,430,1365]){
+  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));
+  await context.route('**/*',route=>route.request().url().startsWith(base)?route.continue():route.abort());
+  await page.goto(base+'index.html');
+  await page.evaluate(()=>{localStorage.setItem('arm-done-01','1');localStorage.setItem('untouched-fixture','keep');localStorage.setItem('arm-last-study',JSON.stringify({lesson:'03',tab:'practica',at:123}));});
+  await page.goto(base+'buscador-academico.html');await page.locator('#q').fill('peso muerto');
+  assert(await page.locator('.result').count()>0);await page.locator('[data-filter="video"]').click();assert(await page.locator('.result').count()>0);
+  await page.screenshot({path:evidence+'/search-'+width+'.png',fullPage:true});
+  await page.locator('#q').fill('xyznotfound');assert.match(await page.locator('#results').innerText(),/No encontramos/);await page.getByRole('button',{name:'Limpiar búsqueda'}).click();
+  await page.goto(base+'curso-arm.html?lesson=03&section=practica');await page.waitForFunction(()=>document.querySelector('.tab.active')?.dataset.tab==='practica');
+  assert.equal(await page.locator('#lessonTitle').innerText(),'Zona Media');
+  await page.locator('[data-tab="material"]').click();assert.match(page.url(),/section=material/);
+  await page.goBack();await page.waitForFunction(()=>document.querySelector('.tab.active')?.dataset.tab==='practica');
+  await page.goForward();await page.waitForFunction(()=>document.querySelector('.tab.active')?.dataset.tab==='material');
+  await page.locator('.back').click();assert(await page.locator('#home').isVisible());await page.goBack();assert(await page.locator('#material').isVisible());
+  for(const section of ['resumen','material','practica','repaso']){await page.goto(base+'curso-arm.html#lesson=04&section='+section);await page.waitForFunction(s=>document.querySelector('.tab.active')?.dataset.tab===s,section);}
+  await page.goto(base+'curso-arm.html#lesson=03&resource=195');assert.match(await page.locator('#rm-resource-fallback').innerText(),/TP #1/);assert(await page.locator('#material').isVisible());
+  await page.goto(base+'curso-arm.html#lesson=99');assert(await page.locator('#home').isVisible());assert.match(await page.locator('#rm-route-notice').innerText(),/El enlace/);
+  await page.goto(base+'curso-arm.html#lesson=04&section=invalid');assert(await page.locator('#resumen').isVisible());
+  assert.equal(await page.evaluate(()=>localStorage.getItem('arm-done-01')),'1');assert.equal(await page.evaluate(()=>localStorage.getItem('untouched-fixture')),'keep');
+  await page.locator('#done').check();await page.reload();assert(await page.locator('#done').isChecked());
+  await page.screenshot({path:evidence+'/course-'+width+'.png',fullPage:true});
+  await page.goto(base+'entrenamiento.html');await page.locator('#aiSearch').fill('peso muerto');await page.waitForFunction(()=>document.querySelectorAll('#results .r').length>1);await page.locator('#results .r').first().click();await page.waitForFunction(()=>document.querySelector('#app').contentDocument?.querySelector('#lessonTitle')?.textContent==='Fuerza en Tren Inferior');
+  assert(await page.locator('.sections').evaluate(el=>el.getBoundingClientRect().bottom<=document.querySelector('.topbar').getBoundingClientRect().bottom),'shell navigation overlaps frame');
+  await page.screenshot({path:evidence+'/shell-'+width+'.png',fullPage:true});
+  await page.goto(base+'evaluacion-arm.html');const frame=page.frames().find(f=>f.url().endsWith('entrenamiento-base.html'));assert(frame);
+  await frame.waitForFunction(()=>typeof startQuiz==='function'&&window.RMLearning);
+  const expected=await frame.evaluate(()=>{view={name:'examenfinal'};startQuiz('examenfinal',2,false);const q=quizSession.items[0].q;return{q:q.q,a:q.options[q.correct],wrong:Object.keys(q.options).find(k=>k!==q.correct)};});
+  await frame.locator('[data-l="'+expected.wrong+'"]').click();
+  const bank=await page.evaluate(()=>JSON.parse(localStorage.getItem('arm-error-bank-v1')));assert.equal(bank.length,1);assert.equal(bank[0].q,expected.q);assert.equal(bank[0].a,expected.a);
+  await frame.evaluate(wrong=>pickAnswer(wrong),expected.wrong);assert.equal(await page.evaluate(()=>JSON.parse(localStorage.getItem('rm-learning-events-v1')).filter(x=>x.type==='quiz-wrong').length),1);
+  await frame.evaluate(()=>{nextQuiz();pickAnswer(quizSession.items[quizSession.pos].q.correct);nextQuiz();});
+  const attempts=await frame.evaluate(()=>progress.quiz.__examenfinal__.attempts);await frame.evaluate(()=>{render();render();});assert.equal(await frame.evaluate(()=>progress.quiz.__examenfinal__.attempts),attempts,'result rerender must not duplicate attempts');
+  await page.goto(base+'repaso-arm.html');assert.equal(await page.locator('.error').count(),1);await page.getByRole('button',{name:'Ver respuesta'}).click();assert.match(await page.locator('.answer').innerText(),/Resp
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const base=process.env.RM_TEST_URL||'http://127.0.0.1:4173/';
+(async()=>{
+ const browser=await chromium.launch({headless:true,...(process.env.RM_CHROMIUM_PATH?{executablePath:process.env.RM_CHROMIUM_PATH}:{})});
+ const evidence=process.env.RM_EVIDENCE||'../rm-evidence';fs.mkdirSync(evidence,{recursive:true});
+ try{for(const width of [320,360,390,430,1365]){
+  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];
+  page.on('pageerror',e=>errors.push(e.message));await context.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
+  for(let n=1;n<=11;n++){
+   await page.goto(base+'curso-arm.html#lesson='+n+'&section=material');await page.locator('.resource').first().waitFor();
+   assert(await page.locator('.resource').count()>0);assert.equal(await page.locator('#lessonTag').innerText(),'CLASE '+String(n).padStart(2,'0'));
+   for(const section of ['resumen','material','practica','repaso']){await page.locator('[data-tab="'+section+'"]').click();assert(await page.locator('#'+section).isVisible());assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'Class '+n+' '+section+' '+width);}
+   await page.locator('#done').check();await page.reload();assert(await page.locator('#done').isChecked());
+  }
+  await page.locator('.back').click();assert.equal(await page.locator('#progressPct').innerText(),'100%');assert.equal(await page.locator('.card.done').count(),11);
+  await page.goto(base+'biblioteca-arm-r2.html');await page.waitForFunction(()=>document.querySelectorAll('.item').length===199);
+  for(let n=1;n<=11;n++){await page.locator('#lesson').selectOption(String(n));await page.waitForFunction(n=>[...document.querySelectorAll('.item .kind')].every(x=>x.textContent.includes('CLASE '+String(n).padStart(2,'0'))),n);assert(await page.locator('.item').count()>0);}
+  await page.locator('#lesson').selectOption('');await page.locator('#kind').selectOption('pdf');await page.waitForFunction(()=>document.querySelectorAll('.item').length===32);
+  await page.locator('#q').fill('zznonexistent');await page.waitForFunction(()=>document.querySelector('.empty')?.textContent.includes('No hay coincidencias'));
+  await page.locator('#q').fill('');await page.locator('#kind').selectOption('');await page.waitForFunction(()=>document.querySelectorAll('.item').length===199);
+  await page.locator('.group summary').first().click();assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'Library '+width);
+  await page.screenshot({path:evidence+'/library-'+width+'.png',fullPage:true});
+  await page.goto(base+'biomecanica-aplicada.html');const ids=await page.locator('#patterns button').evaluateAll(xs=>xs.map(x=>x.dataset.id));assert.equal(ids.length,8);
+  for(const id of ids){await page.locator('[data-id="'+id+'"]').click();await page.locator('#notes').fill('Audit '+id);await page.waitForFunction(()=>document.querySelector('#save')?.textContent==='Guardado.');assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'Biomechanics '+id+' '+width);}
+  await page.reload();assert.equal(await page.locator('#notes').inputValue(),'Audit '+ids.at(-1));
+  await page.goBack();await page.waitForFunction(id=>document.querySelector('#patterns button.active')?.dataset.id===id,ids.at(-2));assert.equal(await page.locator('#notes').inputValue(),'Audit '+ids.at(-2));
+  await page.screenshot({path:evidence+'/biomechanics-'+width+'.png',fullPage:true});
+  await page.goto(base+'curso-arm.html#lesson=03&resource=195');await page.waitForFunction(()=>document.querySelector('#rm-resource-fallback a')?.href.includes('.r2.dev/'));assert.match(await page.locator('#rm-resource-fallback a').getAttribute('href'),/TP%20%231/);
+  await page.goto(base+'entrenamiento.html');for(const pageName of ['biblioteca-arm-r2.html','biomecanica-aplicada.html','curso-arm.html','antes-del-primer-alumno.html']){await page.locator('[data-page="'+pageName+'"]').click();await page.waitForFunction(name=>document.querySelector('#app').contentDocument?.location.pathname.endsWith('/'+name),pageName);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,'Shell '+width);}
+  assert.deepEqual(errors,[]);await context.close();console.log('PASS all classrooms, library, biomechanics, shell width='+width);
+ }
+ const context=await browser.newContext();await context.addInitScript(()=>{Storage.prototype.getItem=()=>{throw Error('blocked')};Storage.prototype.setItem=()=>{throw Error('blocked')};});const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(base+'entrenamiento.html');await page.locator('[data-page="biomecanica-aplicada.html"]').click();await page.waitForFunction(()=>document.querySelector('#app').contentDocument?.querySelector('#notes'));assert.deepEqual(errors,[]);await context.close();console.log('PASS shell unavailable storage');
+ }finally{await browser.close()}
+})().catch(e=>{console.error(e);process.exitCode=1});
+
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright'),assert=require('node:assert/strict'),fs=require('node:fs');
+const base=process.env.RM_TEST_URL||'http://127.0.0.1:4173/';
+(async()=>{const browser=await chromium.launch({headless:true,...(process.env.RM_CHROMIUM_PATH?{executablePath:process.env.RM_CHROMIUM_PATH}:{})});try{
+ for(const width of [320,360,390,430,1365]){
+  const context=await browser.newContext({viewport:{width,height:900}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await context.route('**/*',r=>r.request().url().startsWith(base)?r.continue():r.abort());
+  await page.goto(base+'curso-arm.html#lesson=04&section=practica');await page.locator('#studyNotes').waitFor();await page.locator('#studyNotes').fill('Mi duda sobre unipodales');await page.locator('#done').check();await page.reload();await page.locator('#studyNotes').waitFor();assert.equal(await page.locator('#studyNotes').inputValue(),'Mi duda sobre unipodales');
+  await page.locator('[data-tab="repaso"]').click();await page.getByRole('link',{name:'Practicar esta clase →',exact:true}).click();
+  const frame=page.frameLocator('#app');await frame.locator('#startLessonQuiz').click();const inner=page.frames().find(f=>f.url().includes('entrenamiento-base.html'));
+  const lesson=await inner.evaluate(()=>quizSession.lesson);assert.equal(lesson,'04');const wrong=await inner.evaluate(()=>Object.keys(quizSession.items[0].q.options).find(x=>x!==quizSession.items[0].q.correct));await frame.locator('[data-l="'+wrong+'"]').click();
+  const bank=await page.evaluate(()=>JSON.parse(localStorage.getItem('arm-error-bank-v1')));assert.equal(bank[0].lesson,'04');
+  await page.goto(base+'repaso-arm.html?lesson=04');assert.equal(await page.locator('.error').count(),1);await page.getByRole('button',{name:'Ver respuesta',exact:true}).click();await page.getByRole('button',{name:'La recordé',exact:true}).click();assert.equal(await page.locator('.error').count(),0);
+  await page.goto(base+'repaso-arm.html?lesson=03');assert.equal(await page.locator('#total').innerText(),'0');
+  await page.goto(base+'evaluacion-arm.html?lesson=06');await page.frameLocator('#app').locator('#startLessonQuiz').waitFor();assert(await page.frameLocator('#app').locator('#startLessonQuiz').isDisabled());
+  await page.goto(base+'revision-respuestas.html#q=3');assert.equal(await page.locator('.question').count(),40);assert.equal(await page.evaluate(()=>document.activeElement.id),'que

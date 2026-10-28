@@ -1,0 +1,152 @@
+{
+  "results": [
+    {
+      "width": 320,
+      "route": "inicio",
+      "overflow": false,
+      "replacementCharacters": 35
+    },
+    {
+      "width": 320,
+      "route": "curso",
+      "overflow": false,
+      "replacementCharacters": 7
+    },
+    {
+      "width": 320,
+      "route": "aula/11",
+      "overflow": false,
+      "replacementCharacters": 19
+    },
+    {
+      "width": 320,
+      "route": "practica/11",
+      "overflow": false,
+      "replacementCharacters": 21
+    },
+    {
+      "width": 320,
+      "route": "aula/11/notas",
+      "overflow": false,
+      "replacementCharacters": 17
+    },
+    {
+      "width": 320,
+      "route": "biblioteca",
+      "overflow": false,
+      "replacementCharacters": 77
+    },
+    {
+      "width": 390,
+      "route": "inicio",
+      "overflow": false,
+      "replacementCharacters": 33
+    },
+    {
+      "width": 390,
+      "route": "curso",
+      "overflow": false,
+      "replacementCharacters": 7
+    },
+    {
+      "width": 390,
+      "route": "aula/11",
+      "overflow": false,
+      "replacementCharacters": 19
+    },
+    {
+      "width": 390,
+      "route": "practica/11",
+      "overflow": false,
+      "replacementCharacters": 21
+    },
+    {
+      "width": 390,
+      "route": "aula/11/notas",
+      "overflow": false,
+      "replacementCharacters": 17
+    },
+    {
+      "width": 390,
+      "route": "biblioteca",
+      "overflow": false,
+      "replacementCharacters": 77
+    },
+    {
+      "width": 430,
+      "route": "inicio",
+      "overflow": false,
+      "replacementCharacters": 33
+    },
+    {
+      "width": 430,
+      "route": "curso",
+      "overflow": false,
+      "replacementCharacters": 7
+    },
+    {
+      "width": 430,
+      "route": "aula/11",
+      "overflow": false,
+      "replacementCharacters": 19
+    },
+    {
+      "width": 430,
+      "route": "practica/11",
+      "overflow": false,
+      "replacementCharacters": 21
+    },
+    {
+      "width": 430,
+      "route": "aula/11/notas",
+      "overflow": false,
+      "replacementCharacters": 17
+    },
+    {
+      "width": 430,
+      "route": "biblioteca",
+      "overflow": false,
+      "replacementCharacters": 77
+    },
+    {
+      "width": 1440,
+      "route": "inicio",
+      "overflow": false,
+      "replacementCharacters": 40
+    },
+    {
+      "width": 1440,
+      "route": "curso",
+      "overflow": false,
+      "replacementCharacters": 14
+    },
+    {
+      "width": 1440,
+      "route": "aula/11",
+      "overflow": false,
+      "replacementCharacters": 30
+    },
+    {
+      "width": 1440,
+      "route": "practica/11",
+      "overflow": false,
+      "replacementCharacters": 29
+    },
+    {
+      "width": 1440,
+      "route": "aula/11/notas",
+      "overflow": false,
+      "replacementCharacters": 28
+    },
+    {
+      "width": 1440,
+      "route": "biblioteca",
+      "overflow": false,
+      "replacementCharacters": 84
+    },
+    {
+      "notesPersisted": true
+    }
+  ],
+  "errors": []
+}

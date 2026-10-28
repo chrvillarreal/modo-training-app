@@ -1,0 +1,29 @@
+{
+  "task_id": "b2e7bf7f-5369-4870-85fe-dfc688390929",
+  "run_id": "60ff8d32-c664-46fd-a30d-209e77096ea5",
+  "title": "Examinar integración estudio en páginas banco y entrenamiento",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "rg",
+    "-n",
+    "examen-estudio|<script|study-",
+    "entrenamiento-base.html",
+    "banco-arm.html",
+    "study-ui.js",
+    "study-core.js"
+  ],
+  "started_utc": "2026-10-28T23:16:24.631058+00:00",
+  "finished_utc": "2026-10-28T23:16:24.643918+00:00",
+  "exit_code": 2,
+  "status": "failed",
+  "evidence": "60ff8d32-c664-46fd-a30d-209e77096ea5.log"
+}
+
+entrenamiento-base.html:621:<script>
+entrenamiento-base.html:12481:<script src="study-legacy.js"></script>
+study-core.js:4:const KEY='rm-study-v1',DAY=86400000;
+banco-arm.html:410:<script>
+banco-arm.html:11441:<script src="study-legacy.js"></script>
+rg: study-ui.js: No such file or directory (os error 2)
