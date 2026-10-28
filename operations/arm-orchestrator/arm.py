@@ -16,10 +16,12 @@ def digest(value):
     return hashlib.sha256(canonical(value).encode()).hexdigest()
 
 class Orchestrator:
-    def __init__(self, path='arm.sqlite'):
-        self.db = sqlite3.connect(path)
+    def __init__(self, path='arm.sqlite', *, read_only=False):
+        self.db = sqlite3.connect(Path(path).resolve().as_uri()+'?mode=ro', uri=True) if read_only else sqlite3.connect(path)
         self.db.row_factory = sqlite3.Row
         self.db.execute('PRAGMA foreign_keys=ON')
+        if read_only:
+            return
         self.db.executescript('''
         CREATE TABLE IF NOT EXISTS projects (id TEXT PRIMARY KEY, repo TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS tasks (id TEXT PRIMARY KEY, project TEXT REFERENCES projects(id), title TEXT NOT NULL, priority TEXT CHECK(priority IN ('P0','P1','P2')), action TEXT NOT NULL, branch TEXT NOT NULL, sha TEXT NOT NULL, status TEXT NOT NULL, agent TEXT NOT NULL, payload TEXT NOT NULL);
@@ -98,9 +100,12 @@ class Orchestrator:
 
     def verify(self):
         prev='0'*64
-        for r in self.db.execute('SELECT * FROM events ORDER BY seq'):
-            if r['previous']!=prev or r['hash']!=digest([r['at'],r['kind'],json.loads(r['data']),prev]): return False
-            prev=r['hash']
+        try:
+            for r in self.db.execute('SELECT seq,at,kind,data,previous,hash FROM events ORDER BY seq'):
+                if r['previous']!=prev or r['hash']!=digest([r['at'],r['kind'],json.loads(r['data']),prev]): return False
+                prev=r['hash']
+        except (sqlite3.DatabaseError, ValueError, TypeError):
+            return False
         return True
 
     def export(self):
@@ -116,13 +121,23 @@ def main():
     start=sub.add_parser('start');start.add_argument('task')
     finish=sub.add_parser('finish');finish.add_argument('run');finish.add_argument('status',choices=['passed','failed','blocked']);finish.add_argument('evidence')
     approval=sub.add_parser('request-approval');approval.add_argument('task')
-    args=vars(p.parse_args());db=args.pop('db');cmd=args.pop('cmd');o=Orchestrator(db)
+    args=vars(p.parse_args());db=args.pop('db');cmd=args.pop('cmd')
+    if cmd=='verify':
+        o=None
+        try:
+            o=Orchestrator(db, read_only=True)
+            valid=o.verify()
+        except sqlite3.DatabaseError:
+            valid=False
+        finally:
+            if o is not None: o.db.close()
+        print(json.dumps({'valid':valid},indent=2))
+        raise SystemExit(0 if valid else 1)
+    o=Orchestrator(db)
     if cmd=='status': result=o.export()
-    elif cmd=='verify': result={'valid':o.verify()}
     elif cmd=='task': result={'task':o.task(**args)}
     elif cmd=='start':result={'run':o.start(**args)}
     elif cmd=='finish':result=o.finish(**args)
     else:result={'approval':o.request_approval(**args)}
     print(json.dumps(result,ensure_ascii=False,indent=2))
-    if cmd=='verify' and not result['valid']: raise SystemExit(1)
 if __name__=='__main__':main()

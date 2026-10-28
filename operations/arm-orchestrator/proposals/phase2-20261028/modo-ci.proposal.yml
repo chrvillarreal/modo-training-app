@@ -1,0 +1,40 @@
+{
+  "name": "Modo demo regression (proposal, requires demo fix and tests/security.cjs)",
+  "on": {
+    "pull_request": {},
+    "workflow_dispatch": {}
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "jobs": {
+    "qa": {
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 10,
+      "steps": [
+        {
+          "uses": "actions/checkout@v4",
+          "with": {
+            "persist-credentials": false
+          }
+        },
+        {
+          "uses": "actions/setup-node@v4",
+          "with": {
+            "node-version": "24"
+          }
+        },
+        {
+          "run": "npm install --no-save --ignore-scripts --package-lock=false playwright@1.64.1"
+        },
+        {
+          "run": "npx playwright install --with-deps chromium"
+        },
+        {
+          "name": "Security and recovery on synthetic local data",
+          "run": "export PLAYWRIGHT_MODULE=\"$(node -p \"require.resolve('playwright')\")\"\npython3 -m http.server 4179 --bind 127.0.0.1 &\ntask_server_pid=$!\ntrap 'kill \"$task_server_pid\"' EXIT\ncurl --retry 10 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:4179/ > /dev/null\nnode tests/security.cjs\n"
+        }
+      ]
+    }
+  }
+}

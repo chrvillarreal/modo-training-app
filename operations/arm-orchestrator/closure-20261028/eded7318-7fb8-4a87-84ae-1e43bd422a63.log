@@ -1,0 +1,51 @@
+{
+  "task_id": "58383ef7-6e7e-4c61-966f-ddadbd98f912",
+  "run_id": "eded7318-7fb8-4a87-84ae-1e43bd422a63",
+  "title": "Validar corrección PWA contra los 10 E2E existentes",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "env",
+    "CHROMIUM_PATH=/usr/bin/chromium",
+    "npm",
+    "run",
+    "test:e2e"
+  ],
+  "started_utc": "2026-10-28T23:19:21.053570+00:00",
+  "finished_utc": "2026-10-28T23:19:51.357729+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "eded7318-7fb8-4a87-84ae-1e43bd422a63.log"
+}
+
+
+> nutrisport-pro@1.0.0 test:e2e
+> playwright test
+
+
+Running 10 tests using 1 worker
+
+  ✓   1 tests/local-mvp.spec.ts:3:3 › flujo local completo a 320px (2.5s)
+  ✓   2 tests/local-mvp.spec.ts:3:3 › flujo local completo a 375px (2.3s)
+  ✓   3 tests/local-mvp.spec.ts:3:3 › flujo local completo a 430px (2.3s)
+  ✓   4 tests/local-mvp.spec.ts:3:3 › flujo local completo a 768px (2.3s)
+  ✓   5 tests/local-mvp.spec.ts:3:3 › flujo local completo a 1024px (2.3s)
+  ✓   6 tests/local-mvp.spec.ts:3:3 › flujo local completo a 1440px (2.5s)
+  ✓   7 tests/local-mvp.spec.ts:147:1 › IndexedDB denegado mantiene calculadora operativa (778ms)
+  ✓   8 tests/stage-two.spec.ts:4:3 › métodos, plan, PDF y offline a 320px (2.3s)
+  ✓   9 tests/stage-two.spec.ts:4:3 › métodos, plan, PDF y offline a 1440px (2.5s)
+  ✓  10 tests/stage-two.spec.ts:188:1 › actualización explícita de PWA conserva IndexedDB (7.4s)
+
+  10 passed (29.0s)
+[WebServer] (node:4006) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:4019) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:4042) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

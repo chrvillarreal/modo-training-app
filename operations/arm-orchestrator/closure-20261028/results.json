@@ -1,0 +1,33 @@
+{
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "date": "2026-10-28",
+  "timezone": "America/Buenos_Aires",
+  "new_runs": 81,
+  "run_status_counts": {
+    "passed": 68,
+    "failed": 12,
+    "blocked": 1
+  },
+  "event_chain_valid": true,
+  "coordinator": "Existing supervised ChatGPT Work only",
+  "remote_writes_this_phase": false,
+  "development_flow": "task -> reproduction -> minimal local draft -> tests -> evidence -> supervised UX/QA review",
+  "review_independence": "Same operator in separate review phase; not a second autonomous agent or independent human approval",
+  "current_results": {
+    "ARM": "published 21/21; local candidate 27/27",
+    "RM_preview_base": "7 unit tests; 32 browser checks; 24 route/width results; five keyboard/menu/search checks",
+    "RM_PR2": "16 unit tests and browser.cjs/full-audit.cjs/personal-study-browser.cjs on five widths, external assets blocked",
+    "Modo_demo": "4 historical defects reproduced; security/recovery draft 6 checks passed",
+    "Modo_1_3": "6 smoke checks; no backend certification",
+    "NutriSport": "88 unit tests + build original; original E2E 9/10, local PWA draft E2E 10/10 + targeted regression passed"
+  },
+  "limitations": [
+    "No deployment functional acceptance",
+    "No R2/video streaming certification",
+    "No clinical formula acceptance",
+    "No cross-device or server permission acceptance",
+    "No OS-level sandbox claim",
+    "CI proposals not executed on GitHub",
+    "Original 23/10 evidence preserved; current results are separate"
+  ]
+}

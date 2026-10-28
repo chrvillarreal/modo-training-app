@@ -1,0 +1,42 @@
+{
+  "task_id": "7044bc01-e923-4999-a38b-5c43ac2e7d64",
+  "run_id": "d48ee057-30bb-4336-a931-f770c6c409f4",
+  "title": "Simular reconciliación RM en objetos Git sin modificar ramas",
+  "project": "rm-training",
+  "base_sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+  "cwd": "/workspace/work/phase2-rm-pr2",
+  "command": [
+    "git",
+    "merge-tree",
+    "--write-tree",
+    "origin/main",
+    "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6"
+  ],
+  "started_utc": "2026-10-28T23:16:47.160347+00:00",
+  "finished_utc": "2026-10-28T23:16:47.193612+00:00",
+  "exit_code": 1,
+  "status": "failed",
+  "evidence": "d48ee057-30bb-4336-a931-f770c6c409f4.log"
+}
+
+8bf37b59f65aa93cb23b9924734e19fbc5ad901d
+100644 964f0b0f3e9c8420fdc52eb0eb6c0b9d3dd4e4fd 1	curso-arm.html
+100644 ce29fbc03a3ac13ab89a2d075f6845d6017f3495 2	curso-arm.html
+100644 9076480058f3f6aad3a982b14b71ff6319f1cd26 3	curso-arm.html
+100644 35c530eda1fa6e9d80adbaed224f6f877c35338d 1	entrenamiento-base.html
+100644 c7513f6a7ec316a2ff61ef17e098fbd386af7bbf 2	entrenamiento-base.html
+100644 bc447b5cc65dded7a7f20087e9eadad20c1568dc 3	entrenamiento-base.html
+100644 0277d78531d6e43e9b9811935c50f7ed7450ab0a 1	entrenamiento.html
+100644 dbe3b877c5a98f693aa707ae78d343f5381c2b11 2	entrenamiento.html
+100644 b94c0c0aed04b33bcf737f23eee3ce67320a0d8c 3	entrenamiento.html
+100644 906607de8b8e183e2dad177060639f6f09d169a0 2	tests/browser.cjs
+100644 9e90b0001da67820abac504f6cebe464433a1e89 3	tests/browser.cjs
+
+Auto-merging curso-arm.html
+CONFLICT (content): Merge conflict in curso-arm.html
+Auto-merging entrenamiento-base.html
+CONFLICT (content): Merge conflict in entrenamiento-base.html
+Auto-merging entrenamiento.html
+CONFLICT (content): Merge conflict in entrenamiento.html
+Auto-merging tests/browser.cjs
+CONFLICT (add/add): Merge conflict in tests/browser.cjs

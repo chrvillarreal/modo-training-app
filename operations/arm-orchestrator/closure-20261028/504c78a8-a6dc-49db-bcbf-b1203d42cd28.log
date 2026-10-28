@@ -1,0 +1,20 @@
+{
+  "task_id": "f98d61f3-88f5-4ba3-a658-c830a01dff9b",
+  "run_id": "504c78a8-a6dc-49db-bcbf-b1203d42cd28",
+  "title": "Declarar UTF-8 en páginas RM que carecen de charset",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm-fix",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;import re; changed=[];ps=[Path('entrenamiento-base.html'),Path('banco-arm.html')];[(p.write_text('<meta charset=\"utf-8\">\\n'+p.read_text()),changed.append(str(p))) for p in ps if not re.search(r'<meta[^>]*charset',p.read_text(),re.I)];print(changed)"
+  ],
+  "started_utc": "2026-10-28T23:24:52.458376+00:00",
+  "finished_utc": "2026-10-28T23:24:52.496271+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "504c78a8-a6dc-49db-bcbf-b1203d42cd28.log"
+}
+
+['entrenamiento-base.html', 'banco-arm.html']

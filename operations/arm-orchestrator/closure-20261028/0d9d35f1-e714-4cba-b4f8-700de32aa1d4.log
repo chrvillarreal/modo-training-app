@@ -1,0 +1,26 @@
+{
+  "task_id": "f47c8eeb-f27d-41c0-9c56-1a7cb3e29ec0",
+  "run_id": "0d9d35f1-e714-4cba-b4f8-700de32aa1d4",
+  "title": "Reejecutar RM con charset equivalente a servidor original y red bloqueada",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm",
+    "--port",
+    "4178",
+    "--",
+    "node",
+    "/workspace/work/rm-browser-safe.cjs"
+  ],
+  "started_utc": "2026-10-28T23:18:30.070617+00:00",
+  "finished_utc": "2026-10-28T23:18:34.389490+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "0d9d35f1-e714-4cba-b4f8-700de32aa1d4.log"
+}
+
+{"checks":32,"errors":[]}

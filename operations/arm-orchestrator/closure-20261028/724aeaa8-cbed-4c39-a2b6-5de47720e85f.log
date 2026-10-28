@@ -1,0 +1,82 @@
+{
+  "task_id": "715b8385-454b-4701-b545-2f22a3614e7a",
+  "run_id": "724aeaa8-cbed-4c39-a2b6-5de47720e85f",
+  "title": "Ejecutar 10 E2E originales NutriSport con Chromium del entorno",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "env",
+    "CHROMIUM_PATH=/usr/bin/chromium",
+    "npm",
+    "run",
+    "test:e2e"
+  ],
+  "started_utc": "2026-10-28T23:16:15.720686+00:00",
+  "finished_utc": "2026-10-28T23:17:08.221320+00:00",
+  "exit_code": 1,
+  "status": "failed",
+  "evidence": "724aeaa8-cbed-4c39-a2b6-5de47720e85f.log"
+}
+
+
+> nutrisport-pro@1.0.0 test:e2e
+> playwright test
+
+
+Running 10 tests using 1 worker
+
+  ✓   1 tests/local-mvp.spec.ts:3:3 › flujo local completo a 320px (2.5s)
+  ✓   2 tests/local-mvp.spec.ts:3:3 › flujo local completo a 375px (2.2s)
+  ✓   3 tests/local-mvp.spec.ts:3:3 › flujo local completo a 430px (2.5s)
+  ✓   4 tests/local-mvp.spec.ts:3:3 › flujo local completo a 768px (2.3s)
+  ✓   5 tests/local-mvp.spec.ts:3:3 › flujo local completo a 1024px (2.3s)
+  ✓   6 tests/local-mvp.spec.ts:3:3 › flujo local completo a 1440px (2.4s)
+  ✓   7 tests/local-mvp.spec.ts:147:1 › IndexedDB denegado mantiene calculadora operativa (767ms)
+  ✓   8 tests/stage-two.spec.ts:4:3 › métodos, plan, PDF y offline a 320px (2.2s)
+  ✓   9 tests/stage-two.spec.ts:4:3 › métodos, plan, PDF y offline a 1440px (2.4s)
+  ✘  10 tests/stage-two.spec.ts:188:1 › actualización explícita de PWA conserva IndexedDB (30.1s)
+
+
+  1) tests/stage-two.spec.ts:188:1 › actualización explícita de PWA conserva IndexedDB ─────────────
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.waitForEvent: Test timeout of 30000ms exceeded.
+    =========================== logs ===========================
+    waiting for event "load"
+    ============================================================
+
+      219 |     });
+      220 |     await expect(update).toBeVisible();
+    > 221 |     await Promise.all([page.waitForEvent("load"), update.click()]);
+          |                             ^
+      222 |     await page
+      223 |       .getByRole("navigation")
+      224 |       .getByRole("button", { name: "Alumnos", exact: true })
+        at /workspace/work/phase2-nutri/tests/stage-two.spec.ts:221:29
+
+    Error Context: test-results/stage-two-actualización-explícita-de-PWA-conserva-IndexedDB/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/stage-two-actualización-explícita-de-PWA-conserva-IndexedDB/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/stage-two-actualización-explícita-de-PWA-conserva-IndexedDB/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    tests/stage-two.spec.ts:188:1 › actualización explícita de PWA conserva IndexedDB ──────────────
+  9 passed (51.6s)
+[WebServer] (node:2374) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2387) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:2413) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

@@ -1,0 +1,6 @@
+{
+  "task_id": "1cec8213-350a-4f25-a712-94b064fee8a5",
+  "run_id": "a7451b2e-f015-4fe4-88c4-bb53f19fe2b1",
+  "verdict": "passed_local_supervised",
+  "limitations": "B actions and remote acceptance pending"
+}

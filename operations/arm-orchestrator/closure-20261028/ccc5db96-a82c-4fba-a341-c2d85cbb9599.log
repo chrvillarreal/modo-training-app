@@ -1,0 +1,21 @@
+{
+  "task_id": "9152ea67-7801-483c-83ce-cffa2c8cf402",
+  "run_id": "ccc5db96-a82c-4fba-a341-c2d85cbb9599",
+  "title": "Confirmar alcance mínimo del borrador Modo demo",
+  "project": "modo-training-app",
+  "base_sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+  "cwd": "/workspace/work/phase2-modo-fix",
+  "command": [
+    "git",
+    "diff",
+    "--stat"
+  ],
+  "started_utc": "2026-10-28T23:23:52.396228+00:00",
+  "finished_utc": "2026-10-28T23:23:52.400318+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "ccc5db96-a82c-4fba-a341-c2d85cbb9599.log"
+}
+
+ index.html | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)

@@ -1,0 +1,20 @@
+{
+  "task_id": "637517ae-09b2-40de-b848-89499e768e7c",
+  "run_id": "6da30d75-ce9f-4f7e-acaf-cc2361bdc04e",
+  "title": "Buscar original UTF-8 confiable en historial del preview RM",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess;shas=subprocess.check_output(['git','log','--all','--format=%H','--','design-preview/index.html'],text=True).splitlines();print([(x,subprocess.check_output(['git','show',x+':design-preview/index.html']).decode().count(chr(65533))) for x in shas])"
+  ],
+  "started_utc": "2026-10-28T23:16:03.546512+00:00",
+  "finished_utc": "2026-10-28T23:16:03.612978+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "6da30d75-ce9f-4f7e-acaf-cc2361bdc04e.log"
+}
+
+[('24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312', 154)]

@@ -1,0 +1,49 @@
+{
+  "task_id": "d7906837-ae41-4ced-b074-c008cca9ddea",
+  "run_id": "1717851b-9bac-4a25-9522-938fcb45e239",
+  "title": "UX QA suite publicada antes de nuevos cambios",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work/phase2-arm/operations/arm-orchestrator",
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "started_utc": "2026-10-28T23:13:06.114869+00:00",
+  "finished_utc": "2026-10-28T23:13:06.402790+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "1717851b-9bac-4a25-9522-938fcb45e239.log"
+}
+
+test_approval_expiry (test_arm.Tests.test_approval_expiry) ... ok
+test_approval_reuse (test_arm.Tests.test_approval_reuse) ... ok
+test_approval_scope (test_arm.Tests.test_approval_scope) ... ok
+test_block_not_pass (test_arm.Tests.test_block_not_pass) ... ok
+test_duplicate_finish (test_arm.Tests.test_duplicate_finish) ... ok
+test_duplicate_start (test_arm.Tests.test_duplicate_start) ... ok
+test_evidence_required (test_arm.Tests.test_evidence_required) ... ok
+test_failure_not_done (test_arm.Tests.test_failure_not_done) ... ok
+test_forbidden (test_arm.Tests.test_forbidden) ... ok
+test_main_write_block (test_arm.Tests.test_main_write_block) ... ok
+test_no_self_approval (test_arm.Tests.test_no_self_approval) ... ok
+test_persistence (test_arm.Tests.test_persistence) ... ok
+test_priority (test_arm.Tests.test_priority) ... ok
+test_registry (test_arm.Tests.test_registry) ... ok
+test_safe_run (test_arm.Tests.test_safe_run) ... ok
+test_sensitive_no_executor (test_arm.Tests.test_sensitive_no_executor) ... ok
+test_sha_required (test_arm.Tests.test_sha_required) ... ok
+test_tampering (test_arm.Tests.test_tampering) ... ok
+test_unknown_action (test_arm.Tests.test_unknown_action) ... ok
+test_unknown_project (test_arm.Tests.test_unknown_project) ... ok
+test_verify_exit_status (test_cli_integrity.CliIntegrity.test_verify_exit_status) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.104s
+
+OK

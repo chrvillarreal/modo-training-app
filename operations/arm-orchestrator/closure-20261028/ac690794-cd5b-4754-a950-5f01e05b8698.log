@@ -1,0 +1,25 @@
+{
+  "task_id": "4e3de697-987e-4c6c-8e74-97aeb476808d",
+  "run_id": "ac690794-cd5b-4754-a950-5f01e05b8698",
+  "title": "Preparar copia independiente del commit publicado",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work/arm-publish",
+  "command": [
+    "git",
+    "worktree",
+    "add",
+    "-b",
+    "audit/phase2-20261028",
+    "/workspace/work/phase2-arm",
+    "c86bdfc133a1191d446a84984d758e50975f75fe"
+  ],
+  "started_utc": "2026-10-28T23:12:22.874159+00:00",
+  "finished_utc": "2026-10-28T23:12:22.895583+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "ac690794-cd5b-4754-a950-5f01e05b8698.log"
+}
+
+HEAD is now at c86bdfc fix(arm): fail verification CLI on invalid ledger and record October 28 audit
+Preparing worktree (new branch 'audit/phase2-20261028')

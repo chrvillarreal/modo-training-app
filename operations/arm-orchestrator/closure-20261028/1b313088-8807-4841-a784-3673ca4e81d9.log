@@ -1,0 +1,21 @@
+{
+  "task_id": "e78635a5-f4d3-46da-bad9-96726ce082ef",
+  "run_id": "1b313088-8807-4841-a784-3673ca4e81d9",
+  "title": "Fijar candidato RM auditado",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "git",
+    "switch",
+    "--detach",
+    "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312"
+  ],
+  "started_utc": "2026-10-28T23:13:21.912188+00:00",
+  "finished_utc": "2026-10-28T23:13:21.923770+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "1b313088-8807-4841-a784-3673ca4e81d9.log"
+}
+
+HEAD is now at 24a584c design: add responsive study preview for visual review

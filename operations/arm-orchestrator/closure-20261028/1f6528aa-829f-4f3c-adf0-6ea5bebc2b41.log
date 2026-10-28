@@ -1,0 +1,19 @@
+{
+  "task_id": "d6956481-a02a-4786-ad78-7e1f8221dd9a",
+  "run_id": "1f6528aa-829f-4f3c-adf0-6ea5bebc2b41",
+  "title": "Preparar corrección mínima MODO03 y MODO04 sólo en copia local",
+  "project": "modo-training-app",
+  "base_sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/draft_modo_fix.py"
+  ],
+  "started_utc": "2026-10-28T23:17:52.850961+00:00",
+  "finished_utc": "2026-10-28T23:17:52.873856+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "1f6528aa-829f-4f3c-adf0-6ea5bebc2b41.log"
+}
+
+Draft only: escaped persisted user fields and preserved unreadable originals; no migration or backend

@@ -1,0 +1,20 @@
+{
+  "task_id": "a602f11e-4501-4ff9-84e9-8b0e2b3ffa5b",
+  "run_id": "38daa640-ed20-4814-beca-6b0c8f2fdc9e",
+  "title": "Conservar checkpoint de revisión y scripts exactos de reproducción",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;import shutil;root=Path('/workspace/work/phase2-arm/operations/arm-orchestrator/closure-20261028');d=root/'review-checkpoint';d.mkdir(exist_ok=True);shutil.copyfile(root/'CIERRE.md',d/'CIERRE.md');d=root/'reproduction';d.mkdir(exist_ok=True);names=['local_browser.py','utf8_server.py','rm-browser-safe.cjs','rm-browser-diagnose.cjs','rm-pr2-browser.cjs','rm-extra.cjs','modo-security-tests.cjs','modo13-smoke.cjs','check_arm_artifacts.py','check_remote_resource.py','check_phase2_package.py'];[shutil.copyfile(Path('/workspace/work')/n,d/n) for n in names];print('Exact scripts archived; these retain documented session paths and are not an installed executor')"
+  ],
+  "started_utc": "2026-10-28T23:27:51.535293+00:00",
+  "finished_utc": "2026-10-28T23:27:51.561930+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "38daa640-ed20-4814-beca-6b0c8f2fdc9e.log"
+}
+
+Exact scripts archived; these retain documented session paths and are not an installed executor

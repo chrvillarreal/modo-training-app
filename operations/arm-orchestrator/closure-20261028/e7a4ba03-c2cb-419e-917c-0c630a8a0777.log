@@ -1,0 +1,39 @@
+{
+  "task_id": "dbcf3c6d-1f09-4544-b882-122d6d6b8997",
+  "run_id": "e7a4ba03-c2cb-419e-917c-0c630a8a0777",
+  "title": "Reejecutar 88 unitarias NutriSport",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "npm",
+    "test"
+  ],
+  "started_utc": "2026-10-28T23:15:32.371765+00:00",
+  "finished_utc": "2026-10-28T23:15:34.747000+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "e7a4ba03-c2cb-419e-917c-0c630a8a0777.log"
+}
+
+
+> nutrisport-pro@1.0.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/work/phase2-nutri
+
+
+ Test Files  4 passed (4)
+      Tests  88 passed (88)
+   Start at  23:15:33
+   Duration  1.62s (transform 37%, import 36%, tests 24%, worker 3%)
+
+    Isolate  4 workers spawned · ~169ms startup each (spawn + environment, per file)
+             at least ~506ms faster with isolate: false — reuses workers across files instead of one per file
+
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

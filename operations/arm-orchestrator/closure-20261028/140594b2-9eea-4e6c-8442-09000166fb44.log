@@ -1,0 +1,21 @@
+{
+  "task_id": "34887345-e87d-4369-ab9f-4276abb53782",
+  "run_id": "140594b2-9eea-4e6c-8442-09000166fb44",
+  "title": "Revisar inicialización y datos demo para borrador de recuperación",
+  "project": "modo-training-app",
+  "base_sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+  "cwd": "/workspace/work/phase2-modo",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;s=Path('index.html').read_text();print(s[s.index('<script>'):s.index('function save')])"
+  ],
+  "started_utc": "2026-10-28T23:15:16.276462+00:00",
+  "finished_utc": "2026-10-28T23:15:16.299155+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "140594b2-9eea-4e6c-8442-09000166fb44.log"
+}
+
+<script>
+let S=JSON.parse(localStorage.getItem('mt_students')||'null')||[{id:1,name:'Lucía Fernández',goal:'Fuerza general',adh:86,email:'lucia@demo.com',age:31,notes:'Priorizar técnica de sentadilla. Sin dolor actual.',last:'Hoy'},{id:2,name:'Martín Gómez',goal:'Hipertrofia',adh:67,email:'martin@demo.com',age:28,notes:'Revisar adherencia y volumen.',last:'Ayer'},{id:3,name:'Sofía Ruiz',goal:'Rendimiento',adh:92,email:'sofia@demo.com',age:26,notes:'Buena tolerancia a potencia.',last:'Hoy'},{id:4,name:'Nicolás Díaz',goal:'Recomposición',adh:50,email:'nico@demo.com',age:35,notes:'Retomar frecuencia semanal.',last:'Hace 4 días'}];const E=['Sentadilla goblet','Peso muerto rumano','Press con mancuernas','Remo con mancuerna','Dominadas','Press militar','Hip thrust','Zancadas'];const P=[['home','Inicio'],['students','Alumnos'],['routines','Rutinas'],['library','Biblioteca'],['calendar','Calendario'],['progress','Progreso']];let selected=1;let R=JSON.parse(localStorage.getItem('mt_routine')||'null')||E.slice(0,5).map((e,i)=>({name:e,sets:3,reps:10+i,rir:2,rest:90}));nav.innerHTML=P.map((x,i)=>`<button class="${i?'':'on'}" onclick="show('${x[0]}')">${x[1]}</button>`).join('');

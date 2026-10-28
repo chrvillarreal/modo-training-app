@@ -1,0 +1,32 @@
+{
+  "task_id": "58785367-53ef-4cba-9299-1d0c83f6038f",
+  "run_id": "b432ee6f-eb6a-40a2-a5a5-370af89876a6",
+  "title": "Ejecutar notas repaso respaldo y validación personal RM PR2",
+  "project": "rm-training",
+  "base_sha": "77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm-pr2",
+    "--port",
+    "4185",
+    "--",
+    "node",
+    "/workspace/work/rm-pr2-browser.cjs",
+    "personal-study-browser.cjs"
+  ],
+  "started_utc": "2026-10-28T23:22:02.100984+00:00",
+  "finished_utc": "2026-10-28T23:22:21.370008+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "b432ee6f-eb6a-40a2-a5a5-370af89876a6.log"
+}
+
+PASS personal study, restore, teacher review width=320
+PASS personal study, restore, teacher review width=360
+PASS personal study, restore, teacher review width=390
+PASS personal study, restore, teacher review width=430
+PASS personal study, restore, teacher review width=1365
+PASS HTML injection regression

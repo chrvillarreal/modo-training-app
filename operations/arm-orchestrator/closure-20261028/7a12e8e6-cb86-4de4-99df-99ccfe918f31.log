@@ -1,0 +1,80 @@
+{
+  "task_id": "48b9c6d5-715c-48b1-b256-4b542589ab14",
+  "run_id": "7a12e8e6-cb86-4de4-99df-99ccfe918f31",
+  "title": "Comparar RM PR divergente sin integrar y buscar textos originales",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "python3",
+    "-c",
+    "import subprocess,pathlib;g=lambda *a:subprocess.check_output(['git',*a],text=True);print('PR2',g('rev-parse','origin/rm-audit-p0-p1'));print('ahead behind',g('rev-list','--left-right','--count','origin/main...origin/rm-audit-p0-p1'));print(g('diff','--stat','origin/main...origin/rm-audit-p0-p1'));s=pathlib.Path('design-preview/index.html').read_text();print('REPLACEMENTS',s.count(chr(65533)));print('\\n'.join(line for line in s.splitlines() if chr(65533) in line)[:12000])"
+  ],
+  "started_utc": "2026-10-28T23:14:46.225341+00:00",
+  "finished_utc": "2026-10-28T23:14:46.279414+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "7a12e8e6-cb86-4de4-99df-99ccfe918f31.log"
+}
+
+PR2 77c90dfa6a8c2b7e9fab6be8a3f878fd73af39b6
+
+ahead behind 2	38
+
+ alumno.html                         |    2 +-
+ antes-del-primer-alumno.html        |    2 +
+ biblioteca-arm-r2.html              |    1 +
+ biomecanica-aplicada.html           |    1 +
+ buscador-academico.html             |    1 +
+ curso-arm-r2-legacy.html            |   57 +
+ curso-arm.html                      |   58 +-
+ docs/academic-search-audit.md       |   55 +
+ docs/personal-study-improvements.md |   20 +
+ docs/pre-merge-validation.md        |   39 +
+ entrenamiento-base.html             |   22 +-
+ entrenamiento.html                  |   19 +-
+ evaluacion-arm.html                 |    1 +
+ index.html                          |    2 +-
+ mis-errores.html                    |    1 +
+ repaso-arm.html                     |    1 +
+ respaldo-estudio.html               |    7 +
+ revision-respuestas.html            |    5 +
+ rm-academic-index.js                | 3121 +++++++++++++++++++++++++++++++++++
+ rm-academic-search.js               |   46 +
+ rm-answer-review.js                 |   13 +
+ rm-backup-page.js                   |    9 +
+ rm-classroom-study.js               |    5 +
+ rm-course-navigation.js             |   46 +
+ rm-evaluation-context.js            |    8 +
+ rm-evaluation-events.js             |    9 +
+ rm-exam-questions.js                |    2 +
+ rm-learning-engine.js               |   30 +
+ rm-r2-library.js                    |   39 +
+ rm-search-page.js                   |   28 +
+ rm-shell-search.js                  |   10 +
+ rm-study-backup.js                  |   36 +
+ rm-study-flow.js                    |   22 +
+ rm-ui.js                            |    8 +
+ rutinas.html                        |    2 +-
+ tests/academic.test.cjs             |   23 +
+ tests/backup.test.cjs               |   16 +
+ tests/browser.cjs                   |   47 +
+ tests/course-flow.test.cjs          |   50 +
+ tests/full-audit.cjs                |   35 +
+ tests/learning.test.cjs             |   12 +
+ tests/library.test.cjs              |   15 +
+ tests/personal-study-browser.cjs    |   27 +
+ tests/study-flow.test.cjs           |    5 +
+ 44 files changed, 3875 insertions(+), 83 deletions(-)
+
+REPLACEMENTS 154
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RM Training � Tu espacio de estudio</title>
+</style></head><body><a class="skip" href="#view">Saltar al contenido</a><aside class="sidebar" id="sidebar"><div class="brand"><span class="mark">RM</span><span>RM Training<small>FORMACI�N</small></span></div><div class="area"><span>Formaci�n</span><a href="https://rm-training-ten.vercel.app/gestion.html" target="_blank" rel="noopener">Gesti�n ?</a></div><div class="label">Tu espacio de estudio</div><nav id="nav"></nav><div class="sidefoot"><strong>Aprender. Aplicar. Volver.</strong>Curso ARM � RM Training<div class="divider"></div><a href="#criterios">Fuentes y criterios</a></div></aside><div class="main"><header class="topbar"><button class="menu" id="menu" aria-label="Abrir navegaci�n" aria-expanded="false" aria-controls="sidebar"></button><div class="mobiletitle">RM Training</div><span class="crumb" id="crumb">Formaci�n / Inicio de estudio</span><span class="preview">Propuesta visual � datos de prueba</span><a href="https://rm-training-ten.vercel.app" target="_blank" rel="noopener">Herramientas RM ?</a></header><main class="content" id="view" tabindex="-1"></main></div><div id="toast" class="toast" role="status" hidden></div>
+const destinations=[['home','Inicio de estudio','home'],['curso','Curso ARM','book'],['biblioteca','Biblioteca','library'],['biomecanica','Biomec�nica aplicada','bio'],['practica','Pr�ctica y examen','practice'],['progreso','Mi progreso y notas','chart']];
+function home(){const last=state.last;return head('Formaci�n � Curso ARM','Tu pr�ximo paso empieza ac�.','Un lugar para estudiar, poner a prueba lo que entend�s y volver a lo que necesit�s reforzar.')+'<div class="two"><section class="card feature"><span class="rings"></span><div class="eyebrow">'+(last?'Retom� tu recorrido de prueba':'Empez� tu recorrido')+'</div><h2>'+(last?'Clase '+last+' � '+e(L.find(x=>x.n===last).t):'Del concepto a la pr�ctica.')+'</h2><p>'+(last?'Volv� a la clase que abriste en esta propuesta visual.':'Explor� las once clases del curso. Cada aula re�ne la explicaci�n, el material original y las actividades.')+'</p>'+primary(last?'#aula/'+last:'#aula/01',last?'Continuar clase':'Comenzar por la clase 01')+'</section><section class="card"><div class="eyebrow">Una gu�a para estudiar</div><h2 style="margin-top:12px">A tu ritmo, con un orden.</h2>'+[['01','Comprend�','Le� la explicaci�n por partes.'],['02','Contrast�','Volv� al video o PDF original.'],['03','Aplic�','Practic� y revis� el razonamiento.']].map(x=>'<div class="step"><span class="stepnum">'+x[0]+'</span><div><h3 style="font-size:14px;margin:0">'+x[1]+'</h3><p class="muted">'+x[2]+'</p></div></div>').join('')+'</section></div><div class="sectionhead"><h2>Tu mesa de estudio</h2><a href="#curso">Ver las 11 clases </a></div><div class="routegrid">'+routeCard('curso','Un recorrido, once clases','Del rol del entrenador a la hipertrofia.','book')+routeCard('biblioteca','El material, a mano','Busc� por nombre, clase y tipo de archivo.','library')+routeCard('practica/11','Pon� a prueba una idea','Respond� y revis� el porqu�.','practice')+'</div><div class="sectionhead"><h2>Repasos pendientes</h2><a href="#progreso">Ver mi actividad </a></div><section class="card"><h3>Tu recorrido real se conserva en la aplicaci�n actual.</h3><p class="muted" style="font-size:14px;margin:0">Esta vista previa usa registros separados. Todav�a no importa tus notas ni determina qu� repasos ten�s pendientes.</p></section>'}
+function catalog(){return head('Curso ARM','Un recorrido para entender el movimiento.','Once clases. Un mismo espacio para comprender, consultar el original y practicar.')+'<div class="searchrow"><div class="searchbox">'+icon('search')+'<input type="search" id="class-search" aria-label="Buscar clases" placeholder="Buscar una clase o un tema."></div></div><p class="result-count" id="class-count">11 clases � orden original del curso</p><div class="lessonlist" id="lessonlist">'+classRows(L)+'</div>'}function classRows(items){return items.map(l=>'<a class="card lessonrow" href="#aula/'+l.n+'"><span class="number">'+l.n+'</span><div><h2>'+e(l.t)+'</h2><p>'+e(l.d)+'</p></div><span class="tag neutral">'+(state.consulted.includes(l.n)?'Consulta marcada':'Explorar clase')+'</span><span class="arrow"></span></a>').join('')||'<p>No encontr� clases con ese texto.</p>'}
+function aula(id,part='guia'){const l=L.find(x=>x.n===id)||L[10],d=STUDY_LESSONS[l.n];state.last=l.n;save();let body='';if(part==='guia'){body='<span class="tag">Explicaci�n complementaria</span><h2>Comprender esta clase</h2><div class="objectives"><h3>Al terminar, deber�as poder.</h3><ul>'+d.goals.map(x=>'<li>'+e(x)+'</li>').join('')+'</ul></div><h3>Antes de empezar</h3><p>'+e(d.before)+'</p>'+d.explanation.map((p,i)=>'<section id="parte-'+i+'"><h2><span class="subtle">0'+(i+1)+' / </span>'+['Entender el concepto','Interpretar con contexto','Conectar con el material'][i]+'</h2><p>'+e(p)+'</p></section>').join('')+'<div class="example" id="ejemplo"><div class="eyebrow">Ejemplo resuelto</div><p style="margin-top:10px">'+e(d.example)+'</p></div><details><summary>Sobre esta explicaci�n y sus fuentes</summary><p class="subtle">Gu�a complementaria elaborada con IA. No es una transcripci�n ni una clave oficial. '+(id==='11'?'C�lculos contrastados con Planes de Hipertrofia, p�ginas 4-6.':'Selecci�n de recursos por tema; pendiente de revisi�n docente exhaustiva.')+'</p><a href="#criterios">Ver criterios y procedencia</a></details><label class="subtle"><input type="checkbox" id="consulted" '+(state.consulted.includes(id)?'checked':'')+'> Marcar que consult� el material en esta propuesta</label>'}else if(part==='material'){body='<span class="tag neutral">Material original ARM</span><h2>Volv� a la fuente</h2><p class="muted">Los archivos mantienen sus rutas y su codificaci�n originales.</p>'+files(id).map(resource).join('')}else if(part==='notas'){body='<span class="tag">Notas personales de prueba</span><h2>Dej� una idea para volver</h2><label for="notes">Tus apuntes, dudas y referencias de p�gina o minuto</label><textarea id="notes" maxlength="20000" placeholder="Lo que entend�, lo que quiero revisar.">'+e(state.notes[id]||'')+'</textarea><p class="subtle" id="note-status" role="status">Se guardan por separado en este navegador.</p>'}else {body='<h2>Repasar sin mirar</h2><p>'+e(d.review[0])+'</p><details><summary>Ver respuesta y explicaci�n</summary><p>'+e(d.review[1][d.review[2]])+'</p><p>'+e(d.review[3])+'</p></details><p class="subtle">Vista de repaso. La programaci�n de repasos del producto actual se conectar� despu�s de aprobar el dise�o.</p>'}return '<a class="back" href="#curso"> Todas las clases</a>'+head('Clase '+id+' / 11 � Curso ARM',e(l.t),e(l.d))+'<div class="tabs">'+[['guia','Gu�a de estudio'],['material','Material original'],['practica','Pr�ctica'],['notas','Mis notas'],['repaso','Repaso']].map(([p,t])=>'<a class="'+(p===part?'active':'')+'" '+(p===part?'aria-current="page"':'')+' href="#'+(p==='practica'?'practica/'+id:'aula/'+id+'/'+p)+'">'+t+'</a>').join('')+'</div><div class="lessonlayout"><article class="card reading">'+body+'<div class="lessonfoot"><a href="#aula/'+id+'/material">Consultar el material </a>'+primary('#practica/'+id,'Pasar a la pr�ctica')+'</div></article><aside class="card toc"><div class="label">En esta clase</div><div class="tocnav"><a href="#aula/'+id+'/guia">Prop�sito y objetivos</a><a href="#aula/'+id+'/guia" data-scroll="parte-0">Explicaci�n guiada</a><a href="#aula/'+id+'/guia" data-scroll="ejemplo">Ejemplo resuelto</a><a href="#aula/'+id+'/material">Videos y PDFs</a><a href="#practica/'+id+'">Comprensi�n y aplicaci�n</a></div><div class="divider"></div><h3 style="font-size:14px">Tambi�n pod�s escuchar</h3><p class="subtle">Lectura sint�tica de la gu�a complementaria.</p><button class="btn" id="voice">'+icon('play')+' Escuchar gu�a</button><button class="btn text" id="stopvoice">Detener</button><div class="divider"></div><a href="#aula/'+id+'/notas">'+icon('note')+' Abrir mis notas</a></aside></div>'}
+let qIndex=0;function practice(id){const l=L.find(x=>x.n===id)||L[10],d=STUDY_LESSONS[l.n],q=d.q[qIndex%d.q.length];return '<a class="back" href="#aula/'+id+'"> Volver a la clase</a>'+head('Pr�ctica guiada � Clase '+id,e(l.t),'Respond� sin mirar. Despu�s, revis� el razonamiento y contrastalo con la fuente.')+'<div class="lessonlayout"><section class="card question"><div class="eyebrow">Comprensi�n � Pregunta '+(qIndex%d.q.length+1)+' de '+d.q.length+'</div><form id="answerform"><fieldset><legend>'+e(q[0])+'</legend>'+q[1].map((o,i)=>'<label class="option"><input type="radio" name="answer" value="'+i+'"><span>'+e(o)+'</span></label>').join('')+'</fieldset><div class="actions"><button type="submit" class="btn primary">Comprobar respuesta</button><a class="btn" href="#aula/'+id+'/material">Consultar material</a></div><p class="subtle" id="answer-error" role="status"></p></form><div class="feedback" id="feedback" role="status" hidden></div><details><summary>Actividad de aplicaci�n</summary><p>'+e(d.task)+'</p><a href="#aula/'+id+'/notas">Escribir mi razonamiento en notas </a><details><summary>Ver criterios de autoevaluaci�n</summary><ul>'+d.rubric.map(x=>'<li>'+e(x)+'</li>').join('')+'</ul><p class="subtle">Autoevaluaci�n; no equivale a una correcci�n docente.</p></details></details></section><aside class="card"><span class="tag">Apoyo a mano</span><h3 style="margin-top:15px">Pod�s volver al original.</h3><p class="muted" style="font-size:14px">La correcci�n mantiene tu respuesta visible mientras consult�s la referencia.</p>'+(id==='11'?'<a class="btn" target="_blank" rel="noopener" href="'+hipSource()+'">Planes de Hipertrofia ?</a><p class="subtle" style="margin-top:12px">PDF original ARM � p�ginas 4-6</p>':'<a class="btn" href="#aula/'+id+'/material">Ver fuentes de la clase</a>')+'<div class="divider"></div><p class="subtle">Esta pr�ctica utiliza las preguntas y explicaciones complementarias existentes. No es una simulaci�n de examen.</p></aside></div>'}
+function resource(p){const video=/\.(mp4|mov|mpg)$/i.test(p),pdf=/\.pdf$/i.test(p);return '<article class="card resource"><span class="tag neutral">'+(video?'Video':pdf?'PDF':'Archivo')+' � Original ARM</span><h3 style="margin-top:12px">'+e(p.split('/').pop())+'</h3><details><summary>'+(video?'Reproducir aqu�':pdf?'Leer aqu�':'Ver opciones del archivo')+'</summary>'+(video?'<video controls playsinline preload="none" src="'+e(url(p))+'"></video>':pdf?'<iframe loading="lazy" title="'+e(p.split('/').pop())+'" src="'+e(url(p))+'"></iframe>':'<p>Este formato se consulta descargando el archivo.</p>')+'</details><a href="'+e(url(p))+'" target="_blank" rel="noopener">Abrir archivo original ?</a><p class="subtle media-status" role="status"></p></article>'}
+function library(){return head('Biblioteca','Encontr� lo que necesit�s.','199 archivos del curso, con sus rutas originales. Los dos PDFs complementarios se distinguen al pie.')+'<div class="searchrow"><div class="searchbox">'+icon('search')+'<input type="search" id="resource-search" aria-label="Buscar material" placeholder="Buscar material por nombre."></div><select id="class-filter" aria-label="Filtrar por clase"><option value="">Todas las clases</option>'+L.map(l=>'<option value="'+l.n+'">'+l.n+' � '+e(l.t)+'</option>').join('')+'</select><select id="type-filter" aria-label="Filtrar por formato"><option value="">Todos los tipos</option><option value="pdf">PDF</option><option value="video">Video</option><option value="other">Otros</option></select></div><p id="resource-count" class="result-count" role="status"></p><div id="resource-list"></div>'+complementary()}
+function complementary(){return '<div class="sectionhead"><h2>Bibliograf�a complementaria</h2></div>'+[['biomecanica-basica-actividad-fisica-deporte-2015.pdf','Biomec�nica b�sica aplicada a la actividad f�sica y el deporte'

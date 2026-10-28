@@ -1,0 +1,45 @@
+{
+  "task_id": "7f787cfa-b44e-46f5-93eb-b7a627c4d472",
+  "run_id": "993e9418-e52c-44dd-949c-be280bfadeb4",
+  "title": "Regresión PWA primera instalación y actualización conservando datos",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "env",
+    "CHROMIUM_PATH=/usr/bin/chromium",
+    "npm",
+    "run",
+    "test:e2e",
+    "--",
+    "--grep",
+    "actualización explícita"
+  ],
+  "started_utc": "2026-10-28T23:20:22.018463+00:00",
+  "finished_utc": "2026-10-28T23:20:32.469709+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "993e9418-e52c-44dd-949c-be280bfadeb4.log"
+}
+
+
+> nutrisport-pro@1.0.0 test:e2e
+> playwright test --grep actualización explícita
+
+
+Running 1 test using 1 worker
+
+  ✓  1 tests/stage-two.spec.ts:188:1 › actualización explícita de PWA conserva IndexedDB (7.5s)
+
+  1 passed (9.5s)
+[WebServer] (node:4883) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:4897) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:4924) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

@@ -1,0 +1,27 @@
+{
+  "task_id": "c856a8f6-5e85-4b97-9093-05bc23a20fbb",
+  "run_id": "eb61a21c-a5c2-405f-8a1f-a408df786f21",
+  "title": "Reproducir fallo de inicialización heredada RM en navegador",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm",
+    "--port",
+    "4178",
+    "--",
+    "node",
+    "/workspace/work/rm-browser-diagnose.cjs"
+  ],
+  "started_utc": "2026-10-28T23:17:31.998851+00:00",
+  "finished_utc": "2026-10-28T23:17:34.167659+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "eb61a21c-a5c2-405f-8a1f-a408df786f21.log"
+}
+
+{"name":"entrenamiento-base.html","errors":["Invalid regular expression: /[Ì€-Í¯]/g: Range out of order in character class","renderTopicView is not defined"],"state":{"ready":"complete","view":null,"renderType":"undefined","script":["","http://127.0.0.1:4178/study-legacy.js"]}}
+{"name":"banco-arm.html","errors":["Invalid regular expression: /[Ì€-Í¯]/g: Range out of order in character class","renderTopicView is not defined"],"state":{"ready":"complete","view":{"name":"examenfinal"},"link":"<a class=\"btn\" href=\"examen-estudio.html\">Abrir examen actualizado</a>","renderType":"function","script":["","http://127.0.0.1:4178/study-legacy.js"]}}

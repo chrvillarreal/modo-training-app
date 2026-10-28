@@ -1,0 +1,26 @@
+{
+  "task_id": "d34bc379-fc2e-457d-8b56-456c196ca9bd",
+  "run_id": "a49fa9c2-45cf-44c8-a2f0-ea78d2592ef5",
+  "title": "Recuperar ramas funcionales Modo para comparación local",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work/arm-publish",
+  "command": [
+    "git",
+    "fetch",
+    "origin",
+    "feat/rutina-agustin-link",
+    "feature/modo-training-1.3",
+    "feat/ai-operations-mvp"
+  ],
+  "started_utc": "2026-10-28T23:13:22.720907+00:00",
+  "finished_utc": "2026-10-28T23:13:25.640951+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "a49fa9c2-45cf-44c8-a2f0-ea78d2592ef5.log"
+}
+
+From https://github.com/chrvillarreal/modo-training-app
+ * branch            feat/rutina-agustin-link -> FETCH_HEAD
+ * branch            feature/modo-training-1.3 -> FETCH_HEAD
+ * branch            feat/ai-operations-mvp -> FETCH_HEAD

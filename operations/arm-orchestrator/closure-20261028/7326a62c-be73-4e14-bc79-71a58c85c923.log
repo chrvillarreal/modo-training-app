@@ -1,0 +1,42 @@
+{
+  "task_id": "dceb9c7e-f3c6-4675-bf0b-c6609de41242",
+  "run_id": "7326a62c-be73-4e14-bc79-71a58c85c923",
+  "title": "Reejecutar unitarias RM fijadas",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work/phase2-rm",
+  "command": [
+    "npm",
+    "test"
+  ],
+  "started_utc": "2026-10-28T23:13:59.348378+00:00",
+  "finished_utc": "2026-10-28T23:14:00.103820+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "7326a62c-be73-4e14-bc79-71a58c85c923.log"
+}
+
+
+> test
+> node --test tests/study.test.cjs
+
+✔ exam subtracts mistakes and counts omissions without clamping negative points (2.545986ms)
+✔ immediate repeated answers never become delayed retention (1.269443ms)
+✔ backup merges attempts without replacing existing notes or other records (2.564834ms)
+✔ storage unavailable preserves current-session work and reports failure (1.016832ms)
+✔ successful delayed review schedules a later review without repeated-click inflation (0.981981ms)
+✔ all source scripts parse and static local destinations exist (36.384582ms)
+✔ eleven guides have valid exercise keys and a distinct retrieval question (1.52632ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 117.8112
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

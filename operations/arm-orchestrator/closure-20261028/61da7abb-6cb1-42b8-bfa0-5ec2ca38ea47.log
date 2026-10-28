@@ -1,0 +1,24 @@
+{
+  "task_id": "b01dda36-3187-4adc-9caa-bd609ba37a01",
+  "run_id": "61da7abb-6cb1-42b8-bfa0-5ec2ca38ea47",
+  "title": "Revalidar paquete ARM tras recuperar evidencia omitida",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/check_arm_artifacts.py"
+  ],
+  "started_utc": "2026-10-28T23:16:24.624770+00:00",
+  "finished_utc": "2026-10-28T23:16:24.659523+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "61da7abb-6cb1-42b8-bfa0-5ec2ca38ea47.log"
+}
+
+{
+  "runs_checked": 19,
+  "events_checked": 70,
+  "chain_valid": true,
+  "missing_evidence": []
+}

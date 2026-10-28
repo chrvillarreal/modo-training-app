@@ -1,0 +1,37 @@
+{
+  "task_id": "55dad193-cc35-4ae0-b064-be4ecc9123db",
+  "run_id": "19edba26-e6cd-423e-a74a-81c90fd968c7",
+  "title": "Regresión de aceptación Modo contra original vulnerable",
+  "project": "modo-training-app",
+  "base_sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-modo",
+    "--port",
+    "4179",
+    "--",
+    "node",
+    "/workspace/work/modo-security-tests.cjs"
+  ],
+  "started_utc": "2026-10-28T23:17:31.991322+00:00",
+  "finished_utc": "2026-10-28T23:17:33.968113+00:00",
+  "exit_code": 1,
+  "status": "failed",
+  "evidence": "19edba26-e6cd-423e-a74a-81c90fd968c7.log"
+}
+
+AssertionError [ERR_ASSERTION]: Student content executed JavaScript
+
+1 !== undefined
+
+    at /workspace/work/modo-security-tests.cjs:13:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: undefined,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

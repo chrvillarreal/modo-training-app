@@ -1,0 +1,177 @@
+{
+  "task_id": "97eb2381-1a91-4bdc-aa16-a239e8281970",
+  "run_id": "934cf7b6-3e6e-4caf-b88e-64badd77d15b",
+  "title": "Reejecutar preview RM usando script configurable y navegador disponible",
+  "project": "rm-training",
+  "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/local_browser.py",
+    "--root",
+    "/workspace/work/phase2-rm",
+    "--port",
+    "4180",
+    "--",
+    "node",
+    "/workspace/work/phase2-arm/operations/arm-orchestrator/tests/rm-preview.cjs"
+  ],
+  "started_utc": "2026-10-28T23:19:19.504872+00:00",
+  "finished_utc": "2026-10-28T23:19:22.278023+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "934cf7b6-3e6e-4caf-b88e-64badd77d15b.log"
+}
+
+{
+  "results": [
+    {
+      "width": 320,
+      "route": "inicio",
+      "overflow": false,
+      "replacementCharacters": 35
+    },
+    {
+      "width": 320,
+      "route": "curso",
+      "overflow": false,
+      "replacementCharacters": 7
+    },
+    {
+      "width": 320,
+      "route": "aula/11",
+      "overflow": false,
+      "replacementCharacters": 19
+    },
+    {
+      "width": 320,
+      "route": "practica/11",
+      "overflow": false,
+      "replacementCharacters": 21
+    },
+    {
+      "width": 320,
+      "route": "aula/11/notas",
+      "overflow": false,
+      "replacementCharacters": 17
+    },
+    {
+      "width": 320,
+      "route": "biblioteca",
+      "overflow": false,
+      "replacementCharacters": 77
+    },
+    {
+      "width": 390,
+      "route": "inicio",
+      "overflow": false,
+      "replacementCharacters": 33
+    },
+    {
+      "width": 390,
+      "route": "curso",
+      "overflow": false,
+      "replacementCharacters": 7
+    },
+    {
+      "width": 390,
+      "route": "aula/11",
+      "overflow": false,
+      "replacementCharacters": 19
+    },
+    {
+      "width": 390,
+      "route": "practica/11",
+      "overflow": false,
+      "replacementCharacters": 21
+    },
+    {
+      "width": 390,
+      "route": "aula/11/notas",
+      "overflow": false,
+      "replacementCharacters": 17
+    },
+    {
+      "width": 390,
+      "route": "biblioteca",
+      "overflow": false,
+      "replacementCharacters": 77
+    },
+    {
+      "width": 430,
+      "route": "inicio",
+      "overflow": false,
+      "replacementCharacters": 33
+    },
+    {
+      "width": 430,
+      "route": "curso",
+      "overflow": false,
+      "replacementCharacters": 7
+    },
+    {
+      "width": 430,
+      "route": "aula/11",
+      "overflow": false,
+      "replacementCharacters": 19
+    },
+    {
+      "width": 430,
+      "route": "practica/11",
+      "overflow": false,
+      "replacementCharacters": 21
+    },
+    {
+      "width": 430,
+      "route": "aula/11/notas",
+      "overflow": false,
+      "replacementCharacters": 17
+    },
+    {
+      "width": 430,
+      "route": "biblioteca",
+      "overflow": false,
+      "replacementCharacters": 77
+    },
+    {
+      "width": 1440,
+      "route": "inicio",
+      "overflow": false,
+      "replacementCharacters": 40
+    },
+    {
+      "width": 1440,
+      "route": "curso",
+      "overflow": false,
+      "replacementCharacters": 14
+    },
+    {
+      "width": 1440,
+      "route": "aula/11",
+      "overflow": false,
+      "replacementCharacters": 30
+    },
+    {
+      "width": 1440,
+      "route": "practica/11",
+      "overflow": false,
+      "replacementCharacters": 29
+    },
+    {
+      "width": 1440,
+      "route": "aula/11/notas",
+      "overflow": false,
+      "replacementCharacters": 28
+    },
+    {
+      "width": 1440,
+      "route": "biblioteca",
+      "overflow": false,
+      "replacementCharacters": 84
+    },
+    {
+      "notesPersisted": true
+    }
+  ],
+  "errors": []
+}

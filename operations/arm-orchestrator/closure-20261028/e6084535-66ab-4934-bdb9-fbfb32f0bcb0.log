@@ -1,0 +1,24 @@
+{
+  "task_id": "4e06b4b2-7342-4683-8a80-3f71738574fb",
+  "run_id": "e6084535-66ab-4934-bdb9-fbfb32f0bcb0",
+  "title": "Preparar demo Modo en copia independiente",
+  "project": "modo-training-app",
+  "base_sha": "0bb492437d3f24d2b29c1ed608ffc8080b21230a",
+  "cwd": "/workspace/work/arm-publish",
+  "command": [
+    "git",
+    "worktree",
+    "add",
+    "--detach",
+    "/workspace/work/phase2-modo",
+    "0bb492437d3f24d2b29c1ed608ffc8080b21230a"
+  ],
+  "started_utc": "2026-10-28T23:13:26.012092+00:00",
+  "finished_utc": "2026-10-28T23:13:26.020725+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "e6084535-66ab-4934-bdb9-fbfb32f0bcb0.log"
+}
+
+HEAD is now at 0bb4924 Add shareable Agustin workout page
+Preparing worktree (detached HEAD 0bb4924)

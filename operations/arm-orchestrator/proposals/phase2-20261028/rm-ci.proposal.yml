@@ -1,0 +1,43 @@
+{
+  "name": "RM local functional checks (proposal, not activated)",
+  "on": {
+    "pull_request": {},
+    "workflow_dispatch": {}
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "jobs": {
+    "qa": {
+      "runs-on": "ubuntu-latest",
+      "timeout-minutes": 10,
+      "steps": [
+        {
+          "uses": "actions/checkout@v4",
+          "with": {
+            "persist-credentials": false
+          }
+        },
+        {
+          "uses": "actions/setup-node@v4",
+          "with": {
+            "node-version": "24"
+          }
+        },
+        {
+          "run": "node --test tests/*.test.cjs"
+        },
+        {
+          "run": "npm install --no-save --ignore-scripts --package-lock=false playwright@1.64.1"
+        },
+        {
+          "run": "npx playwright install --with-deps chromium"
+        },
+        {
+          "name": "Browser against loopback UTF-8 server",
+          "run": "export PLAYWRIGHT_MODULE=\"$(node -p \"require.resolve('playwright')\")\"\nexport CHROME_PATH=\"$(node -e \"process.stdout.write(require('playwright').chromium.executablePath())\")\"\nexport RM_CHROMIUM_PATH=\"$CHROME_PATH\"\nexport RM_TEST_URL=http://127.0.0.1:4178/\nnode tests/server.cjs &\ntask_server_pid=$!\ntrap 'kill \"$task_server_pid\"' EXIT\ncurl --retry 10 --retry-connrefused --retry-delay 1 --fail http://127.0.0.1:4178/curso-arm.html > /dev/null\nnode tests/browser.cjs\n"
+        }
+      ]
+    }
+  }
+}

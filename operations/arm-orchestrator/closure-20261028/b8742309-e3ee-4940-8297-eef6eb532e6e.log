@@ -1,0 +1,412 @@
+{
+  "task_id": "b825b5d4-4b78-4e7e-bf66-f7e949e29c82",
+  "run_id": "b8742309-e3ee-4940-8297-eef6eb532e6e",
+  "title": "Diagnosticar actualización PWA fallida sin alterar producto",
+  "project": "calculadora-nutricion-deportiva",
+  "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+  "cwd": "/workspace/work/phase2-nutri",
+  "command": [
+    "cat",
+    "src/PwaSettings.tsx",
+    "test-results/stage-two-actualización-explícita-de-PWA-conserva-IndexedDB/error-context.md"
+  ],
+  "started_utc": "2026-10-28T23:18:12.785205+00:00",
+  "finished_utc": "2026-10-28T23:18:12.788015+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "b8742309-e3ee-4940-8297-eef6eb532e6e.log"
+}
+
+import { useEffect, useState } from "react";
+type InstallEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: string }>;
+};
+let registrationTask: Promise<ServiceWorkerRegistration> | undefined;
+function registerWorker() {
+  return (registrationTask ??= navigator.serviceWorker
+    .register("/sw.js", { updateViaCache: "none" })
+    .catch((error) => {
+      registrationTask = undefined;
+      throw error;
+    }));
+}
+export function PwaSettings() {
+  const [ready, setReady] = useState(false),
+    [online, setOnline] = useState(navigator.onLine),
+    [error, setError] = useState(""),
+    [install, setInstall] = useState<InstallEvent | null>(null),
+    [waiting, setWaiting] = useState<ServiceWorker | null>(null),
+    [updating, setUpdating] = useState(false);
+  useEffect(() => {
+    let disposed = false,
+      registration: ServiceWorkerRegistration | undefined;
+    const status = () => setOnline(navigator.onLine);
+    const prompt = (e: Event) => {
+      e.preventDefault();
+      setInstall(e as InstallEvent);
+    };
+    const installed = () => setInstall(null);
+    const onMessage = (e: MessageEvent) => {
+      if (e.data?.type === "NUTRISPORT_OFFLINE_READY") setReady(true);
+    };
+    const check = () => {
+      if (registration?.waiting) setWaiting(registration.waiting);
+    };
+    const onUpdate = () => {
+      const worker = registration?.installing;
+      worker?.addEventListener("statechange", () => {
+        if (!disposed && worker.state === "installed") {
+          setReady(!!navigator.serviceWorker.controller);
+          check();
+        }
+      });
+    };
+    window.addEventListener("online", status);
+    window.addEventListener("offline", status);
+    window.addEventListener("beforeinstallprompt", prompt);
+    window.addEventListener("appinstalled", installed);
+    if ("serviceWorker" in navigator && import.meta.env.PROD) {
+      navigator.serviceWorker.addEventListener("message", onMessage);
+      registerWorker()
+        .then(async (r) => {
+          if (disposed) return;
+          registration = r;
+          check();
+          setReady(!!navigator.serviceWorker.controller);
+          r.addEventListener("updatefound", onUpdate);
+          r.active?.postMessage({ type: "STATUS" });
+        })
+        .catch(() => {
+          if (!disposed)
+            setError(
+              "No se pudo preparar el modo sin conexión. Volvé a abrir la app con conexión segura.",
+            );
+        });
+    }
+    return () => {
+      disposed = true;
+      window.removeEventListener("online", status);
+      window.removeEventListener("offline", status);
+      window.removeEventListener("beforeinstallprompt", prompt);
+      window.removeEventListener("appinstalled", installed);
+      navigator.serviceWorker?.removeEventListener("message", onMessage);
+      registration?.removeEventListener("updatefound", onUpdate);
+    };
+  }, []);
+  async function update() {
+    setUpdating(true);
+    setError("");
+    try {
+      const registration = await navigator.serviceWorker.getRegistration();
+      const worker = registration?.waiting;
+      if (!worker)
+        throw new Error(
+          "La actualización ya no está disponible. Cerrá otras pestañas de la app y volvé a abrirla.",
+        );
+      const activate = () => {
+        if (worker.state === "activated") {
+          worker.removeEventListener("statechange", activate);
+          window.location.reload();
+        } else if (worker.state === "redundant") {
+          worker.removeEventListener("statechange", activate);
+          setUpdating(false);
+          setError(
+            "La actualización no pudo activarse. Volvé a abrir la app con conexión.",
+          );
+        }
+      };
+      worker.addEventListener("statechange", activate);
+      worker.postMessage({ type: "ACTIVATE_UPDATE" });
+    } catch (e) {
+      setUpdating(false);
+      setError(
+        e instanceof Error ? e.message : "No se pudo aplicar la actualización.",
+      );
+    }
+  }
+  return (
+    <section className="panel">
+      <h2>Instalar y usar sin conexión</h2>
+      <p>
+        {online ? "Con conexión" : "Sin conexión"} ·{" "}
+        {ready
+          ? "Recursos disponibles para uso sin conexión."
+          : "Preparando recursos locales. Abrí esta sección con conexión para habilitar el uso offline."}
+      </p>
+      {error && (
+        <p role="alert" className="error">
+          {error}
+        </p>
+      )}
+      <p className="muted">
+        Abrí la aplicación una vez con conexión y esperá a que los recursos
+        estén listos. Luego podés usar calculadoras, fichas, backups e informes
+        PDF sin red. El guardado sigue en el mismo navegador y origen.
+      </p>
+      <div className="actions">
+        {install ? (
+          <button
+            onClick={async () => {
+              try {
+                await install.prompt();
+                await install.userChoice;
+                setInstall(null);
+              } catch {
+                setError(
+                  "El navegador no pudo mostrar la instalación. Usá su menú para instalar.",
+                );
+              }
+            }}
+          >
+            Instalar NutriSport Pro
+          </button>
+        ) : (
+          <p>
+            Para instalar: usá «Instalar app» del navegador o, en Safari de
+            iPhone/iPad, «Compartir → Agregar a inicio». La disponibilidad
+            depende del navegador y requiere HTTPS (o localhost).
+          </p>
+        )}
+        {waiting && (
+          <button disabled={updating} onClick={update}>
+            Aplicar actualización y recargar
+          </button>
+        )}
+      </div>
+      <p className="muted">
+        Las actualizaciones se aplican con este botón cuando hay otra versión
+        abierta. Terminá de guardar y exportá un respaldo antes de actualizar.
+        La caché contiene solo la aplicación; no guarda fichas ni informes
+        generados. Desinstalar no equivale a eliminar todos los datos del
+        navegador.
+      </p>
+    </section>
+  );
+}
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: stage-two.spec.ts >> actualización explícita de PWA conserva IndexedDB
+- Location: tests/stage-two.spec.ts:188:1
+
+# Error details
+
+```
+Test timeout of 30000ms exceeded.
+```
+
+```
+Error: page.waitForEvent: Test timeout of 30000ms exceeded.
+=========================== logs ===========================
+waiting for event "load"
+============================================================
+```
+
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - link "NUTRISPORT PRO ESPACIO PROFESIONAL · MVP 1.0" [ref=e5] [cursor=pointer]:
+      - /url: "#main"
+      - text: NUTRISPORT PRO
+      - generic [ref=e6]: ESPACIO PROFESIONAL · MVP 1.0
+    - navigation "Principal" [ref=e7]:
+      - button "Inicio" [ref=e8] [cursor=pointer]:
+        - generic [aria-hidden] [ref=e9]: ◈
+        - text: Inicio
+      - button "Alumnos" [ref=e10] [cursor=pointer]:
+        - generic [aria-hidden] [ref=e11]: ○
+        - text: Alumnos
+      - button "Calculadoras" [ref=e12] [cursor=pointer]:
+        - generic [aria-hidden] [ref=e13]: ∑
+        - text: Calculadoras
+      - button "Evaluaciones" [ref=e14] [cursor=pointer]:
+        - generic [aria-hidden] [ref=e15]: ▤
+        - text: Evaluaciones
+      - button "Seguimiento" [ref=e16] [cursor=pointer]:
+        - generic [aria-hidden] [ref=e17]: ↗
+        - text: Seguimiento
+      - button "Configuración" [ref=e18] [cursor=pointer]:
+        - generic [aria-hidden] [ref=e19]: ⚙
+        - text: Configuración
+    - generic [ref=e20]:
+      - text: Datos en tu dispositivo
+      - generic [ref=e22]: Sin cuenta · Sin nube
+  - main [ref=e23]:
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - paragraph [ref=e26]: NUTRICIÓN DEPORTIVA / CONFIGURACIÓN
+        - heading "Configuración" [level=1] [ref=e27]
+        - paragraph [ref=e28]: Herramientas simples para una práctica organizada.
+      - generic [ref=e29]: LOCAL · GRATUITO
+    - status [ref=e30]: Ejemplo ficticio disponible en Alumnos.
+    - generic [ref=e32]:
+      - heading "Instalar y usar sin conexión" [level=2] [ref=e33]
+      - paragraph [ref=e34]: Con conexión · Recursos disponibles para uso sin conexión.
+      - alert [ref=e35]: La actualización ya no está disponible. Cerrá otras pestañas de la app y volvé a abrirla.
+      - paragraph [ref=e36]: Abrí la aplicación una vez con conexión y esperá a que los recursos estén listos. Luego podés usar calculadoras, fichas, backups e informes PDF sin red. El guardado sigue en el mismo navegador y origen.
+      - generic [ref=e37]:
+        - paragraph [ref=e38]: "Para instalar: usá «Instalar app» del navegador o, en Safari de iPhone/iPad, «Compartir → Agregar a inicio». La disponibilidad depende del navegador y requiere HTTPS (o localhost)."
+        - button "Aplicar actualización y recargar" [ref=e39] [cursor=pointer]
+      - paragraph [ref=e40]: Las actualizaciones se aplican con este botón cuando hay otra versión abierta. Terminá de guardar y exportá un respaldo antes de actualizar. La caché contiene solo la aplicación; no guarda fichas ni informes generados. Desinstalar no equivale a eliminar todos los datos del navegador.
+    - generic [ref=e41]:
+      - heading "Copias de seguridad" [level=2] [ref=e42]
+      - paragraph [ref=e43]: "Exportá fichas y evaluaciones en JSON. La importación reemplaza todos los datos de este navegador: exportá antes una copia actual."
+      - generic [ref=e44]:
+        - button "Exportar copia JSON" [ref=e45] [cursor=pointer]
+        - generic [ref=e46]:
+          - text: Elegir copia JSON
+          - button "Elegir copia JSON" [ref=e47]
+    - generic [ref=e48]:
+      - heading "Privacidad y persistencia" [level=2] [ref=e49]
+      - list [ref=e50]:
+        - listitem [ref=e51]: Fichas y evaluaciones permanecen en IndexedDB de este navegador y origen. La app no las envía a servidores.
+        - listitem [ref=e52]: No hay cifrado propio, contraseña ni sincronización entre dispositivos. Cualquier persona con acceso a este perfil del navegador puede ver los datos.
+        - listitem [ref=e53]: El modo privado, la limpieza del navegador, cambiar de dominio o el desalojo de almacenamiento pueden provocar pérdida de acceso o datos.
+        - listitem [ref=e54]: "Las copias JSON contienen información legible: guardalas protegidas y compartilas solo con autorización."
+        - listitem [ref=e55]: Usá alias y registrá solo lo necesario. Mantené copias periódicas en un lugar seguro.
+      - button "Solicitar persistencia al navegador" [ref=e56] [cursor=pointer]
+    - generic [ref=e57]:
+      - heading "Datos de prueba" [level=2] [ref=e58]
+      - paragraph [ref=e59]: Agrega una ficha y evaluación ficticias identificadas como ejemplo. No reemplaza tus datos. Podés eliminarlas desde Alumnos.
+      - button "Cargar ejemplo ficticio" [ref=e60] [cursor=pointer]
+    - generic [ref=e61]: NutriSport Pro MVP 1.0 · Estimaciones para adultos · Herramienta de apoyo con revisión profesional.
+```
+
+# Test source
+
+```ts
+  121 |     const raw = JSON.parse(readFileSync((await backup.path())!, "utf8"));
+  122 |     expect(raw.version).toBe(2);
+  123 |     expect(
+  124 |       raw.assessments.some((a: any) => a.formula === "cunningham-1980-v1"),
+  125 |     ).toBe(true);
+  126 |     expect(raw.assessments.some((a: any) => !a.schemaVersion)).toBe(true);
+  127 |     const cached = await page.evaluate(async () => {
+  128 |       const urls: string[] = [];
+  129 |       for (const name of await caches.keys()) {
+  130 |         const cache = await caches.open(name);
+  131 |         for (const r of await cache.keys()) urls.push(r.url);
+  132 |       }
+  133 |       return urls;
+  134 |     });
+  135 |     expect(cached.some((u) => u.endsWith("/fonts/NutriSans.ttf"))).toBe(true);
+  136 |     expect(cached.some((u) => u.includes("report-"))).toBe(true);
+  137 |     expect(cached.some((u) => u.includes(".pdf"))).toBe(false);
+  138 |     const manifest = await page.evaluate(async () =>
+  139 |       JSON.parse(await (await caches.match("/manifest.webmanifest"))!.text()),
+  140 |     );
+  141 |     expect(manifest.display).toBe("standalone");
+  142 |     expect(manifest.icons.some((i: any) => i.sizes === "512x512")).toBe(true);
+  143 |     // Escribir y restaurar los dos esquemas también sin red.
+  144 |     await page
+  145 |       .getByLabel("Elegir copia JSON")
+  146 |       .setInputFiles((await backup.path())!);
+  147 |     await page
+  148 |       .getByRole("button", { name: "Reemplazar datos con esta copia" })
+  149 |       .click();
+  150 |     await expect(page.getByRole("status")).toHaveText(
+  151 |       "Copia restaurada correctamente.",
+  152 |     );
+  153 |     await page
+  154 |       .getByRole("navigation")
+  155 |       .getByRole("button", { name: "Alumnos", exact: true })
+  156 |       .click();
+  157 |     await page
+  158 |       .getByRole("button", { name: "Nuevo alumno", exact: true })
+  159 |       .click();
+  160 |     await page.getByLabel("Nombre o alias").fill("Offline Ficticio");
+  161 |     await page
+  162 |       .getByRole("button", { name: "Guardar ficha", exact: true })
+  163 |       .click();
+  164 |     await expect(
+  165 |       page.getByRole("heading", {
+  166 |         name: "Ficha · Offline Ficticio",
+  167 |         exact: true,
+  168 |       }),
+  169 |     ).toBeVisible();
+  170 |     await page.getByRole("button", { name: "Editar", exact: true }).click();
+  171 |     await page.getByLabel("Nombre o alias").fill("Offline Editado");
+  172 |     await page
+  173 |       .getByRole("button", { name: "Guardar ficha", exact: true })
+  174 |       .click();
+  175 |     await page
+  176 |       .getByRole("button", { name: "Eliminar alumno", exact: true })
+  177 |       .click();
+  178 |     await expect(
+  179 |       page.getByRole("heading", {
+  180 |         name: "Alex Ejemplo (ficticio)",
+  181 |         exact: true,
+  182 |       }),
+  183 |     ).toBeVisible();
+  184 |     expect(errors).toEqual([]);
+  185 |     expect(external).toEqual([]);
+  186 |   });
+  187 | }
+  188 | test("actualización explícita de PWA conserva IndexedDB", async ({ page }) => {
+  189 |   const swPath = "dist/sw.js";
+  190 |   const original = readFileSync(swPath, "utf8");
+  191 |   try {
+  192 |     await page.goto("/");
+  193 |     await page
+  194 |       .getByRole("navigation")
+  195 |       .getByRole("button", { name: "Configuración", exact: true })
+  196 |       .click();
+  197 |     await page.getByRole("button", { name: "Cargar ejemplo ficticio" }).click();
+  198 |     await expect(
+  199 |       page.getByText("Recursos disponibles para uso sin conexión.", {
+  200 |         exact: false,
+  201 |       }),
+  202 |     ).toBeVisible();
+  203 |     const foreign = "cache-otra-app";
+  204 |     await page.evaluate(async (name) => {
+  205 |       await caches.open(name);
+  206 |     }, foreign);
+  207 |     writeFileSync(
+  208 |       swPath,
+  209 |       original.replace(
+  210 |         /nutrisport-static-[a-f0-9]+/g,
+  211 |         "nutrisport-static-test-update",
+  212 |       ),
+  213 |     );
+  214 |     await page.evaluate(async () => {
+  215 |       await (await navigator.serviceWorker.ready).update();
+  216 |     });
+  217 |     const update = page.getByRole("button", {
+  218 |       name: "Aplicar actualización y recargar",
+  219 |     });
+  220 |     await expect(update).toBeVisible();
+> 221 |     await Promise.all([page.waitForEvent("load"), update.click()]);
+      |                             ^ Error: page.waitForEvent: Test timeout of 30000ms exceeded.
+  222 |     await page
+  223 |       .getByRole("navigation")
+  224 |       .getByRole("button", { name: "Alumnos", exact: true })
+  225 |       .click();
+  226 |     await expect(
+  227 |       page.getByRole("heading", {
+  228 |         name: "Alex Ejemplo (ficticio)",
+  229 |         exact: true,
+  230 |       }),
+  231 |     ).toBeVisible();
+  232 | 
+  233 |     await expect
+  234 |       .poll(async () =>
+  235 |         (await page.evaluate(() => caches.keys())).filter((k) =>
+  236 |           k.startsWith("nutrisport-static-"),
+  237 |         ),
+  238 |       )
+  239 |       .toEqual(["nutrisport-static-test-update"]);
+  240 |     expect(await page.evaluate(() => caches.keys())).toContain(foreign);
+  241 |   } finally {
+  242 |     writeFileSync(swPath, original);
+  243 |   }
+  244 | });
+  245 | 
+```

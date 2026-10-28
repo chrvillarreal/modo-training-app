@@ -1,0 +1,36 @@
+[
+  {
+    "id": "B-ARM",
+    "repo": "modo-training-app",
+    "branch": "feat/arm-orchestrator-v1",
+    "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+    "scope": "Actualizar sólo operations/arm-orchestrator en PR #2: verify read-only, 27 tests, evidencia faltante, script RM configurable, informe y propuestas; CI sólo documentos, no activación",
+    "level": "B",
+    "approved": false,
+    "possible_side_effect": "Automatizaciones/checks/preview asociados al push; no invocar deploy ni promoción de producción"
+  },
+  {
+    "id": "B-NUTRI",
+    "repo": "calculadora-nutricion-deportiva",
+    "branch": "feat/nutrisport-pro-local-mvp",
+    "base_sha": "e852644c4ce29635024eedbbf3fb8acfc6ff8df8",
+    "scope": "Actualizar PR #2 existente con src/PwaSettings.tsx y tests/stage-two.spec.ts; sin merge ni producción",
+    "patch": "nutrisport-pwa.patch",
+    "patch_sha256": "1a5cac732a93941ab84491bfad85279e32ec20ac5a25a7c1b988084a39b49a64",
+    "level": "B",
+    "approved": false,
+    "possible_side_effect": "Automatizaciones/checks/preview asociados al push; no invocar deploy ni promoción de producción"
+  },
+  {
+    "id": "B-RM",
+    "repo": "rm-training",
+    "branch": "design/study-preview-20261019",
+    "base_sha": "24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312",
+    "scope": "Actualizar PR #4 existente sólo con declaración UTF-8 en entrenamiento-base.html y banco-arm.html; sin reconciliar PR #2, merge o producción",
+    "patch": "rm-charset.patch",
+    "patch_sha256": "5c940c53f8aaebd347e98e9d31fadc264d5a3513764dfdddb664163073c096fd",
+    "level": "B",
+    "approved": false,
+    "possible_side_effect": "Automatizaciones/checks/preview asociados al push; no invocar deploy ni promoción de producción"
+  }
+]

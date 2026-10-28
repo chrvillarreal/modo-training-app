@@ -1,0 +1,33 @@
+{
+  "task_id": "6dc5f673-e1f3-4fcd-a701-a385f0790ed0",
+  "run_id": "a1bc6b99-7697-4977-9df0-d1a1f63515f9",
+  "title": "Auditar evidencias referenciadas y cadena exportada de forma independiente",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work",
+  "command": [
+    "python3",
+    "/workspace/work/check_arm_artifacts.py"
+  ],
+  "started_utc": "2026-10-28T23:16:03.520522+00:00",
+  "finished_utc": "2026-10-28T23:16:03.554996+00:00",
+  "exit_code": 1,
+  "status": "failed",
+  "evidence": "a1bc6b99-7697-4977-9df0-d1a1f63515f9.log"
+}
+
+{
+  "runs_checked": 19,
+  "events_checked": 70,
+  "chain_valid": true,
+  "missing_evidence": [
+    {
+      "run": "de699803-db25-4319-85be-bada0272f499",
+      "evidence": {
+        "bytes": 1560,
+        "file": "development-draft.patch",
+        "sha256": "4c273b081749f1f331cb8a340295839831d6baba371294e936e79cca2fe57f7a"
+      }
+    }
+  ]
+}

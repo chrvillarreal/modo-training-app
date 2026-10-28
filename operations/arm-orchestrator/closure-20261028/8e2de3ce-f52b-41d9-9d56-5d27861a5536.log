@@ -1,0 +1,20 @@
+{
+  "task_id": "5737f485-a184-46b9-9826-6b470341105c",
+  "run_id": "8e2de3ce-f52b-41d9-9d56-5d27861a5536",
+  "title": "Hacer reproducible el script de preview RM sin rutas fijas del host",
+  "project": "modo-training-app",
+  "base_sha": "c86bdfc133a1191d446a84984d758e50975f75fe",
+  "cwd": "/workspace/work/phase2-arm/operations/arm-orchestrator",
+  "command": [
+    "python3",
+    "-c",
+    "from pathlib import Path;p=Path('tests/rm-preview.cjs');s=p.read_text().replace(\"const {chromium}=require('/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');\",\"const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'/opt/codex/runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');const base=process.env.APP_URL||'http://127.0.0.1:4178';\").replace(\"executablePath:'/tmp/arm-chromium'\",\"executablePath:process.env.CHROME_PATH||'/tmp/arm-chromium'\").replace(\"p.goto('http://127.0.0.1:4178/\",\"p.goto(base+'/\");p.write_text(s);print('Runtime/browser/baseURL configurable; assertions preserved')"
+  ],
+  "started_utc": "2026-10-28T23:19:19.085877+00:00",
+  "finished_utc": "2026-10-28T23:19:19.137144+00:00",
+  "exit_code": 0,
+  "status": "passed",
+  "evidence": "8e2de3ce-f52b-41d9-9d56-5d27861a5536.log"
+}
+
+Runtime/browser/baseURL configurable; assertions preserved

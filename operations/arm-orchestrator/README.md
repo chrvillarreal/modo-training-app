@@ -14,6 +14,7 @@ python3 arm.py --db arm.sqlite verify
 python3 arm.py --db demo.sqlite task --project rm-training --title 'Revisar flujo' --priority P1 --action review --branch audit/review --sha 24a584cb520c9d8e4f4e51e0ee7b0e5d6f0fd312
 ```
 `start TASK_ID` abre una ejecución; `finish RUN_ID passed|failed|blocked evidencia.log` registra el resultado del operador. No ejecuta comandos y no verifica automáticamente que un log sea verdadero: corresponde a QA adjuntar resultados reales.
+`verify` abre una base existente en modo de sólo lectura: no crea ni inicializa archivos. Devuelve JSON `{"valid":false}` y código de salida 1 si falta la base, no puede leerse su esquema de eventos o la cadena está alterada; una cadena válida devuelve salida 0. Verifica la cadena de eventos, no autentica al operador ni revalida archivos de evidencia externos.
 `request-approval TASK_ID` solicita revisión de una tarea sensible. La API Python `decide` registra referencia de una decisión humana; no es autenticación de identidad y no habilita un ejecutor externo. En v1 ninguna aprobación local dispara pushes, despliegues ni publicaciones.
 
 ## Seguridad y límites
